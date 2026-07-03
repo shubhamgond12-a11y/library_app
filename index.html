@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Selection Library - Premium SaaS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Glassmorphism Themes */
+        :root {
+            --bg-grad: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-input-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            
+            --modal-bg: rgba(255, 255, 255, 0.95);
+            --modal-card-bg: rgba(240, 244, 248, 0.8);
+            --modal-border: rgba(255, 255, 255, 1);
+            
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --green: #10b981;
+            --orange: #f59e0b;
+            --red: #ef4444;
+        }
+
+        .dark-theme {
+            --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --glass-bg: rgba(15, 23, 42, 0.55);
+            --glass-input-bg: rgba(0, 0, 0, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            
+            --modal-bg: rgba(15, 23, 42, 0.95);
+            --modal-card-bg: rgba(0, 0, 0, 0.4);
+            --modal-border: rgba(255, 255, 255, 0.1);
+
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --green: #10b981;
+            --orange: #f59e0b;
+            --red: #ef4444;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; background: var(--bg-grad); background-attachment: fixed;
+            color: var(--text-main); margin: 0; padding: 10px 10px 30px 10px;
+            transition: background 0.4s ease, color 0.4s ease; min-height: 100vh;
+        }
+
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .animate-in { animation: fadeSlideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
+        .modal-animate { animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
+        h2 { margin: 0; font-weight: 700; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); letter-spacing: -0.5px;}
+        
+        .glass-panel {
+            background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); border-radius: 16px;
+        }
+
+        .utility-bar { display: flex; gap: 8px; align-items: center; }
+        
+        .theme-switch { position: relative; display: inline-block; width: 50px; height: 26px; margin-right: 2px;}
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--glass-input-bg); transition: .4s; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 4px; border-radius: 34px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: var(--primary); transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 2; }
+        input:checked + .slider:before { transform: translateX(24px); background-color: var(--green); }
+        
+        .switch-icon { width: 12px; height: 12px; z-index: 1; transition: 0.3s; }
+        .moon-icon { color: var(--text-muted); opacity: 0.5; }
+        .sun-icon { color: var(--orange); opacity: 1; }
+        input:checked + .slider .moon-icon { color: var(--primary); opacity: 1; }
+        input:checked + .slider .sun-icon { color: var(--text-muted); opacity: 0.5; }
+
+        .icon-btn {
+            border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-main);
+            padding: 6px; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; 
+            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); 
+            transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .icon-btn:hover { transform: scale(1.05); background: var(--glass-input-bg); }
+        .icon-btn:active { transform: scale(0.95); }
+
+        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; padding: 15px; }
+        .stat-card { text-align: center; font-size: 12px; font-weight: 600; padding: 8px; border-radius: 12px; background: var(--glass-input-bg); border: 1px solid var(--glass-border);}
+        .stat-card .num { font-size: 22px; font-weight: 700; display: block; margin-top: 2px; }
+
+        .filter-section { padding: 15px; margin-bottom: 20px; }
+        .search-box { width: 100%; padding: 12px 15px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 12px; margin-bottom: 15px; font-family: 'Poppins', sans-serif; box-sizing: border-box; transition: box-shadow 0.3s ease; }
+        .search-box:focus { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4); }
+        
+        .filter-btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        .filter-btn { border: 1px solid var(--glass-border); padding: 8px 16px; font-size: 12px; font-weight: 600; font-family: 'Poppins', sans-serif; background: var(--glass-bg); color: var(--text-main); border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: transparent; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+
+        .tab-container { display: flex; gap: 15px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 14px; border: 1px solid var(--glass-border); font-size: 14px; font-weight: 600; background: var(--glass-bg); color: var(--text-main); border-radius: 12px; cursor: pointer; backdrop-filter: blur(10px); font-family: 'Poppins', sans-serif; transition: all 0.2s ease; }
+        .tab-btn.active { background: rgba(255,255,255,0.7); box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+        .dark-theme .tab-btn.active { background: rgba(0,0,0,0.7); box-shadow: inset 0 2px 5px rgba(255,255,255,0.05); }
+
+        .form-container { padding: 20px; }
+        label { font-size: 13px; font-weight: 600; display: block; margin-top: 15px; margin-bottom: 6px; color: var(--text-main); }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 10px; font-size: 14px; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.2s; }
+        input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4); }
+        
+        .action-btn { width: 100%; padding: 14px; margin-top: 15px; border: none; border-radius: 10px; background: var(--primary); color: white; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-family: 'Poppins', sans-serif; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 6px; }
+        .action-btn:active { transform: scale(0.96); }
+
+        .seat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 10px; }
+        .seat { aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; font-weight: 600; font-size: 14px; cursor: pointer; border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(8px); border-radius: 12px; padding: 5px; box-sizing: border-box; transition: transform 0.2s, box-shadow 0.2s; }
+        .seat:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); border-color: var(--primary); }
+        .seat.free { color: var(--green); border: 1px solid rgba(16, 185, 129, 0.4); justify-content: center;}
+        .seat.allotted { background: rgba(37, 99, 235, 0.15); color: var(--primary); font-size: 12px; border: 1px solid var(--primary); }
+        .seat.due-alert { background: rgba(245, 158, 11, 0.15); color: var(--orange); border-color: var(--orange); }
+        .seat.expired-alert { background: rgba(239, 68, 68, 0.15); color: var(--red); border-color: var(--red); animation: pulse-border 2s infinite; }
+        
+        .seat-number { font-size: 15px; font-weight: 700; margin-bottom: 2px;}
+        .seat-name { font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; color: var(--text-main); font-weight: 500; line-height: 1.2;}
+
+        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+
+        /* Modals & UI Components */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { width: 92%; max-width: 420px; padding: 25px; box-sizing: border-box; border-radius: 20px; max-height: 90vh; overflow-y: auto; background: var(--modal-bg); border: 1px solid var(--modal-border); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        
+        .profile-details { background: var(--modal-card-bg); border-radius: 14px; padding: 5px 15px; margin-top: 15px; border: 1px solid var(--glass-border); }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(150,150,150,0.15); }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        .info-value { font-size: 13px; font-weight: 600; color: var(--text-main); text-align: right; }
+        .status-badge { padding: 4px 10px; border-radius: 8px; font-weight: 600; color: white; font-size: 11px; letter-spacing: 0.5px;}
+
+        .payment-ledger { margin-top: 10px; max-height: 140px; overflow-y: auto; padding-right: 5px;}
+        .payment-item { background: var(--modal-card-bg); border-radius: 10px; padding: 12px 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); }
+        .pay-left { display: flex; flex-direction: column; gap: 4px;}
+        .pay-date { font-size: 12px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 6px;}
+        .pay-mode { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;}
+        .pay-amount { font-size: 15px; font-weight: 700; color: var(--green); }
+
+        .student-list-item { background: var(--modal-card-bg); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); cursor: pointer; transition: transform 0.2s ease; }
+        .student-list-item:hover { transform: scale(1.02); }
+
+        svg { stroke-width: 2; width: 16px; height: 16px; }
+
+        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: max-content; max-width: 90%; pointer-events: none; }
+        .toast { background: rgba(15, 23, 42, 0.9); color: white; padding: 14px 25px; border-radius: 30px; font-size: 14px; font-weight: 500; text-align: center; margin-top: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(20px); }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .hidden { display: none !important; }
+        .flex-row { display: flex; gap: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="authScreen" class="modal" style="display:flex; background: var(--bg-grad); z-index: 9999;">
+        <div class="modal-content glass-panel" style="max-width: 380px; text-align: center; padding: 35px 25px;">
+            <h2 style="color:var(--primary); margin-bottom: 5px; font-weight:700;">Library SaaS System</h2>
+            <p style="font-size: 13px; color:var(--text-muted); margin-bottom: 25px;">Sign in to manage your library and seamlessly sync your data to the cloud.</p>
+            
+            <input type="email" id="authEmail" placeholder="Email Address" style="margin-bottom:15px; padding:14px;">
+            <input type="password" id="authPassword" placeholder="Password" style="margin-bottom:20px; padding:14px;">
+            
+            <button class="action-btn" onclick="loginUser()" style="background:var(--primary); padding:14px; margin-top:0;">Login to Dashboard</button>
+            <button class="action-btn" onclick="signupUser()" style="background:var(--glass-input-bg); color:var(--text-main); margin-top:12px; box-shadow:none;">Create New Account</button>
+            
+            <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
+        </div>
+    </div>
+
+    <!-- MAIN APPLICATION -->
+    <div id="mainApp" style="display:none;">
+        <header class="animate-in">
+            <h2 id="appTitle">Selection Library</h2>
+            <div class="utility-bar">
+                <label class="theme-switch" title="Toggle Dark Mode">
+                    <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
+                    <span class="slider round">
+                        <svg class="switch-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        <svg class="switch-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </span>
+                </label>
+                <button class="icon-btn" onclick="openSettingsModal()" title="Library Settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </button>
+                <button class="icon-btn" onclick="exportData()" title="Backup Data">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 17l4 4 4-4"/><path d="M12 12v9"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+                </button>
+                <button class="icon-btn" onclick="triggerImport()" title="Restore Data">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 16l-4-4-4 4"/><path d="M12 12v9"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+                </button>
+                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                </button>
+                <input type="file" id="importFile" class="hidden" onchange="importData(this)">
+            </div>
+        </header>
+
+        <div class="dashboard glass-panel animate-in">
+            <div class="stat-card">Phys. Chairs Free <span class="num" id="statFree" style="color:var(--green)">0</span></div>
+            <div class="stat-card">Total Enrolled <span class="num" id="statOccupied" style="color:var(--primary)">0</span></div>
+            <div class="stat-card">Profiles Fee Due <span class="num" id="statDue" style="color:var(--orange)">0</span></div>
+            <div class="stat-card">Profiles Expired <span class="num" id="statExpired" style="color:var(--red)">0</span></div>
+        </div>
+
+        <div class="tab-container animate-in">
+            <button class="tab-btn active" id="tabMapBtn" onclick="switchTab('map')">🪑 Seats Matrix</button>
+            <button class="tab-btn" id="tabAddBtn" onclick="switchTab('add')">📝 New Admission</button>
+        </div>
+
+        <div id="seatMapTab" class="animate-in">
+            <div class="filter-section glass-panel">
+                <input type="text" id="searchExam" class="search-box" placeholder="Search Exam (e.g. Banking, UPSC)..." oninput="applyFilters()">
+                <div class="filter-btn-group">
+                    <button class="filter-btn active" id="fltAll" onclick="setFilter('all')">All Seats</button>
+                    <button class="filter-btn" id="fltFree" onclick="setFilter('free')">Empty Chairs</button>
+                    <button class="filter-btn" id="fltDue" onclick="setFilter('due')">Fee Due</button>
+                    <button class="filter-btn" id="fltExpired" onclick="setFilter('expired')">Expired</button>
+                </div>
+            </div>
+            <div class="seat-grid" id="seatsContainer"></div>
+        </div>
+
+        <div id="addSeatTab" class="hidden animate-in">
+            <div class="form-container glass-panel">
+                <h3 style="text-align:center; color:var(--primary); margin-top:0;">New Registration</h3>
+                
+                <label>Seat Number</label>
+                <input type="text" id="seatNo" placeholder="e.g. 15, 6A, 12B" style="text-transform: uppercase;">
+                <label>Student Name</label>
+                <input type="text" id="studentName" placeholder="Full Name">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" placeholder="10-digit number">
+                <label>Preparing For</label>
+                <input type="text" id="exam" placeholder="e.g. Banking, SSC, UPSC">
+                
+                <div class="flex-row">
+                    <div style="flex:1"><label>Admission</label><input type="date" id="admDate"></div>
+                    <div style="flex:1"><label>Valid Up To</label><input type="date" id="validDate"></div>
+                </div>
+
+                <div class="flex-row">
+                    <div style="flex:1"><label>Paid (₹)</label><input type="number" id="initialAmount" placeholder="1500"></div>
+                    <div style="flex:1"><label>Mode</label>
+                        <select id="initialMode"><option value="Cash">Cash</option><option value="UPI">UPI</option></select>
+                    </div>
+                </div>
+                
+                <label>Fee Status</label>
+                <select id="feeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+
+                <label>Shift Timing</label>
+                <select id="shift" onchange="toggleCustomShift('shift', 'customShift')">
+                    <!-- Populated dynamically -->
+                </select>
+                <input type="text" id="customShift" class="hidden" placeholder="Enter Custom Shift timings" style="margin-top:10px;">
+                
+                <button class="action-btn" onclick="allotSeat()">Complete Admission</button>
+            </div>
+        </div>
+    </div> <!-- End Main App -->
+
+    <!-- MODALS -->
+    <div id="detailsModal" class="modal">
+        
+        <div class="modal-content hidden" id="modalSettingsSection">
+            <h3 style="margin-top:0; color:var(--primary); font-weight:700;">⚙️ Library Settings</h3>
+            <p style="font-size: 13px; margin-bottom: 20px; color:var(--text-muted);">Customize your app configuration below.</p>
+            <label>Library / Business Name</label>
+            <input type="text" id="cfgLibName" placeholder="e.g. Selection Library">
+            <label>Total Standard Seats</label>
+            <input type="number" id="cfgTotalSeats" min="1" max="1000" placeholder="e.g. 86">
+            <label>Custom Seat Labels (comma separated)</label>
+            <input type="text" id="cfgCustomSeats" placeholder="e.g. 6A, 6B, 12A, 12B" style="text-transform: uppercase;">
+            <label>Available Shifts (one per line)</label>
+            <textarea id="cfgShifts" rows="4" placeholder="Morning (8 AM - 2 PM)&#10;Evening (2 PM - 8 PM)"></textarea>
+            
+            <div style="display:flex; gap:10px; margin-top:25px;">
+                <button class="action-btn" style="margin:0; background:var(--primary); flex:2;" onclick="saveSettings()">Save & Apply</button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+
+        <div class="modal-content hidden" id="modalListSection">
+            <h3 style="margin-top:0; color:var(--primary); font-weight:700;">Seat <span id="listSeatNo"></span> Occupants</h3>
+            <p style="font-size: 13px; margin-bottom: 20px; color:var(--text-muted);">Select a student to view details or add another shift.</p>
+            <div id="occupantsContainer"></div>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="action-btn" style="margin:0; background:var(--primary); flex:2;" onclick="addAnotherToSeat()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add Another Shift
+                </button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+
+        <div class="modal-content hidden" id="modalViewSection">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 id="modTitle" style="margin:0; color:var(--primary); font-weight:700;">Seat Profile</h3>
+                <button class="action-btn" onclick="showEditForm()" style="background:var(--primary); width:auto; margin:0; padding:6px 14px; border-radius:8px; font-size:12px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit
+                </button>
+            </div>
+            
+            <div class="profile-details">
+                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Name</span> <span class="info-value" id="modName"></span></div>
+                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Phone</span> <span class="info-value" id="modPhone"></span></div>
+                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Shift</span> <span class="info-value" id="modShift"></span></div>
+                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> Exam</span> <span class="info-value" id="modExam"></span></div>
+                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Admission</span> <span class="info-value" id="modDate"></span></div>
+                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10H3"/><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 16 2 2 4-4"/></svg> Valid Up To</span> <span class="info-value" id="modValid"></span></div>
+                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Status</span> <span class="status-badge" id="modFee"></span></div>
+            </div>
+
+            <h4 style="margin: 20px 0 10px 0; font-size: 14px; color:var(--text-main);">Payment Ledger</h4>
+            <div class="payment-ledger" id="paymentLedger"></div>
+            
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+                <button class="action-btn" style="margin:0; background:var(--green);" onclick="showPaymentForm()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Record New Payment
+                </button>
+                <div style="display:flex; gap:10px;">
+                    <button class="action-btn" style="background:var(--primary); margin:0; flex:1;" onclick="addAnotherToSeat()">+ Add Shift</button>
+                    <button class="action-btn" style="background:var(--red); margin:0; flex:1;" id="btnRemoveStudent" onclick="freeStudentSlot()">Remove</button>
+                    <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" id="btnViewBack" onclick="backToListOrClose()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-content hidden" id="modalEditSection">
+            <h3 style="margin-top:0; color:var(--primary); font-weight:700;">Edit Profile</h3>
+            
+            <label>Student Name</label> <input type="text" id="editName">
+            <label>Phone Number</label> <input type="tel" id="editPhone">
+            <label>Exam</label> <input type="text" id="editExam">
+            
+            <div class="flex-row">
+                <div style="flex:1"><label>Admission Date</label> <input type="date" id="editAdmDate"></div>
+                <div style="flex:1"><label>Valid Up To</label> <input type="date" id="editValidDate"></div>
+            </div>
+            
+            <label>Fee Status</label>
+            <select id="editFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+            <label>Shift Timing</label>
+            <input type="text" id="editShift">
+
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="action-btn" style="margin:0; background:var(--primary); flex:2;" onclick="saveEdit()">Save Changes</button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="cancelEdit()">Cancel</button>
+            </div>
+        </div>
+
+        <div class="modal-content hidden" id="modalPaySection">
+            <h3 style="margin-top:0; color:var(--primary); font-weight:700;">Record Fee Payment</h3>
+            <p style="font-size: 13px; margin-bottom: 20px; color:var(--text-muted);">Updating <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
+            
+            <label>Payment Date</label> <input type="date" id="payDate">
+            
+            <div class="flex-row">
+                <div style="flex:1"><label>Amount (₹)</label> <input type="number" id="payAmount" placeholder="1500"></div>
+                <div style="flex:1"><label>Mode</label>
+                    <select id="payMode"><option value="Cash">Cash</option><option value="UPI">UPI</option></select>
+                </div>
+            </div>
+
+            <label>Extend Validity To (Renewal)</label> <input type="date" id="payValidDate">
+            <label>Update Fee Status</label>
+            <select id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+
+            <div style="display:flex; gap:10px; margin-top:25px;">
+                <button class="action-btn" style="margin:0; background:var(--green); flex:2;" onclick="savePayment()">Save Payment</button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="hidePaymentForm()">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- Firebase App (the core Firebase SDK) & Services -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your provided Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4",
+            authDomain: "librarymgt-2026.firebaseapp.com",
+            projectId: "librarymgt-2026",
+            storageBucket: "librarymgt-2026.firebasestorage.app",
+            messagingSenderId: "836897960075",
+            appId: "1:836897960075:web:11899c0996620eb428e48e"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let unsubscribeSnapshot = null;
+
+        // Default Configuration
+        let appConfig = {
+            libraryName: "Selection Library",
+            totalSeats: 86,
+            customSeats: ["6A", "6B", "12A", "12B", "28A", "28B", "28C"],
+            shifts: ["Morning (8 AM - 2 PM)", "Evening (2 PM - 8 PM)", "Full Day (7 AM - 9 PM)"]
+        };
+
+        // --- PHASE 4: CLOUD DATABASE ABSTRACTION LAYER ---
+        const DB = {
+            data: {},
+            save: function() {
+                if (!currentUser) return;
+                // Securely store data under their unique User ID
+                const docRef = doc(db, 'artifacts', 'library-saas', 'users', currentUser.uid, 'libraryData', 'main');
+                setDoc(docRef, {
+                    config: appConfig,
+                    seatsData: this.data
+                }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
+            },
+            getAllData: function() { return this.data; },
+            getOccupants: function(seatNo) { return this.data[seatNo] || []; },
+            addStudent: function(seatNo, studentData) {
+                if(!this.data[seatNo]) this.data[seatNo] = [];
+                this.data[seatNo].push(studentData);
+                this.save();
+            },
+            updateStudent: function(seatNo, studentId, updatedData) {
+                const idx = this.data[seatNo].findIndex(s => s.id === studentId);
+                if(idx > -1) {
+                    this.data[seatNo][idx] = { ...this.data[seatNo][idx], ...updatedData };
+                    this.save();
+                }
+            },
+            removeStudent: function(seatNo, studentId) {
+                this.data[seatNo] = this.data[seatNo].filter(s => s.id !== studentId);
+                this.save();
+            },
+            addPayment: function(seatNo, studentId, paymentObj, validDate, feeStatus) {
+                const student = this.data[seatNo].find(s => s.id === studentId);
+                if(student) {
+                    student.payments.push(paymentObj);
+                    if(validDate) student.validDate = validDate;
+                    if(feeStatus) student.feeStatus = feeStatus;
+                    this.save();
+                }
+            }
+        };
+
+        // APP STATE
+        window.seatLayout = [];
+        window.currentFilter = 'all';
+        window.activeSeatNo = null;
+        window.activeStudentId = null;
+        window.isDeleteConfirmStep = false; 
+
+        // Apply visual theme immediately
+        if(localStorage.getItem('libTheme') === 'dark') document.body.classList.add('dark-theme');
+        window.addEventListener('DOMContentLoaded', () => {
+            const checkbox = document.getElementById('themeCheckbox');
+            if (checkbox) checkbox.checked = document.body.classList.contains('dark-theme');
+        });
+
+        // --- AUTHENTICATION ENGINE ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                loadDataFromCloud();
+                window.toast(`Logged in securely.`);
+            } else {
+                currentUser = null;
+                document.getElementById('authScreen').style.display = 'flex';
+                document.getElementById('mainApp').style.display = 'none';
+                if (unsubscribeSnapshot) unsubscribeSnapshot();
+            }
+        });
+
+        window.loginUser = () => {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            const err = document.getElementById('authError');
+            if(!email || !pass) { err.innerText = "Please enter email and password."; return; }
+            
+            signInWithEmailAndPassword(auth, email, pass).catch(error => {
+                err.innerText = error.message.replace('Firebase:', '').trim();
+            });
+        };
+
+        window.signupUser = () => {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            const err = document.getElementById('authError');
+            if(!email || !pass) { err.innerText = "Please enter email and password."; return; }
+            
+            createUserWithEmailAndPassword(auth, email, pass).then(() => {
+                window.toast("Account created! Welcome to your SaaS dashboard.");
+            }).catch(error => {
+                err.innerText = error.message.replace('Firebase:', '').trim();
+            });
+        };
+
+        window.logoutUser = () => {
+            signOut(auth).then(() => window.toast("Logged out successfully."));
+        };
+
+        // --- LIVE CLOUD SYNC ---
+        function loadDataFromCloud() {
+            const docRef = doc(db, 'artifacts', 'library-saas', 'users', currentUser.uid, 'libraryData', 'main');
+            
+            // onSnapshot triggers instantly on any change across any device
+            unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    if (cloudData.config) appConfig = cloudData.config;
+                    if (cloudData.seatsData) DB.data = cloudData.seatsData;
+                } else {
+                    // NEW ACCOUNT: Attempt to migrate old local data to the cloud so they don't lose it
+                    const localConfig = JSON.parse(localStorage.getItem('libConfigPro'));
+                    const localSeats = JSON.parse(localStorage.getItem('libSeatsPro'));
+                    
+                    if(localConfig) appConfig = localConfig;
+                    if(localSeats) DB.data = localSeats;
+                    
+                    DB.save(); // Push migrated (or default) data up to Firebase
+                    window.toast("SaaS Profile Initialized!");
+                }
+                
+                document.getElementById('appTitle').innerText = appConfig.libraryName || 'Selection Library';
+                window.initializeAppStructure();
+                window.renderSeats();
+            }, (error) => {
+                window.toast("Database connection error");
+                console.error("Cloud sync error: ", error);
+            });
+        }
+
+        // --- CORE UI FUNCTIONS ---
+        window.toast = function(message) {
+            const container = document.getElementById('toast-container');
+            const el = document.createElement('div'); el.className = 'toast'; el.innerText = message;
+            container.appendChild(el);
+            setTimeout(() => el.classList.add('show'), 10);
+            setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
+        }
+
+        window.toggleTheme = function() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('libTheme', isDark ? 'dark' : 'light');
+            document.getElementById('themeCheckbox').checked = isDark;
+        }
+
+        function triggerTabAnimation(tabId) {
+            const el = document.getElementById(tabId);
+            el.classList.remove('animate-in'); void el.offsetWidth; el.classList.add('animate-in');
+        }
+
+        window.switchTab = function(tab) {
+            if(tab === 'map') {
+                document.getElementById('seatMapTab').classList.remove('hidden');
+                document.getElementById('addSeatTab').classList.add('hidden');
+                document.getElementById('tabMapBtn').className = 'tab-btn active';
+                document.getElementById('tabAddBtn').className = 'tab-btn';
+                triggerTabAnimation('seatMapTab');
+                window.renderSeats();
+            } else {
+                document.getElementById('addSeatTab').classList.remove('hidden');
+                document.getElementById('seatMapTab').classList.add('hidden');
+                document.getElementById('tabAddBtn').className = 'tab-btn active';
+                document.getElementById('tabMapBtn').className = 'tab-btn';
+                document.getElementById('admDate').value = new Date().toISOString().split('T')[0];
+                triggerTabAnimation('addSeatTab');
+            }
+        }
+
+        window.toggleCustomShift = function(selectId, inputId) {
+            document.getElementById(inputId).classList.toggle('hidden', document.getElementById(selectId).value !== 'Custom');
+        }
+
+        window.initializeAppStructure = function() {
+            window.seatLayout = [];
+            for (let i = 1; i <= appConfig.totalSeats; i++) {
+                window.seatLayout.push(i.toString());
+                const relatedCustomSeats = appConfig.customSeats.filter(seat => {
+                    const match = seat.match(/^(\d+)[A-Za-z]+$/);
+                    return match && parseInt(match[1]) === i;
+                });
+                window.seatLayout.push(...relatedCustomSeats);
+            }
+
+            const shiftSelect = document.getElementById('shift');
+            if(shiftSelect) {
+                shiftSelect.innerHTML = ''; 
+                appConfig.shifts.forEach(shiftName => {
+                    const opt = document.createElement('option'); opt.value = shiftName; opt.innerText = shiftName;
+                    shiftSelect.appendChild(opt);
+                });
+                const customOpt = document.createElement('option'); customOpt.value = 'Custom'; customOpt.innerText = 'Custom Shift...';
+                shiftSelect.appendChild(customOpt);
+            }
+        }
+
+        function updateDashboard() {
+            let freeChairs = 0, totalEnrolled = 0, dueProfiles = 0, expiredProfiles = 0;
+            const today = new Date().toISOString().split('T')[0];
+
+            for(let seatId of window.seatLayout) {
+                const occupants = DB.getOccupants(seatId);
+                if(occupants.length === 0) freeChairs++;
+                occupants.forEach(student => {
+                    totalEnrolled++;
+                    if(student.feeStatus === 'Due') dueProfiles++;
+                    if(student.validDate && student.validDate < today) expiredProfiles++;
+                });
+            }
+            document.getElementById('statFree').innerText = freeChairs;
+            document.getElementById('statOccupied').innerText = totalEnrolled;
+            document.getElementById('statDue').innerText = dueProfiles;
+            document.getElementById('statExpired').innerText = expiredProfiles;
+        }
+
+        window.setFilter = function(type) {
+            window.currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('flt' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
+            window.renderSeats();
+        }
+        window.applyFilters = function() { window.renderSeats(); }
+
+        window.renderSeats = function() {
+            const container = document.getElementById('seatsContainer');
+            if(!container) return;
+            container.innerHTML = ''; updateDashboard();
+            const examQuery = document.getElementById('searchExam').value.toLowerCase();
+            const today = new Date().toISOString().split('T')[0];
+
+            for (let seatId of window.seatLayout) {
+                const occupants = DB.getOccupants(seatId);
+                let hasDue = false, hasExpired = false, hasMatch = false;
+                
+                occupants.forEach(s => {
+                    if (s.feeStatus === 'Due') hasDue = true;
+                    if (s.validDate && s.validDate < today) hasExpired = true;
+                    if (!examQuery || (s.exam && s.exam.toLowerCase().includes(examQuery))) hasMatch = true;
+                });
+
+                if (window.currentFilter === 'free' && occupants.length > 0) continue;
+                if (window.currentFilter === 'due' && !hasDue) continue;
+                if (window.currentFilter === 'expired' && !hasExpired) continue;
+                if (occupants.length > 0 && examQuery && !hasMatch) continue;
+
+                const div = document.createElement('div');
+                
+                if (occupants.length > 0) {
+                    let alertClass = 'allotted';
+                    if (hasExpired) alertClass = 'expired-alert';
+                    else if (hasDue) alertClass = 'due-alert';
+                    
+                    div.className = `seat ${alertClass}`;
+                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    occupants.forEach(s => {
+                        let shortShift = s.shift.charAt(0);
+                        div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${shortShift})</div>`;
+                    });
+                    div.onclick = () => window.handleSeatClick(seatId);
+                } else {
+                    if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
+                    div.className = `seat free`;
+                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; };
+                }
+                container.appendChild(div);
+            }
+        }
+
+        window.allotSeat = function() {
+            const seatNo = document.getElementById('seatNo').value.toUpperCase().trim();
+            const name = document.getElementById('studentName').value;
+            
+            if (!seatNo || !window.seatLayout.includes(seatNo)) { window.toast('⚠️ Invalid Seat Number. Check the map.'); return; }
+            if (!name) { window.toast('⚠️ Student name required'); return; }
+
+            let shift = document.getElementById('shift').value === 'Custom' ? document.getElementById('customShift').value : document.getElementById('shift').value;
+            const occupants = DB.getOccupants(seatNo);
+
+            let hasConflict = false; let conflictMsg = "";
+            for (let s of occupants) {
+                if (s.shift === shift) { hasConflict = true; conflictMsg = `Seat ${seatNo} is already booked for ${shift} by ${s.name}`; break; }
+                if (s.shift.includes("Full Day") && (shift.includes("Morning") || shift.includes("Evening"))) { hasConflict = true; conflictMsg = `Seat ${seatNo} is booked for the Full Day by ${s.name}`; break; }
+                if (shift.includes("Full Day") && (s.shift.includes("Morning") || s.shift.includes("Evening"))) { hasConflict = true; conflictMsg = `Seat ${seatNo} is booked for a half day by ${s.name}`; break; }
+            }
+            if (hasConflict) { window.toast('🚫 ' + conflictMsg); return; }
+
+            let initialPayments = [];
+            const amt = document.getElementById('initialAmount').value;
+            if(amt) {
+                initialPayments.push({ date: document.getElementById('admDate').value, amount: amt, mode: document.getElementById('initialMode').value });
+            }
+
+            const newStudent = { 
+                id: Date.now().toString() + Math.random().toString(36).substr(2, 5), 
+                name, shift, phone: document.getElementById('phone').value || 'N/A', 
+                exam: document.getElementById('exam').value || 'General', admDate: document.getElementById('admDate').value, 
+                validDate: document.getElementById('validDate').value, feeStatus: document.getElementById('feeStatus').value,
+                payments: initialPayments
+            };
+            
+            DB.addStudent(seatNo, newStudent);
+            
+            ['seatNo', 'studentName', 'phone', 'exam', 'admDate', 'validDate', 'initialAmount', 'customShift'].forEach(id => document.getElementById(id).value = '');
+            window.switchTab('map'); window.toast(`🎉 ${name} allocated successfully!`);
+        }
+
+        window.addAnotherToSeat = function() {
+            const seatToFill = window.activeSeatNo;
+            window.closeModal();
+            window.switchTab('add');
+            document.getElementById('seatNo').value = seatToFill;
+        }
+
+        // --- SETTINGS MODAL ---
+        window.openSettingsModal = function() {
+            hideAllModalSections();
+            document.getElementById('cfgLibName').value = appConfig.libraryName || 'Selection Library';
+            document.getElementById('cfgTotalSeats').value = appConfig.totalSeats || 86;
+            document.getElementById('cfgCustomSeats').value = (appConfig.customSeats || []).join(', ');
+            document.getElementById('cfgShifts').value = (appConfig.shifts || []).join('\n');
+            triggerModalAnimation('modalSettingsSection');
+            document.getElementById('detailsModal').style.display = 'flex';
+        }
+
+        window.saveSettings = function() {
+            const newName = document.getElementById('cfgLibName').value.trim();
+            const newTotal = parseInt(document.getElementById('cfgTotalSeats').value);
+            const newCustom = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s);
+            const newShifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s);
+
+            if(!newName || isNaN(newTotal) || newTotal < 1 || newShifts.length === 0) {
+                window.toast('⚠️ Please fill out all settings properly.'); return;
+            }
+
+            appConfig.libraryName = newName;
+            appConfig.totalSeats = newTotal;
+            appConfig.customSeats = newCustom;
+            appConfig.shifts = newShifts;
+
+            // Push all structural changes instantly to Cloud
+            DB.save(); 
+
+            document.getElementById('appTitle').innerText = newName;
+            window.initializeAppStructure(); 
+            window.renderSeats();            
+            window.closeModal();
+            window.toast('✅ Settings applied & synced to cloud!');
+        }
+
+        function hideAllModalSections() {
+            ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+                document.getElementById(id).classList.remove('modal-animate'); 
+            });
+        }
+
+        function triggerModalAnimation(sectionId) {
+            const el = document.getElementById(sectionId);
+            el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate');
+        }
+
+        window.handleSeatClick = function(seatNo) {
+            window.activeSeatNo = seatNo;
+            const occupants = DB.getOccupants(seatNo);
+            if(occupants.length === 1) { window.openStudentProfile(occupants[0].id); } 
+            else { window.showListMenu(); }
+            document.getElementById('detailsModal').style.display = 'flex';
+        }
+
+        window.showListMenu = function() {
+            hideAllModalSections();
+            const occupants = DB.getOccupants(window.activeSeatNo);
+            document.getElementById('listSeatNo').innerText = window.activeSeatNo;
+            const listCont = document.getElementById('occupantsContainer'); listCont.innerHTML = '';
+            
+            occupants.forEach(s => {
+                let badgeColor = s.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
+                listCont.innerHTML += `
+                    <div class="student-list-item" onclick="openStudentProfile('${s.id}')">
+                        <div><strong style="display:block; font-size:15px; color:var(--text-main);">${s.name}</strong>
+                        <span style="font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:4px; margin-top:2px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        ${s.shift}</span></div>
+                        <span style="background:${badgeColor}; color:white; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:600;">${s.feeStatus}</span>
+                    </div>`;
+            });
+            triggerModalAnimation('modalListSection');
+        }
+
+        window.openStudentProfile = function(studentId) {
+            window.activeStudentId = studentId;
+            hideAllModalSections();
+            window.isDeleteConfirmStep = false;
+            const rmvBtn = document.getElementById('btnRemoveStudent');
+            if(rmvBtn) { rmvBtn.innerText = "Remove"; rmvBtn.style.background = "var(--red)"; }
+            
+            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === studentId);
+            document.getElementById('modName').innerText = student.name;
+            document.getElementById('modPhone').innerText = student.phone;
+            document.getElementById('modShift').innerText = student.shift;
+            document.getElementById('modExam').innerText = student.exam;
+            document.getElementById('modDate').innerText = student.admDate || 'N/A';
+            document.getElementById('modValid').innerText = student.validDate || 'N/A';
+            
+            const feeEl = document.getElementById('modFee');
+            feeEl.innerText = student.feeStatus; feeEl.style.background = student.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
+
+            const ledger = document.getElementById('paymentLedger'); ledger.innerHTML = '';
+            if(!student.payments || student.payments.length === 0) {
+                ledger.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center; padding:15px 0;">No payment history recorded.</div>';
+            } else {
+                for(let i = student.payments.length - 1; i >= 0; i--) {
+                    let p = student.payments[i];
+                    ledger.innerHTML += `
+                        <div class="payment-item">
+                            <div class="pay-left">
+                                <span class="pay-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${p.date}</span>
+                                <span class="pay-mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> ${p.mode}</span>
+                            </div>
+                            <span class="pay-amount">₹${p.amount}</span>
+                        </div>`;
+                }
+            }
+
+            const btnBack = document.getElementById('btnViewBack');
+            if(DB.getOccupants(window.activeSeatNo).length > 1) { btnBack.innerHTML = "Back to List"; btnBack.onclick = window.backToListOrClose; } 
+            else { btnBack.innerHTML = "Close"; btnBack.onclick = window.closeModal; }
+
+            triggerModalAnimation('modalViewSection');
+        }
+
+        window.backToListOrClose = function() {
+            if(DB.getOccupants(window.activeSeatNo).length > 1) window.showListMenu();
+            else window.closeModal();
+        }
+        window.closeModal = function() { document.getElementById('detailsModal').style.display = 'none'; window.activeSeatNo = null; window.activeStudentId = null; }
+
+        window.showEditForm = function() {
+            hideAllModalSections();
+            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId);
+            document.getElementById('editName').value = student.name;
+            document.getElementById('editPhone').value = student.phone !== 'N/A' ? student.phone : '';
+            document.getElementById('editExam').value = student.exam;
+            document.getElementById('editAdmDate').value = student.admDate || '';
+            document.getElementById('editValidDate').value = student.validDate || '';
+            document.getElementById('editFeeStatus').value = student.feeStatus;
+            document.getElementById('editShift').value = student.shift;
+            triggerModalAnimation('modalEditSection');
+        }
+
+        window.saveEdit = function() {
+            const updatedData = {
+                name: document.getElementById('editName').value,
+                phone: document.getElementById('editPhone').value || 'N/A',
+                exam: document.getElementById('editExam').value || 'General',
+                admDate: document.getElementById('editAdmDate').value,
+                validDate: document.getElementById('editValidDate').value,
+                feeStatus: document.getElementById('editFeeStatus').value,
+                shift: document.getElementById('editShift').value
+            };
+            DB.updateStudent(window.activeSeatNo, window.activeStudentId, updatedData);
+            window.toast("✅ Profile Updated"); window.renderSeats(); window.openStudentProfile(window.activeStudentId); 
+        }
+
+        window.cancelEdit = function() { window.openStudentProfile(window.activeStudentId); }
+
+        window.showPaymentForm = function() {
+            hideAllModalSections();
+            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId);
+            document.getElementById('payStudentName').innerText = student.name;
+            document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('payAmount').value = '';
+            document.getElementById('payValidDate').value = student.validDate || '';
+            document.getElementById('payFeeStatus').value = 'Paid';
+            triggerModalAnimation('modalPaySection');
+        }
+
+        window.hidePaymentForm = function() { window.openStudentProfile(window.activeStudentId); }
+
+        window.savePayment = function() {
+            const amt = document.getElementById('payAmount').value;
+            if(!amt) { window.toast('⚠️ Enter amount'); return; }
+            const paymentObj = { date: document.getElementById('payDate').value, amount: amt, mode: document.getElementById('payMode').value };
+            const validDate = document.getElementById('payValidDate').value;
+            const feeStatus = document.getElementById('payFeeStatus').value;
+
+            DB.addPayment(window.activeSeatNo, window.activeStudentId, paymentObj, validDate, feeStatus);
+            window.toast('✅ Payment Saved'); window.renderSeats(); window.openStudentProfile(window.activeStudentId);
+        }
+
+        window.freeStudentSlot = function() {
+            const btn = document.getElementById('btnRemoveStudent');
+            if (!window.isDeleteConfirmStep) {
+                window.isDeleteConfirmStep = true;
+                btn.innerText = "Tap Again to Delete"; btn.style.background = "#991b1b"; 
+                setTimeout(() => {
+                    if (window.isDeleteConfirmStep) { window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)"; }
+                }, 4000);
+                return;
+            }
+            DB.removeStudent(window.activeSeatNo, window.activeStudentId);
+            window.renderSeats(); window.toast(`🗑️ Student removed.`);
+            window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)";
+            if(DB.getOccupants(window.activeSeatNo).length > 0) window.showListMenu(); else window.closeModal();
+        }
+
+        window.exportData = function() {
+            const backupPayload = { config: appConfig, seatsData: DB.getAllData() };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupPayload));
+            const anchor = document.createElement('a'); anchor.setAttribute("href", dataStr);
+            anchor.setAttribute("download", `Library_Backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(anchor); anchor.click(); anchor.remove(); window.toast("📥 Backup Downloaded!");
+        }
+        window.triggerImport = function() { document.getElementById('importFile').click(); }
+        window.importData = function(input) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                try {
+                    const obj = JSON.parse(reader.result);
+                    if(obj.config && obj.seatsData) { appConfig = obj.config; DB.data = obj.seatsData; } 
+                    else { DB.data = obj; } // Fallback for old backups
+                    DB.save(); 
+                    document.getElementById('appTitle').innerText = appConfig.libraryName || 'Selection Library';
+                    window.initializeAppStructure(); window.renderSeats(); window.toast("📤 Data Restored & Synced to Cloud!"); 
+                } catch(e) { window.toast("⚠️ Error reading backup"); }
+            };
+            if(input.files[0]) reader.readAsText(input.files[0]);
+        }
+    </script>
+</body>
+</html>
