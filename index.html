@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Selection Library - Premium SaaS</title>
+    <title>LibSync Pro - Library SaaS</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Glassmorphism Themes */
@@ -146,6 +147,10 @@
         .student-list-item { background: var(--modal-card-bg); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); cursor: pointer; transition: transform 0.2s ease; }
         .student-list-item:hover { transform: scale(1.02); }
 
+        /* Auth Screen Specific Styles */
+        .auth-toggle-link { color: var(--primary); font-weight: 600; cursor: pointer; text-decoration: none; transition: 0.2s; }
+        .auth-toggle-link:hover { text-decoration: underline; }
+
         svg { stroke-width: 2; width: 16px; height: 16px; }
 
         #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: max-content; max-width: 90%; pointer-events: none; }
@@ -154,20 +159,46 @@
         .hidden { display: none !important; }
         .flex-row { display: flex; gap: 10px; }
     </style>
+
+    <!-- FIREBASE COMPAT (Unified Global Script Tags) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen" class="modal" style="display:flex; background: var(--bg-grad); z-index: 9999;">
         <div class="modal-content glass-panel" style="max-width: 380px; text-align: center; padding: 35px 25px;">
-            <h2 style="color:var(--primary); margin-bottom: 5px; font-weight:700;">Library SaaS System</h2>
-            <p style="font-size: 13px; color:var(--text-muted); margin-bottom: 25px;">Sign in to manage your library and seamlessly sync your data to the cloud.</p>
+            <div style="margin-bottom: 25px;">
+                <!-- Updated Brand Name -->
+                <h2 style="color:var(--primary); margin-bottom: 5px; font-weight:700; font-size: 24px;">LibSync Pro</h2>
+                <p id="authSubtitle" style="font-size: 13px; color:var(--text-muted);">Welcome back! Please enter your details.</p>
+            </div>
             
-            <input type="email" id="authEmail" placeholder="Email Address" style="margin-bottom:15px; padding:14px;">
-            <input type="password" id="authPassword" placeholder="Password" style="margin-bottom:20px; padding:14px;">
-            
-            <button class="action-btn" onclick="loginUser()" style="background:var(--primary); padding:14px; margin-top:0;">Login to Dashboard</button>
-            <button class="action-btn" onclick="signupUser()" style="background:var(--glass-input-bg); color:var(--text-main); margin-top:12px; box-shadow:none;">Create New Account</button>
+            <!-- Login Form -->
+            <div id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email Address" style="margin-bottom:15px; padding:14px;">
+                <input type="password" id="loginPassword" placeholder="Password" style="margin-bottom:20px; padding:14px;">
+                
+                <button class="action-btn" onclick="loginUser()" style="background:var(--primary); padding:14px; margin-top:0;">Log In</button>
+                
+                <p style="font-size: 13px; color:var(--text-muted); margin-top: 20px;">
+                    Don't have an account? <span class="auth-toggle-link" onclick="toggleAuthMode('signup')">Sign up</span>
+                </p>
+            </div>
+
+            <!-- Signup Form (Hidden by default) -->
+            <div id="signupForm" class="hidden">
+                <input type="email" id="signupEmail" placeholder="Email Address" style="margin-bottom:15px; padding:14px;">
+                <input type="password" id="signupPassword" placeholder="Create Password" style="margin-bottom:20px; padding:14px;">
+                
+                <button class="action-btn" onclick="signupUser()" style="background:var(--green); padding:14px; margin-top:0;">Create Account</button>
+                
+                <p style="font-size: 13px; color:var(--text-muted); margin-top: 20px;">
+                    Already have an account? <span class="auth-toggle-link" onclick="toggleAuthMode('login')">Log in</span>
+                </p>
+            </div>
             
             <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
         </div>
@@ -176,7 +207,7 @@
     <!-- MAIN APPLICATION -->
     <div id="mainApp" style="display:none;">
         <header class="animate-in">
-            <h2 id="appTitle">Selection Library</h2>
+            <h2 id="appTitle">LibSync Pro</h2>
             <div class="utility-bar">
                 <label class="theme-switch" title="Toggle Dark Mode">
                     <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
@@ -272,7 +303,7 @@
             <h3 style="margin-top:0; color:var(--primary); font-weight:700;">⚙️ Library Settings</h3>
             <p style="font-size: 13px; margin-bottom: 20px; color:var(--text-muted);">Customize your app configuration below.</p>
             <label>Library / Business Name</label>
-            <input type="text" id="cfgLibName" placeholder="e.g. Selection Library">
+            <input type="text" id="cfgLibName" placeholder="e.g. LibSync Pro">
             <label>Total Standard Seats</label>
             <input type="number" id="cfgTotalSeats" min="1" max="1000" placeholder="e.g. 86">
             <label>Custom Seat Labels (comma separated)</label>
@@ -381,12 +412,7 @@
 
     <div id="toast-container"></div>
 
-    <!-- Firebase App (the core Firebase SDK) & Services -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+    <script>
         // Your provided Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4",
@@ -397,51 +423,48 @@
             appId: "1:836897960075:web:11899c0996620eb428e48e"
         };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        // Initialize Firebase Compat Mode
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
         let currentUser = null;
         let unsubscribeSnapshot = null;
 
-        // Default Configuration
+        // NEW BRANDING DEFAULT: LibSync Pro
         let appConfig = {
-            libraryName: "Selection Library",
+            libraryName: "LibSync Pro",
             totalSeats: 86,
             customSeats: ["6A", "6B", "12A", "12B", "28A", "28B", "28C"],
             shifts: ["Morning (8 AM - 2 PM)", "Evening (2 PM - 8 PM)", "Full Day (7 AM - 9 PM)"]
         };
 
-        // --- PHASE 4: CLOUD DATABASE ABSTRACTION LAYER ---
         const DB = {
             data: {},
+            init: function() {
+                const rawData = {};
+                for(let seatId of window.seatLayout) {
+                    rawData[seatId] = [];
+                }
+                this.data = rawData;
+            },
             save: function() {
                 if (!currentUser) return;
-                // Securely store data under their unique User ID
-                const docRef = doc(db, 'artifacts', 'library-saas', 'users', currentUser.uid, 'libraryData', 'main');
-                setDoc(docRef, {
-                    config: appConfig,
-                    seatsData: this.data
-                }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
+                const docRef = db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`);
+                docRef.set({ config: appConfig, seatsData: this.data }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
             },
             getAllData: function() { return this.data; },
             getOccupants: function(seatNo) { return this.data[seatNo] || []; },
             addStudent: function(seatNo, studentData) {
                 if(!this.data[seatNo]) this.data[seatNo] = [];
-                this.data[seatNo].push(studentData);
-                this.save();
+                this.data[seatNo].push(studentData); this.save();
             },
             updateStudent: function(seatNo, studentId, updatedData) {
                 const idx = this.data[seatNo].findIndex(s => s.id === studentId);
-                if(idx > -1) {
-                    this.data[seatNo][idx] = { ...this.data[seatNo][idx], ...updatedData };
-                    this.save();
-                }
+                if(idx > -1) { this.data[seatNo][idx] = { ...this.data[seatNo][idx], ...updatedData }; this.save(); }
             },
             removeStudent: function(seatNo, studentId) {
-                this.data[seatNo] = this.data[seatNo].filter(s => s.id !== studentId);
-                this.save();
+                this.data[seatNo] = this.data[seatNo].filter(s => s.id !== studentId); this.save();
             },
             addPayment: function(seatNo, studentId, paymentObj, validDate, feeStatus) {
                 const student = this.data[seatNo].find(s => s.id === studentId);
@@ -461,15 +484,31 @@
         window.activeStudentId = null;
         window.isDeleteConfirmStep = false; 
 
-        // Apply visual theme immediately
         if(localStorage.getItem('libTheme') === 'dark') document.body.classList.add('dark-theme');
         window.addEventListener('DOMContentLoaded', () => {
             const checkbox = document.getElementById('themeCheckbox');
             if (checkbox) checkbox.checked = document.body.classList.contains('dark-theme');
         });
 
-        // --- AUTHENTICATION ENGINE ---
-        onAuthStateChanged(auth, (user) => {
+        // --- NEW AUTHENTICATION UI LOGIC ---
+        window.toggleAuthMode = function(mode) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const subtitle = document.getElementById('authSubtitle');
+            document.getElementById('authError').innerText = ''; // clear errors on switch
+
+            if (mode === 'signup') {
+                loginForm.classList.add('hidden');
+                signupForm.classList.remove('hidden');
+                subtitle.innerText = "Create an account to manage your library.";
+            } else {
+                signupForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                subtitle.innerText = "Welcome back! Please enter your details.";
+            }
+        }
+
+        auth.onAuthStateChanged((user) => {
             if (user) {
                 currentUser = user;
                 document.getElementById('authScreen').style.display = 'none';
@@ -485,23 +524,23 @@
         });
 
         window.loginUser = () => {
-            const email = document.getElementById('authEmail').value;
-            const pass = document.getElementById('authPassword').value;
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
             const err = document.getElementById('authError');
             if(!email || !pass) { err.innerText = "Please enter email and password."; return; }
             
-            signInWithEmailAndPassword(auth, email, pass).catch(error => {
+            auth.signInWithEmailAndPassword(email, pass).catch(error => {
                 err.innerText = error.message.replace('Firebase:', '').trim();
             });
         };
 
         window.signupUser = () => {
-            const email = document.getElementById('authEmail').value;
-            const pass = document.getElementById('authPassword').value;
+            const email = document.getElementById('signupEmail').value;
+            const pass = document.getElementById('signupPassword').value;
             const err = document.getElementById('authError');
             if(!email || !pass) { err.innerText = "Please enter email and password."; return; }
             
-            createUserWithEmailAndPassword(auth, email, pass).then(() => {
+            auth.createUserWithEmailAndPassword(email, pass).then(() => {
                 window.toast("Account created! Welcome to your SaaS dashboard.");
             }).catch(error => {
                 err.innerText = error.message.replace('Firebase:', '').trim();
@@ -509,32 +548,39 @@
         };
 
         window.logoutUser = () => {
-            signOut(auth).then(() => window.toast("Logged out successfully."));
+            auth.signOut().then(() => {
+                window.toast("Logged out successfully.");
+                // Reset auth fields to blank on logout for privacy
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                window.toggleAuthMode('login'); 
+            });
         };
 
         // --- LIVE CLOUD SYNC ---
         function loadDataFromCloud() {
-            const docRef = doc(db, 'artifacts', 'library-saas', 'users', currentUser.uid, 'libraryData', 'main');
+            const docRef = db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`);
             
-            // onSnapshot triggers instantly on any change across any device
-            unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
-                if (docSnap.exists()) {
+            unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
+                window.initializeAppStructure(); 
+                
+                if (docSnap.exists) {
                     const cloudData = docSnap.data();
                     if (cloudData.config) appConfig = cloudData.config;
                     if (cloudData.seatsData) DB.data = cloudData.seatsData;
                 } else {
-                    // NEW ACCOUNT: Attempt to migrate old local data to the cloud so they don't lose it
                     const localConfig = JSON.parse(localStorage.getItem('libConfigPro'));
                     const localSeats = JSON.parse(localStorage.getItem('libSeatsPro'));
-                    
                     if(localConfig) appConfig = localConfig;
+                    
+                    DB.init(); 
                     if(localSeats) DB.data = localSeats;
                     
-                    DB.save(); // Push migrated (or default) data up to Firebase
+                    DB.save(); 
                     window.toast("SaaS Profile Initialized!");
                 }
                 
-                document.getElementById('appTitle').innerText = appConfig.libraryName || 'Selection Library';
+                document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro';
                 window.initializeAppStructure();
                 window.renderSeats();
             }, (error) => {
@@ -730,7 +776,7 @@
         // --- SETTINGS MODAL ---
         window.openSettingsModal = function() {
             hideAllModalSections();
-            document.getElementById('cfgLibName').value = appConfig.libraryName || 'Selection Library';
+            document.getElementById('cfgLibName').value = appConfig.libraryName || 'LibSync Pro';
             document.getElementById('cfgTotalSeats').value = appConfig.totalSeats || 86;
             document.getElementById('cfgCustomSeats').value = (appConfig.customSeats || []).join(', ');
             document.getElementById('cfgShifts').value = (appConfig.shifts || []).join('\n');
@@ -753,7 +799,6 @@
             appConfig.customSeats = newCustom;
             appConfig.shifts = newShifts;
 
-            // Push all structural changes instantly to Cloud
             DB.save(); 
 
             document.getElementById('appTitle').innerText = newName;
@@ -936,7 +981,7 @@
                     if(obj.config && obj.seatsData) { appConfig = obj.config; DB.data = obj.seatsData; } 
                     else { DB.data = obj; } // Fallback for old backups
                     DB.save(); 
-                    document.getElementById('appTitle').innerText = appConfig.libraryName || 'Selection Library';
+                    document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro';
                     window.initializeAppStructure(); window.renderSeats(); window.toast("📤 Data Restored & Synced to Cloud!"); 
                 } catch(e) { window.toast("⚠️ Error reading backup"); }
             };
@@ -945,3 +990,6 @@
     </script>
 </body>
 </html>
+
+
+```
