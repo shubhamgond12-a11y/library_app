@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,24 +6,18 @@
     <title>LibSync Pro - Library SaaS</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Glassmorphism Themes */
         :root {
             --bg-grad: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
             --glass-bg: rgba(255, 255, 255, 0.4);
             --glass-input-bg: rgba(255, 255, 255, 0.6);
             --glass-border: rgba(255, 255, 255, 0.6);
             --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            
             --modal-bg: rgba(255, 255, 255, 0.95);
             --modal-card-bg: rgba(240, 244, 248, 0.8);
             --modal-border: rgba(255, 255, 255, 1);
             
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --primary: #2563eb;
-            --green: #10b981;
-            --orange: #f59e0b;
-            --red: #ef4444;
+            --text-main: #1e293b; --text-muted: #64748b;
+            --primary: #2563eb; --green: #10b981; --orange: #f59e0b; --red: #ef4444; --yellow: #eab308;
         }
 
         .dark-theme {
@@ -33,134 +26,84 @@
             --glass-input-bg: rgba(0, 0, 0, 0.3);
             --glass-border: rgba(255, 255, 255, 0.1);
             --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-            
             --modal-bg: rgba(15, 23, 42, 0.95);
             --modal-card-bg: rgba(0, 0, 0, 0.4);
             --modal-border: rgba(255, 255, 255, 0.1);
 
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --primary: #3b82f6;
-            --green: #10b981;
-            --orange: #f59e0b;
-            --red: #ef4444;
+            --text-main: #f8fafc; --text-muted: #94a3b8;
+            --primary: #3b82f6; --green: #10b981; --orange: #f59e0b; --red: #ef4444; --yellow: #eab308;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif; background: var(--bg-grad); background-attachment: fixed;
-            color: var(--text-main); margin: 0; padding: 10px 10px 30px 10px;
-            transition: background 0.4s ease, color 0.4s ease; min-height: 100vh;
-        }
-
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-grad); background-attachment: fixed; color: var(--text-main); margin: 0; padding: 10px 10px 60px 10px; transition: background 0.4s ease, color 0.4s ease; min-height: 100vh; }
         @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .animate-in { animation: fadeSlideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
         .modal-animate { animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
-        h2 { margin: 0; font-weight: 700; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); letter-spacing: -0.5px;}
-        
-        .glass-panel {
-            background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); border-radius: 16px;
-        }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 5px; }
+        h2 { margin: 0; font-weight: 700; font-size: 20px; letter-spacing: -0.5px;}
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); border-radius: 16px; }
 
         .utility-bar { display: flex; gap: 8px; align-items: center; }
-        
-        .theme-switch { position: relative; display: inline-block; width: 50px; height: 26px; margin-right: 2px;}
-        .theme-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--glass-input-bg); transition: .4s; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 4px; border-radius: 34px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: var(--primary); transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 2; }
-        input:checked + .slider:before { transform: translateX(24px); background-color: var(--green); }
-        
-        .switch-icon { width: 12px; height: 12px; z-index: 1; transition: 0.3s; }
-        .moon-icon { color: var(--text-muted); opacity: 0.5; }
-        .sun-icon { color: var(--orange); opacity: 1; }
-        input:checked + .slider .moon-icon { color: var(--primary); opacity: 1; }
-        input:checked + .slider .sun-icon { color: var(--text-muted); opacity: 0.5; }
-
-        .icon-btn {
-            border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-main);
-            padding: 6px; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; 
-            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); 
-            transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
+        .icon-btn { border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-main); padding: 6px; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .icon-btn:hover { transform: scale(1.05); background: var(--glass-input-bg); }
         .icon-btn:active { transform: scale(0.95); }
 
-        .dashboard { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; padding: 15px; }
-        .stat-card { text-align: center; font-size: 12px; font-weight: 600; padding: 8px; border-radius: 12px; background: var(--glass-input-bg); border: 1px solid var(--glass-border);}
-        .stat-card .num { font-size: 22px; font-weight: 700; display: block; margin-top: 2px; }
+        .dashboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; padding: 12px; }
+        .stat-card { text-align: center; font-size: 11px; font-weight: 600; padding: 8px 4px; border-radius: 12px; background: var(--glass-input-bg); border: 1px solid var(--glass-border); display: flex; flex-direction: column; justify-content: center;}
+        .stat-card .num { font-size: 20px; font-weight: 700; display: block; margin-top: 2px; }
 
-        .filter-section { padding: 15px; margin-bottom: 20px; }
-        .search-box { width: 100%; padding: 12px 15px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 12px; margin-bottom: 15px; font-family: 'Poppins', sans-serif; box-sizing: border-box; transition: box-shadow 0.3s ease; }
-        .search-box:focus { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4); }
-        
-        .filter-btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
-        .filter-btn { border: 1px solid var(--glass-border); padding: 8px 16px; font-size: 12px; font-weight: 600; font-family: 'Poppins', sans-serif; background: var(--glass-bg); color: var(--text-main); border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
-        .filter-btn.active { background: var(--primary); color: white; border-color: transparent; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+        .tab-container { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;}
+        .tab-container::-webkit-scrollbar { display: none; }
+        .tab-btn { flex: 1; min-width: max-content; padding: 12px 15px; border: 1px solid var(--glass-border); font-size: 13px; font-weight: 600; background: var(--glass-bg); color: var(--text-main); border-radius: 12px; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.2s ease; display:flex; gap:6px; align-items:center; justify-content:center;}
+        .tab-btn.active { background: rgba(255,255,255,0.7); box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); color: var(--primary); border-color: var(--primary);}
+        .dark-theme .tab-btn.active { background: rgba(0,0,0,0.7); border-color: var(--primary);}
 
-        .tab-container { display: flex; gap: 15px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 14px; border: 1px solid var(--glass-border); font-size: 14px; font-weight: 600; background: var(--glass-bg); color: var(--text-main); border-radius: 12px; cursor: pointer; backdrop-filter: blur(10px); font-family: 'Poppins', sans-serif; transition: all 0.2s ease; }
-        .tab-btn.active { background: rgba(255,255,255,0.7); box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
-        .dark-theme .tab-btn.active { background: rgba(0,0,0,0.7); box-shadow: inset 0 2px 5px rgba(255,255,255,0.05); }
+        .search-box { width: 100%; padding: 12px 15px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 12px; margin-bottom: 12px; font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+        .filter-btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
+        .filter-btn { border: 1px solid var(--glass-border); padding: 6px 12px; font-size: 11px; font-weight: 600; background: var(--glass-bg); color: var(--text-main); border-radius: 20px; cursor: pointer; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: transparent; }
 
-        .form-container { padding: 20px; }
-        label { font-size: 13px; font-weight: 600; display: block; margin-top: 15px; margin-bottom: 6px; color: var(--text-main); }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 10px; font-size: 14px; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.2s; }
-        input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4); }
-        
+        label { font-size: 13px; font-weight: 600; display: block; margin-top: 12px; margin-bottom: 4px; color: var(--text-main); }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 10px; font-size: 13px; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         .action-btn { width: 100%; padding: 14px; margin-top: 15px; border: none; border-radius: 10px; background: var(--primary); color: white; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-family: 'Poppins', sans-serif; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 6px; }
         .action-btn:active { transform: scale(0.96); }
 
-        .seat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 10px; }
-        .seat { aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; font-weight: 600; font-size: 14px; cursor: pointer; border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(8px); border-radius: 12px; padding: 5px; box-sizing: border-box; transition: transform 0.2s, box-shadow 0.2s; }
-        .seat:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); border-color: var(--primary); }
+        .seat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 8px; margin-top:15px;}
+        .seat { aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; font-weight: 600; font-size: 14px; cursor: pointer; border: 1px solid var(--glass-border); background: var(--glass-bg); border-radius: 12px; padding: 4px; box-sizing: border-box; transition: transform 0.2s;}
         .seat.free { color: var(--green); border: 1px solid rgba(16, 185, 129, 0.4); justify-content: center;}
         .seat.allotted { background: rgba(37, 99, 235, 0.15); color: var(--primary); font-size: 12px; border: 1px solid var(--primary); }
         .seat.due-alert { background: rgba(245, 158, 11, 0.15); color: var(--orange); border-color: var(--orange); }
-        .seat.expired-alert { background: rgba(239, 68, 68, 0.15); color: var(--red); border-color: var(--red); animation: pulse-border 2s infinite; }
-        
-        .seat-number { font-size: 15px; font-weight: 700; margin-bottom: 2px;}
-        .seat-name { font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; color: var(--text-main); font-weight: 500; line-height: 1.2;}
+        .seat.warn-alert { background: rgba(234, 179, 8, 0.15); color: var(--yellow); border-color: var(--yellow); animation: pulse-yellow 2.5s infinite; }
+        .seat.expired-alert { background: rgba(239, 68, 68, 0.15); color: var(--red); border-color: var(--red); animation: pulse-red 2s infinite; }
+        .seat-number { font-size: 14px; font-weight: 700; margin-bottom: 2px;}
+        .seat-name { font-size: 9px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; color: var(--text-main); font-weight: 500;}
 
-        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        @keyframes pulse-yellow { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
 
-        /* Modals & UI Components */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { width: 92%; max-width: 420px; padding: 25px; box-sizing: border-box; border-radius: 20px; max-height: 90vh; overflow-y: auto; background: var(--modal-bg); border: 1px solid var(--modal-border); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        
-        .profile-details { background: var(--modal-card-bg); border-radius: 14px; padding: 5px 15px; margin-top: 15px; border: 1px solid var(--glass-border); }
-        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(150,150,150,0.15); }
-        .info-row:last-child { border-bottom: none; }
-        .info-label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        /* Finance & Lists UI */
+        .finance-card { background: var(--glass-input-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+        .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:10px; }
+        .fin-box { padding: 12px; border-radius: 10px; text-align: center; border: 1px solid rgba(0,0,0,0.05); }
+        .fin-val { font-size: 20px; font-weight: 700; display: block; margin-top: 4px; }
+        .list-item { background: var(--modal-card-bg); border-radius: 10px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); }
+        .badge { padding: 4px 8px; border-radius: 6px; font-weight: 600; color: white; font-size: 10px; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box;}
+        .modal-content { width: 100%; max-width: 420px; padding: 20px; box-sizing: border-box; border-radius: 20px; max-height: 90vh; overflow-y: auto; background: var(--modal-bg); border: 1px solid var(--modal-border); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(150,150,150,0.15); }
+        .info-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
         .info-value { font-size: 13px; font-weight: 600; color: var(--text-main); text-align: right; }
-        .status-badge { padding: 4px 10px; border-radius: 8px; font-weight: 600; color: white; font-size: 11px; letter-spacing: 0.5px;}
 
-        .payment-ledger { margin-top: 10px; max-height: 140px; overflow-y: auto; padding-right: 5px;}
-        .payment-item { background: var(--modal-card-bg); border-radius: 10px; padding: 12px 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); }
-        .pay-left { display: flex; flex-direction: column; gap: 4px;}
-        .pay-date { font-size: 12px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 6px;}
-        .pay-mode { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;}
-        .pay-amount { font-size: 15px; font-weight: 700; color: var(--green); }
-
-        .student-list-item { background: var(--modal-card-bg); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); cursor: pointer; transition: transform 0.2s ease; }
-        .student-list-item:hover { transform: scale(1.02); }
-
-        /* Auth Screen Specific Styles */
-        .auth-toggle-link { color: var(--primary); font-weight: 600; cursor: pointer; text-decoration: none; transition: 0.2s; }
-        .auth-toggle-link:hover { text-decoration: underline; }
-
-        svg { stroke-width: 2; width: 16px; height: 16px; }
-
+        svg { stroke-width: 2; width: 18px; height: 18px; }
         #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: max-content; max-width: 90%; pointer-events: none; }
-        .toast { background: rgba(15, 23, 42, 0.9); color: white; padding: 14px 25px; border-radius: 30px; font-size: 14px; font-weight: 500; text-align: center; margin-top: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(20px); }
+        .toast { background: rgba(15, 23, 42, 0.9); color: white; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-weight: 500; text-align: center; margin-top: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s; transform: translateY(20px); }
         .toast.show { opacity: 1; transform: translateY(0); }
         .hidden { display: none !important; }
         .flex-row { display: flex; gap: 10px; }
     </style>
 
-    <!-- FIREBASE COMPAT (Unified Global Script Tags) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -169,242 +112,244 @@
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen" class="modal" style="display:flex; background: var(--bg-grad); z-index: 9999;">
-        <div class="modal-content glass-panel" style="max-width: 380px; text-align: center; padding: 35px 25px;">
-            <div style="margin-bottom: 25px;">
-                <!-- Updated Brand Name -->
-                <h2 style="color:var(--primary); margin-bottom: 5px; font-weight:700; font-size: 24px;">LibSync Pro</h2>
-                <p id="authSubtitle" style="font-size: 13px; color:var(--text-muted);">Welcome back! Please enter your details.</p>
-            </div>
+        <div class="modal-content glass-panel" style="text-align: center;">
+            <h2 style="color:var(--primary); margin-bottom: 5px; font-weight:700; font-size: 24px;">LibSync Pro</h2>
+            <p id="authSubtitle" style="font-size: 13px; color:var(--text-muted); margin-bottom: 25px;">Welcome back! Please enter your details.</p>
             
-            <!-- Login Form -->
             <div id="loginForm">
-                <input type="email" id="loginEmail" placeholder="Email Address" style="margin-bottom:15px; padding:14px;">
-                <input type="password" id="loginPassword" placeholder="Password" style="margin-bottom:20px; padding:14px;">
-                
-                <button class="action-btn" onclick="loginUser()" style="background:var(--primary); padding:14px; margin-top:0;">Log In</button>
-                
-                <p style="font-size: 13px; color:var(--text-muted); margin-top: 20px;">
-                    Don't have an account? <span class="auth-toggle-link" onclick="toggleAuthMode('signup')">Sign up</span>
-                </p>
+                <input type="email" id="loginEmail" placeholder="Email Address">
+                <input type="password" id="loginPassword" placeholder="Password" style="margin-top:12px;">
+                <button class="action-btn" onclick="loginUser()">Log In</button>
+                <p style="font-size: 13px; color:var(--text-muted); margin-top: 20px;">Don't have an account? <span style="color:var(--primary); cursor:pointer; font-weight:600;" onclick="toggleAuthMode('signup')">Sign up</span></p>
             </div>
 
-            <!-- Signup Form (Hidden by default) -->
             <div id="signupForm" class="hidden">
-                <input type="email" id="signupEmail" placeholder="Email Address" style="margin-bottom:15px; padding:14px;">
-                <input type="password" id="signupPassword" placeholder="Create Password" style="margin-bottom:20px; padding:14px;">
-                
-                <button class="action-btn" onclick="signupUser()" style="background:var(--green); padding:14px; margin-top:0;">Create Account</button>
-                
-                <p style="font-size: 13px; color:var(--text-muted); margin-top: 20px;">
-                    Already have an account? <span class="auth-toggle-link" onclick="toggleAuthMode('login')">Log in</span>
-                </p>
+                <input type="email" id="signupEmail" placeholder="Email Address">
+                <input type="password" id="signupPassword" placeholder="Create Password" style="margin-top:12px;">
+                <button class="action-btn" onclick="signupUser()" style="background:var(--green);">Create Account</button>
+                <p style="font-size: 13px; color:var(--text-muted); margin-top: 20px;">Already have an account? <span style="color:var(--primary); cursor:pointer; font-weight:600;" onclick="toggleAuthMode('login')">Log in</span></p>
             </div>
-            
             <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
         </div>
     </div>
 
-    <!-- MAIN APPLICATION -->
+    <!-- MAIN APP -->
     <div id="mainApp" style="display:none;">
         <header class="animate-in">
             <h2 id="appTitle">LibSync Pro</h2>
             <div class="utility-bar">
-                <label class="theme-switch" title="Toggle Dark Mode">
-                    <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
-                    <span class="slider round">
-                        <svg class="switch-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                        <svg class="switch-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                    </span>
-                </label>
-                <button class="icon-btn" onclick="openSettingsModal()" title="Library Settings">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                </button>
-                <button class="icon-btn" onclick="exportData()" title="Backup Data">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 17l4 4 4-4"/><path d="M12 12v9"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
-                </button>
-                <button class="icon-btn" onclick="triggerImport()" title="Restore Data">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 16l-4-4-4 4"/><path d="M12 12v9"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
-                </button>
-                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                </button>
-                <input type="file" id="importFile" class="hidden" onchange="importData(this)">
+                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
+                <button class="icon-btn" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
 
         <div class="dashboard glass-panel animate-in">
-            <div class="stat-card">Phys. Chairs Free <span class="num" id="statFree" style="color:var(--green)">0</span></div>
-            <div class="stat-card">Total Enrolled <span class="num" id="statOccupied" style="color:var(--primary)">0</span></div>
-            <div class="stat-card">Profiles Fee Due <span class="num" id="statDue" style="color:var(--orange)">0</span></div>
-            <div class="stat-card">Profiles Expired <span class="num" id="statExpired" style="color:var(--red)">0</span></div>
+            <div class="stat-card">Free <span class="num" id="statFree" style="color:var(--green)">0</span></div>
+            <div class="stat-card">Enrolled <span class="num" id="statOccupied" style="color:var(--primary)">0</span></div>
+            <div class="stat-card">Fee Due <span class="num" id="statDue" style="color:var(--orange)">0</span></div>
+            <div class="stat-card">Exp. <3d <span class="num" id="statWarn" style="color:var(--yellow)">0</span></div>
         </div>
 
         <div class="tab-container animate-in">
-            <button class="tab-btn active" id="tabMapBtn" onclick="switchTab('map')">🪑 Seats Matrix</button>
-            <button class="tab-btn" id="tabAddBtn" onclick="switchTab('add')">📝 New Admission</button>
+            <button class="tab-btn active" id="tabMapBtn" onclick="switchTab('map')">🪑 Matrix</button>
+            <button class="tab-btn" id="tabAddBtn" onclick="switchTab('add')">📝 Admission</button>
+            <button class="tab-btn" id="tabWaitBtn" onclick="switchTab('wait')">⏳ Waitlist <span id="waitBadge" class="badge" style="background:var(--primary); margin-left:4px;">0</span></button>
+            <button class="tab-btn" id="tabFinBtn" onclick="switchTab('fin')">💰 Finance</button>
         </div>
 
+        <!-- TAB 1: SEATS MAP -->
         <div id="seatMapTab" class="animate-in">
-            <div class="filter-section glass-panel">
-                <input type="text" id="searchExam" class="search-box" placeholder="Search Exam (e.g. Banking, UPSC)..." oninput="applyFilters()">
+            <div class="glass-panel" style="padding:12px;">
+                <input type="text" id="searchExam" class="search-box" style="margin-bottom:8px; padding:10px;" placeholder="Search Exam..." oninput="applyFilters()">
                 <div class="filter-btn-group">
-                    <button class="filter-btn active" id="fltAll" onclick="setFilter('all')">All Seats</button>
-                    <button class="filter-btn" id="fltFree" onclick="setFilter('free')">Empty Chairs</button>
+                    <button class="filter-btn active" id="fltAll" onclick="setFilter('all')">All</button>
+                    <button class="filter-btn" id="fltFree" onclick="setFilter('free')">Empty</button>
                     <button class="filter-btn" id="fltDue" onclick="setFilter('due')">Fee Due</button>
+                    <button class="filter-btn" id="fltWarn" onclick="setFilter('warn')">Exp. <3d</button>
                     <button class="filter-btn" id="fltExpired" onclick="setFilter('expired')">Expired</button>
                 </div>
             </div>
             <div class="seat-grid" id="seatsContainer"></div>
         </div>
 
+        <!-- TAB 2: ADMISSION FORM -->
         <div id="addSeatTab" class="hidden animate-in">
-            <div class="form-container glass-panel">
-                <h3 style="text-align:center; color:var(--primary); margin-top:0;">New Registration</h3>
-                
-                <label>Seat Number</label>
-                <input type="text" id="seatNo" placeholder="e.g. 15, 6A, 12B" style="text-transform: uppercase;">
-                <label>Student Name</label>
-                <input type="text" id="studentName" placeholder="Full Name">
-                <label>Phone Number</label>
-                <input type="tel" id="phone" placeholder="10-digit number">
-                <label>Preparing For</label>
-                <input type="text" id="exam" placeholder="e.g. Banking, SSC, UPSC">
-                
+            <div class="glass-panel" style="padding: 15px;">
+                <h3 style="color:var(--primary); margin-top:0; margin-bottom:10px;">New Registration</h3>
+                <label>Seat Number</label> <input type="text" id="seatNo" placeholder="e.g. 15, 6A" style="text-transform: uppercase;">
+                <label>Student Name</label> <input type="text" id="studentName">
+                <label>Phone</label> <input type="tel" id="phone">
+                <label>Preparing For (Exam)</label> <input type="text" id="exam">
                 <div class="flex-row">
                     <div style="flex:1"><label>Admission</label><input type="date" id="admDate"></div>
                     <div style="flex:1"><label>Valid Up To</label><input type="date" id="validDate"></div>
                 </div>
-
                 <div class="flex-row">
                     <div style="flex:1"><label>Paid (₹)</label><input type="number" id="initialAmount" placeholder="1500"></div>
-                    <div style="flex:1"><label>Mode</label>
-                        <select id="initialMode"><option value="Cash">Cash</option><option value="UPI">UPI</option></select>
-                    </div>
+                    <div style="flex:1"><label>Mode</label><select id="initialMode"><option>Cash</option><option>UPI</option></select></div>
                 </div>
-                
-                <label>Fee Status</label>
-                <select id="feeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-
+                <label>Fee Status</label> <select id="feeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
                 <label>Shift Timing</label>
-                <select id="shift" onchange="toggleCustomShift('shift', 'customShift')">
-                    <!-- Populated dynamically -->
-                </select>
-                <input type="text" id="customShift" class="hidden" placeholder="Enter Custom Shift timings" style="margin-top:10px;">
-                
+                <select id="shift" onchange="toggleCustomShift('shift', 'customShift')"></select>
+                <input type="text" id="customShift" class="hidden" placeholder="Custom timings" style="margin-top:10px;">
                 <button class="action-btn" onclick="allotSeat()">Complete Admission</button>
+            </div>
+        </div>
+
+        <!-- TAB 3: WAITLIST -->
+        <div id="waitlistTab" class="hidden animate-in">
+            <div class="glass-panel" style="padding: 15px; margin-bottom: 15px;">
+                <h3 style="color:var(--primary); margin-top:0; margin-bottom:10px;">Add to Waitlist</h3>
+                <div class="flex-row">
+                    <div style="flex:2"><input type="text" id="waitName" placeholder="Student Name"></div>
+                    <div style="flex:2"><input type="tel" id="waitPhone" placeholder="Phone"></div>
+                </div>
+                <div class="flex-row" style="margin-top:10px;">
+                    <div style="flex:2">
+                        <select id="waitShift">
+                            <!-- Populated from config -->
+                        </select>
+                    </div>
+                    <button class="action-btn" style="margin-top:0; flex:1;" onclick="addWaitlist()">Add</button>
+                </div>
+            </div>
+            <h4 style="margin-bottom:8px;">Current Waiting List</h4>
+            <div id="waitlistContainer"></div>
+        </div>
+
+        <!-- TAB 4: FINANCE & LEDGER -->
+        <div id="financeTab" class="hidden animate-in">
+            <div class="glass-panel" style="padding: 15px; margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="margin:0; color:var(--primary);">Financial Overview</h3>
+                    <input type="month" id="finMonth" onchange="calculateFinances()" style="width:auto; padding:6px 10px;">
+                </div>
+                <div class="fin-grid">
+                    <div class="fin-box" style="background:rgba(16,185,129,0.1); border-color:var(--green);"><span style="font-size:11px; color:var(--text-muted);">Total Income</span><span class="fin-val" style="color:var(--green);" id="finIncome">₹0</span></div>
+                    <div class="fin-box" style="background:rgba(239,68,68,0.1); border-color:var(--red);"><span style="font-size:11px; color:var(--text-muted);">Total Expenses</span><span class="fin-val" style="color:var(--red);" id="finExpense">₹0</span></div>
+                </div>
+                <div class="fin-box" style="margin-top:10px; background:var(--glass-bg);"><span style="font-size:11px; color:var(--text-muted);">Net Profit</span><span class="fin-val" style="color:var(--primary);" id="finProfit">₹0</span></div>
+            </div>
+
+            <div class="tab-container" style="margin-bottom:10px;">
+                <button class="tab-btn active" id="btnShowIncome" onclick="switchFinView('income')" style="padding:8px; font-size:12px;">Daily Income Ledger</button>
+                <button class="tab-btn" id="btnShowExpense" onclick="switchFinView('expense')" style="padding:8px; font-size:12px;">Manage Expenses</button>
+            </div>
+
+            <div id="finIncomeView">
+                <div id="incomeLedgerContainer"></div>
+            </div>
+
+            <div id="finExpenseView" class="hidden">
+                <div class="glass-panel" style="padding: 12px; margin-bottom:10px;">
+                    <h4 style="margin-top:0; margin-bottom:8px; font-size:13px;">Add New Expense</h4>
+                    <div class="flex-row">
+                        <div style="flex:1"><input type="date" id="expDate"></div>
+                        <div style="flex:1"><input type="number" id="expAmount" placeholder="Amount (₹)"></div>
+                    </div>
+                    <input type="text" id="expCategory" placeholder="Category (e.g. Rent, Electricity, Cleaning)" style="margin-top:10px;">
+                    <button class="action-btn" style="padding:10px; margin-top:10px;" onclick="addExpense()">Save Expense</button>
+                </div>
+                <div id="expenseLedgerContainer"></div>
             </div>
         </div>
     </div> <!-- End Main App -->
 
-    <!-- MODALS -->
+    <!-- DETAILS MODAL (View/Edit Student) -->
     <div id="detailsModal" class="modal">
-        
-        <div class="modal-content hidden" id="modalSettingsSection">
-            <h3 style="margin-top:0; color:var(--primary); font-weight:700;">⚙️ Library Settings</h3>
-            <p style="font-size: 13px; margin-bottom: 20px; color:var(--text-muted);">Customize your app configuration below.</p>
-            <label>Library / Business Name</label>
-            <input type="text" id="cfgLibName" placeholder="e.g. LibSync Pro">
-            <label>Total Standard Seats</label>
-            <input type="number" id="cfgTotalSeats" min="1" max="1000" placeholder="e.g. 86">
-            <label>Custom Seat Labels (comma separated)</label>
-            <input type="text" id="cfgCustomSeats" placeholder="e.g. 6A, 6B, 12A, 12B" style="text-transform: uppercase;">
-            <label>Available Shifts (one per line)</label>
-            <textarea id="cfgShifts" rows="4" placeholder="Morning (8 AM - 2 PM)&#10;Evening (2 PM - 8 PM)"></textarea>
-            
-            <div style="display:flex; gap:10px; margin-top:25px;">
-                <button class="action-btn" style="margin:0; background:var(--primary); flex:2;" onclick="saveSettings()">Save & Apply</button>
-                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Cancel</button>
-            </div>
-        </div>
-
-        <div class="modal-content hidden" id="modalListSection">
-            <h3 style="margin-top:0; color:var(--primary); font-weight:700;">Seat <span id="listSeatNo"></span> Occupants</h3>
-            <p style="font-size: 13px; margin-bottom: 20px; color:var(--text-muted);">Select a student to view details or add another shift.</p>
-            <div id="occupantsContainer"></div>
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="action-btn" style="margin:0; background:var(--primary); flex:2;" onclick="addAnotherToSeat()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add Another Shift
-                </button>
-                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Close</button>
-            </div>
-        </div>
-
+        <!-- Re-using existing modal sections, slightly styled -->
         <div class="modal-content hidden" id="modalViewSection">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h3 id="modTitle" style="margin:0; color:var(--primary); font-weight:700;">Seat Profile</h3>
-                <button class="action-btn" onclick="showEditForm()" style="background:var(--primary); width:auto; margin:0; padding:6px 14px; border-radius:8px; font-size:12px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit
-                </button>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); padding-bottom:10px; margin-bottom:10px;">
+                <h3 style="margin:0; color:var(--primary); font-weight:700;">Seat <span id="modSeatTitle"></span> Profile</h3>
+                <button class="icon-btn" onclick="showEditForm()" style="width:30px; height:30px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
             </div>
             
-            <div class="profile-details">
-                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Name</span> <span class="info-value" id="modName"></span></div>
-                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Phone</span> <span class="info-value" id="modPhone"></span></div>
-                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Shift</span> <span class="info-value" id="modShift"></span></div>
-                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> Exam</span> <span class="info-value" id="modExam"></span></div>
-                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Admission</span> <span class="info-value" id="modDate"></span></div>
-                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10H3"/><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m9 16 2 2 4-4"/></svg> Valid Up To</span> <span class="info-value" id="modValid"></span></div>
-                <div class="info-row"><span class="info-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Status</span> <span class="status-badge" id="modFee"></span></div>
-            </div>
+            <div class="info-row"><span class="info-label">Name</span> <span class="info-value" id="modName"></span></div>
+            <div class="info-row"><span class="info-label">Phone</span> <span class="info-value" id="modPhone"></span></div>
+            <div class="info-row"><span class="info-label">Shift</span> <span class="info-value" id="modShift"></span></div>
+            <div class="info-row"><span class="info-label">Exam</span> <span class="info-value" id="modExam"></span></div>
+            <div class="info-row"><span class="info-label">Admission</span> <span class="info-value" id="modDate"></span></div>
+            <div class="info-row"><span class="info-label">Valid Up To</span> <span class="info-value" id="modValid"></span></div>
+            <div class="info-row" style="border:none;"><span class="info-label">Status</span> <span class="badge" id="modFee"></span></div>
 
-            <h4 style="margin: 20px 0 10px 0; font-size: 14px; color:var(--text-main);">Payment Ledger</h4>
-            <div class="payment-ledger" id="paymentLedger"></div>
+            <h4 style="margin: 15px 0 5px 0; font-size: 13px; color:var(--primary);">Payment Ledger</h4>
+            <div class="payment-ledger" id="paymentLedger" style="max-height: 120px; overflow-y:auto;"></div>
             
-            <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
-                <button class="action-btn" style="margin:0; background:var(--green);" onclick="showPaymentForm()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Record New Payment
-                </button>
-                <div style="display:flex; gap:10px;">
-                    <button class="action-btn" style="background:var(--primary); margin:0; flex:1;" onclick="addAnotherToSeat()">+ Add Shift</button>
-                    <button class="action-btn" style="background:var(--red); margin:0; flex:1;" id="btnRemoveStudent" onclick="freeStudentSlot()">Remove</button>
-                    <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" id="btnViewBack" onclick="backToListOrClose()">Close</button>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:15px;">
+                <button class="action-btn" style="margin:0; background:var(--green); padding:10px;" onclick="showPaymentForm()">Record Payment / Renew</button>
+                <div style="display:flex; gap:8px;">
+                    <button class="action-btn" style="background:var(--red); margin:0; flex:1; padding:10px;" id="btnRemoveStudent" onclick="freeStudentSlot()">Remove</button>
+                    <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1; padding:10px;" id="btnViewBack" onclick="backToListOrClose()">Close</button>
                 </div>
             </div>
         </div>
 
-        <div class="modal-content hidden" id="modalEditSection">
-            <h3 style="margin-top:0; color:var(--primary); font-weight:700;">Edit Profile</h3>
-            
-            <label>Student Name</label> <input type="text" id="editName">
-            <label>Phone Number</label> <input type="tel" id="editPhone">
-            <label>Exam</label> <input type="text" id="editExam">
-            
-            <div class="flex-row">
-                <div style="flex:1"><label>Admission Date</label> <input type="date" id="editAdmDate"></div>
-                <div style="flex:1"><label>Valid Up To</label> <input type="date" id="editValidDate"></div>
-            </div>
-            
-            <label>Fee Status</label>
-            <select id="editFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-            <label>Shift Timing</label>
-            <input type="text" id="editShift">
+        <!-- LIST SELECTION (For multiple shifts on one seat) -->
+        <div class="modal-content hidden" id="modalListSection">
+            <h3 style="margin-top:0; color:var(--primary);">Seat <span id="listSeatNo"></span> Occupants</h3>
+            <div id="occupantsContainer" style="margin-bottom:15px;"></div>
+            <button class="action-btn" style="margin-bottom:8px; padding:10px;" onclick="addAnotherToSeat()">+ Add Another Shift Here</button>
+            <button class="action-btn" style="background:var(--text-muted); padding:10px; margin:0;" onclick="closeModal()">Close</button>
+        </div>
 
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="action-btn" style="margin:0; background:var(--primary); flex:2;" onclick="saveEdit()">Save Changes</button>
+        <!-- EDIT FORM -->
+        <div class="modal-content hidden" id="modalEditSection">
+            <h3 style="margin-top:0; color:var(--primary);">Edit Profile</h3>
+            <input type="text" id="editName" placeholder="Name" style="margin-bottom:8px;">
+            <input type="tel" id="editPhone" placeholder="Phone" style="margin-bottom:8px;">
+            <input type="text" id="editExam" placeholder="Exam" style="margin-bottom:8px;">
+            <div class="flex-row" style="margin-bottom:8px;">
+                <input type="date" id="editAdmDate" title="Admission Date">
+                <input type="date" id="editValidDate" title="Valid Until">
+            </div>
+            <select id="editFeeStatus" style="margin-bottom:8px;"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+            <input type="text" id="editShift" placeholder="Shift Details">
+            <div class="flex-row" style="margin-top:15px;">
+                <button class="action-btn" style="margin:0; flex:1;" onclick="saveEdit()">Save</button>
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="cancelEdit()">Cancel</button>
             </div>
         </div>
 
+        <!-- PAYMENT FORM -->
         <div class="modal-content hidden" id="modalPaySection">
-            <h3 style="margin-top:0; color:var(--primary); font-weight:700;">Record Fee Payment</h3>
-            <p style="font-size: 13px; margin-bottom: 20px; color:var(--text-muted);">Updating <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
+            <h3 style="margin-top:0; color:var(--primary);">Record Payment</h3>
+            <p style="font-size: 12px; margin-bottom: 15px; color:var(--text-muted);">For: <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
+            <input type="date" id="payDate" style="margin-bottom:8px;">
+            <div class="flex-row" style="margin-bottom:8px;">
+                <input type="number" id="payAmount" placeholder="Amount (₹)">
+                <select id="payMode"><option>Cash</option><option>UPI</option></select>
+            </div>
+            <label style="margin-top:5px;">Extend Validity To (Renewal)</label>
+            <input type="date" id="payValidDate" style="margin-bottom:8px;">
+            <select id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+            <div class="flex-row" style="margin-top:15px;">
+                <button class="action-btn" style="margin:0; background:var(--green); flex:1;" onclick="savePayment()">Save</button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="hidePaymentForm()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- SETTINGS MODAL -->
+        <div class="modal-content hidden" id="modalSettingsSection">
+            <h3 style="margin-top:0; color:var(--primary);">⚙️ Library Settings</h3>
+            <label>Library Name</label> <input type="text" id="cfgLibName">
+            <label>Total Seats</label> <input type="number" id="cfgTotalSeats" min="1">
+            <label>Custom Seats (comma separated)</label> <input type="text" id="cfgCustomSeats" style="text-transform: uppercase;">
+            <label>Available Shifts (one per line)</label> <textarea id="cfgShifts" rows="3"></textarea>
             
-            <label>Payment Date</label> <input type="date" id="payDate">
-            
-            <div class="flex-row">
-                <div style="flex:1"><label>Amount (₹)</label> <input type="number" id="payAmount" placeholder="1500"></div>
-                <div style="flex:1"><label>Mode</label>
-                    <select id="payMode"><option value="Cash">Cash</option><option value="UPI">UPI</option></select>
+            <div style="border-top:1px solid var(--glass-border); margin-top:20px; padding-top:15px;">
+                <h4 style="margin:0 0 10px 0; font-size:13px;">Advanced Data Options</h4>
+                <div class="flex-row">
+                    <button class="action-btn" style="margin:0; background:var(--green); font-size:12px; padding:8px;" onclick="exportData()">Export Backup</button>
+                    <button class="action-btn" style="margin:0; background:var(--orange); font-size:12px; padding:8px;" onclick="document.getElementById('importFileSettings').click()">Import Backup</button>
+                    <input type="file" id="importFileSettings" class="hidden" onchange="importData(this)">
                 </div>
+                <p style="font-size:10px; color:var(--text-muted); margin-top:5px;">Note: Your data syncs to the cloud automatically. Importing will overwrite the cloud data.</p>
             </div>
 
-            <label>Extend Validity To (Renewal)</label> <input type="date" id="payValidDate">
-            <label>Update Fee Status</label>
-            <select id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-
-            <div style="display:flex; gap:10px; margin-top:25px;">
-                <button class="action-btn" style="margin:0; background:var(--green); flex:2;" onclick="savePayment()">Save Payment</button>
-                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="hidePaymentForm()">Cancel</button>
+            <div class="flex-row" style="margin-top:20px;">
+                <button class="action-btn" style="margin:0; flex:2;" onclick="saveSettings()">Save Configuration</button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Close</button>
             </div>
         </div>
 
@@ -413,7 +358,7 @@
     <div id="toast-container"></div>
 
     <script>
-        // Your provided Firebase Configuration
+        // --- FIREBASE SETUP ---
         const firebaseConfig = {
             apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4",
             authDomain: "librarymgt-2026.firebaseapp.com",
@@ -422,53 +367,50 @@
             messagingSenderId: "836897960075",
             appId: "1:836897960075:web:11899c0996620eb428e48e"
         };
-
-        // Initialize Firebase Compat Mode
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-
         let currentUser = null;
         let unsubscribeSnapshot = null;
 
-        // NEW BRANDING DEFAULT: LibSync Pro
+        // --- APP CONFIG & DB LAYER ---
         let appConfig = {
-            libraryName: "LibSync Pro",
-            totalSeats: 86,
+            libraryName: "LibSync Pro", totalSeats: 86,
             customSeats: ["6A", "6B", "12A", "12B", "28A", "28B", "28C"],
             shifts: ["Morning (8 AM - 2 PM)", "Evening (2 PM - 8 PM)", "Full Day (7 AM - 9 PM)"]
         };
 
         const DB = {
-            data: {},
+            seatsData: {},
+            expenses: [],
+            waitlist: [],
             init: function() {
                 const rawData = {};
-                for(let seatId of window.seatLayout) {
-                    rawData[seatId] = [];
-                }
-                this.data = rawData;
+                for(let seatId of window.seatLayout) rawData[seatId] = [];
+                this.seatsData = rawData;
             },
             save: function() {
                 if (!currentUser) return;
-                const docRef = db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`);
-                docRef.set({ config: appConfig, seatsData: this.data }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
+                db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`).set({
+                    config: appConfig, seatsData: this.seatsData, expenses: this.expenses, waitlist: this.waitlist
+                }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
             },
-            getAllData: function() { return this.data; },
-            getOccupants: function(seatNo) { return this.data[seatNo] || []; },
+            getOccupants: function(seatNo) { return this.seatsData[seatNo] || []; },
             addStudent: function(seatNo, studentData) {
-                if(!this.data[seatNo]) this.data[seatNo] = [];
-                this.data[seatNo].push(studentData); this.save();
+                if(!this.seatsData[seatNo]) this.seatsData[seatNo] = [];
+                this.seatsData[seatNo].push(studentData); this.save();
             },
             updateStudent: function(seatNo, studentId, updatedData) {
-                const idx = this.data[seatNo].findIndex(s => s.id === studentId);
-                if(idx > -1) { this.data[seatNo][idx] = { ...this.data[seatNo][idx], ...updatedData }; this.save(); }
+                const idx = this.seatsData[seatNo].findIndex(s => s.id === studentId);
+                if(idx > -1) { this.seatsData[seatNo][idx] = { ...this.seatsData[seatNo][idx], ...updatedData }; this.save(); }
             },
             removeStudent: function(seatNo, studentId) {
-                this.data[seatNo] = this.data[seatNo].filter(s => s.id !== studentId); this.save();
+                this.seatsData[seatNo] = this.seatsData[seatNo].filter(s => s.id !== studentId); this.save();
             },
             addPayment: function(seatNo, studentId, paymentObj, validDate, feeStatus) {
-                const student = this.data[seatNo].find(s => s.id === studentId);
+                const student = this.seatsData[seatNo].find(s => s.id === studentId);
                 if(student) {
+                    if(!student.payments) student.payments = [];
                     student.payments.push(paymentObj);
                     if(validDate) student.validDate = validDate;
                     if(feeStatus) student.feeStatus = feeStatus;
@@ -477,119 +419,11 @@
             }
         };
 
-        // APP STATE
-        window.seatLayout = [];
-        window.currentFilter = 'all';
-        window.activeSeatNo = null;
-        window.activeStudentId = null;
-        window.isDeleteConfirmStep = false; 
+        // --- STATE & UTILS ---
+        window.seatLayout = []; window.currentFilter = 'all'; 
+        window.activeSeatNo = null; window.activeStudentId = null; window.isDeleteConfirmStep = false; 
 
         if(localStorage.getItem('libTheme') === 'dark') document.body.classList.add('dark-theme');
-        window.addEventListener('DOMContentLoaded', () => {
-            const checkbox = document.getElementById('themeCheckbox');
-            if (checkbox) checkbox.checked = document.body.classList.contains('dark-theme');
-        });
-
-        // --- NEW AUTHENTICATION UI LOGIC ---
-        window.toggleAuthMode = function(mode) {
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
-            const subtitle = document.getElementById('authSubtitle');
-            document.getElementById('authError').innerText = ''; // clear errors on switch
-
-            if (mode === 'signup') {
-                loginForm.classList.add('hidden');
-                signupForm.classList.remove('hidden');
-                subtitle.innerText = "Create an account to manage your library.";
-            } else {
-                signupForm.classList.add('hidden');
-                loginForm.classList.remove('hidden');
-                subtitle.innerText = "Welcome back! Please enter your details.";
-            }
-        }
-
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('mainApp').style.display = 'block';
-                loadDataFromCloud();
-                window.toast(`Logged in securely.`);
-            } else {
-                currentUser = null;
-                document.getElementById('authScreen').style.display = 'flex';
-                document.getElementById('mainApp').style.display = 'none';
-                if (unsubscribeSnapshot) unsubscribeSnapshot();
-            }
-        });
-
-        window.loginUser = () => {
-            const email = document.getElementById('loginEmail').value;
-            const pass = document.getElementById('loginPassword').value;
-            const err = document.getElementById('authError');
-            if(!email || !pass) { err.innerText = "Please enter email and password."; return; }
-            
-            auth.signInWithEmailAndPassword(email, pass).catch(error => {
-                err.innerText = error.message.replace('Firebase:', '').trim();
-            });
-        };
-
-        window.signupUser = () => {
-            const email = document.getElementById('signupEmail').value;
-            const pass = document.getElementById('signupPassword').value;
-            const err = document.getElementById('authError');
-            if(!email || !pass) { err.innerText = "Please enter email and password."; return; }
-            
-            auth.createUserWithEmailAndPassword(email, pass).then(() => {
-                window.toast("Account created! Welcome to your SaaS dashboard.");
-            }).catch(error => {
-                err.innerText = error.message.replace('Firebase:', '').trim();
-            });
-        };
-
-        window.logoutUser = () => {
-            auth.signOut().then(() => {
-                window.toast("Logged out successfully.");
-                // Reset auth fields to blank on logout for privacy
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
-                window.toggleAuthMode('login'); 
-            });
-        };
-
-        // --- LIVE CLOUD SYNC ---
-        function loadDataFromCloud() {
-            const docRef = db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`);
-            
-            unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
-                window.initializeAppStructure(); 
-                
-                if (docSnap.exists) {
-                    const cloudData = docSnap.data();
-                    if (cloudData.config) appConfig = cloudData.config;
-                    if (cloudData.seatsData) DB.data = cloudData.seatsData;
-                } else {
-                    const localConfig = JSON.parse(localStorage.getItem('libConfigPro'));
-                    const localSeats = JSON.parse(localStorage.getItem('libSeatsPro'));
-                    if(localConfig) appConfig = localConfig;
-                    
-                    DB.init(); 
-                    if(localSeats) DB.data = localSeats;
-                    
-                    DB.save(); 
-                    window.toast("SaaS Profile Initialized!");
-                }
-                
-                document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro';
-                window.initializeAppStructure();
-                window.renderSeats();
-            }, (error) => {
-                window.toast("Database connection error");
-                console.error("Cloud sync error: ", error);
-            });
-        }
-
-        // --- CORE UI FUNCTIONS ---
         window.toast = function(message) {
             const container = document.getElementById('toast-container');
             const el = document.createElement('div'); el.className = 'toast'; el.innerText = message;
@@ -597,81 +431,133 @@
             setTimeout(() => el.classList.add('show'), 10);
             setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
         }
-
         window.toggleTheme = function() {
             document.body.classList.toggle('dark-theme');
-            const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('libTheme', isDark ? 'dark' : 'light');
-            document.getElementById('themeCheckbox').checked = isDark;
+            localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        function triggerTabAnimation(tabId) {
-            const el = document.getElementById(tabId);
-            el.classList.remove('animate-in'); void el.offsetWidth; el.classList.add('animate-in');
+        // --- AUTHENTICATION ---
+        window.toggleAuthMode = function(mode) {
+            document.getElementById('loginForm').classList.toggle('hidden', mode === 'signup');
+            document.getElementById('signupForm').classList.toggle('hidden', mode === 'login');
+            document.getElementById('authSubtitle').innerText = mode === 'signup' ? "Create an account to manage your library." : "Welcome back! Please enter your details.";
+            document.getElementById('authError').innerText = ''; 
         }
 
-        window.switchTab = function(tab) {
-            if(tab === 'map') {
-                document.getElementById('seatMapTab').classList.remove('hidden');
-                document.getElementById('addSeatTab').classList.add('hidden');
-                document.getElementById('tabMapBtn').className = 'tab-btn active';
-                document.getElementById('tabAddBtn').className = 'tab-btn';
-                triggerTabAnimation('seatMapTab');
-                window.renderSeats();
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
+                loadDataFromCloud(); window.toast(`Logged in securely.`);
             } else {
-                document.getElementById('addSeatTab').classList.remove('hidden');
-                document.getElementById('seatMapTab').classList.add('hidden');
-                document.getElementById('tabAddBtn').className = 'tab-btn active';
-                document.getElementById('tabMapBtn').className = 'tab-btn';
-                document.getElementById('admDate').value = new Date().toISOString().split('T')[0];
-                triggerTabAnimation('addSeatTab');
+                currentUser = null; document.getElementById('authScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none';
+                if (unsubscribeSnapshot) unsubscribeSnapshot();
             }
+        });
+
+        window.loginUser = () => {
+            const email = document.getElementById('loginEmail').value, pass = document.getElementById('loginPassword').value;
+            if(!email || !pass) return document.getElementById('authError').innerText = "Please enter email and password.";
+            auth.signInWithEmailAndPassword(email, pass).catch(e => document.getElementById('authError').innerText = e.message.replace('Firebase:', '').trim());
+        };
+        window.signupUser = () => {
+            const email = document.getElementById('signupEmail').value, pass = document.getElementById('signupPassword').value;
+            if(!email || !pass) return document.getElementById('authError').innerText = "Please enter email and password.";
+            auth.createUserWithEmailAndPassword(email, pass).then(() => window.toast("Account created!")).catch(e => document.getElementById('authError').innerText = e.message.replace('Firebase:', '').trim());
+        };
+        window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
+
+        function loadDataFromCloud() {
+            const docRef = db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`);
+            unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
+                window.initializeAppStructure(); 
+                if (docSnap.exists) {
+                    const d = docSnap.data();
+                    if (d.config) appConfig = d.config;
+                    if (d.seatsData) DB.seatsData = d.seatsData;
+                    DB.expenses = d.expenses || [];
+                    DB.waitlist = d.waitlist || [];
+                } else {
+                    // Legacy migration
+                    const localConfig = JSON.parse(localStorage.getItem('libConfigPro'));
+                    const localSeats = JSON.parse(localStorage.getItem('libSeatsPro'));
+                    if(localConfig) appConfig = localConfig;
+                    DB.init(); if(localSeats) DB.seatsData = localSeats;
+                    DB.save();
+                }
+                
+                document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro';
+                window.initializeAppStructure();
+                window.renderSeats();
+                window.renderWaitlist();
+                window.calculateFinances();
+            }, (error) => { window.toast("Sync error"); });
         }
 
-        window.toggleCustomShift = function(selectId, inputId) {
-            document.getElementById(inputId).classList.toggle('hidden', document.getElementById(selectId).value !== 'Custom');
+        // --- NAVIGATION ---
+        window.switchTab = function(tab) {
+            ['seatMapTab', 'addSeatTab', 'waitlistTab', 'financeTab'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['tabMapBtn', 'tabAddBtn', 'tabWaitBtn', 'tabFinBtn'].forEach(id => document.getElementById(id).classList.remove('active'));
+            
+            if(tab === 'map') { document.getElementById('seatMapTab').classList.remove('hidden'); document.getElementById('tabMapBtn').classList.add('active'); window.renderSeats(); }
+            else if(tab === 'add') { document.getElementById('addSeatTab').classList.remove('hidden'); document.getElementById('tabAddBtn').classList.add('active'); document.getElementById('admDate').value = new Date().toISOString().split('T')[0]; }
+            else if(tab === 'wait') { document.getElementById('waitlistTab').classList.remove('hidden'); document.getElementById('tabWaitBtn').classList.add('active'); window.renderWaitlist(); }
+            else if(tab === 'fin') { document.getElementById('financeTab').classList.remove('hidden'); document.getElementById('tabFinBtn').classList.add('active'); window.calculateFinances(); }
+            
+            const el = document.querySelector('.tab-btn.active');
+            if(el) el.scrollIntoView({behavior: "smooth", block: "nearest", inline: "center"});
         }
 
         window.initializeAppStructure = function() {
             window.seatLayout = [];
             for (let i = 1; i <= appConfig.totalSeats; i++) {
                 window.seatLayout.push(i.toString());
-                const relatedCustomSeats = appConfig.customSeats.filter(seat => {
-                    const match = seat.match(/^(\d+)[A-Za-z]+$/);
-                    return match && parseInt(match[1]) === i;
-                });
-                window.seatLayout.push(...relatedCustomSeats);
+                window.seatLayout.push(...appConfig.customSeats.filter(seat => {
+                    const match = seat.match(/^(\d+)[A-Za-z]+$/); return match && parseInt(match[1]) === i;
+                }));
             }
-
             const shiftSelect = document.getElementById('shift');
-            if(shiftSelect) {
-                shiftSelect.innerHTML = ''; 
-                appConfig.shifts.forEach(shiftName => {
-                    const opt = document.createElement('option'); opt.value = shiftName; opt.innerText = shiftName;
-                    shiftSelect.appendChild(opt);
+            const waitShift = document.getElementById('waitShift');
+            if(shiftSelect && waitShift) {
+                shiftSelect.innerHTML = ''; waitShift.innerHTML = '';
+                appConfig.shifts.forEach(s => {
+                    shiftSelect.innerHTML += `<option value="${s}">${s}</option>`;
+                    waitShift.innerHTML += `<option value="${s}">${s}</option>`;
                 });
-                const customOpt = document.createElement('option'); customOpt.value = 'Custom'; customOpt.innerText = 'Custom Shift...';
-                shiftSelect.appendChild(customOpt);
+                shiftSelect.innerHTML += `<option value="Custom">Custom Shift...</option>`;
             }
         }
 
-        function updateDashboard() {
-            let freeChairs = 0, totalEnrolled = 0, dueProfiles = 0, expiredProfiles = 0;
-            const today = new Date().toISOString().split('T')[0];
+        // --- DASHBOARD & SEATS MATRIX ---
+        function checkExpiry(validDateStr) {
+            if(!validDateStr) return 'ok';
+            const today = new Date(); today.setHours(0,0,0,0);
+            const valid = new Date(validDateStr); valid.setHours(0,0,0,0);
+            const diffDays = Math.ceil((valid - today) / (1000 * 60 * 60 * 24));
+            if(diffDays < 0) return 'expired';
+            if(diffDays <= 3) return 'warn';
+            return 'ok';
+        }
 
+        function updateDashboard() {
+            let freeChairs = 0, totalEnrolled = 0, dueProfiles = 0, warnProfiles = 0;
             for(let seatId of window.seatLayout) {
                 const occupants = DB.getOccupants(seatId);
                 if(occupants.length === 0) freeChairs++;
-                occupants.forEach(student => {
+                occupants.forEach(s => {
                     totalEnrolled++;
-                    if(student.feeStatus === 'Due') dueProfiles++;
-                    if(student.validDate && student.validDate < today) expiredProfiles++;
+                    if(s.feeStatus === 'Due') dueProfiles++;
+                    const expStatus = checkExpiry(s.validDate);
+                    if(expStatus === 'warn' || expStatus === 'expired') warnProfiles++;
                 });
             }
             document.getElementById('statFree').innerText = freeChairs;
             document.getElementById('statOccupied').innerText = totalEnrolled;
             document.getElementById('statDue').innerText = dueProfiles;
-            document.getElementById('statExpired').innerText = expiredProfiles;
+            document.getElementById('statWarn').innerText = warnProfiles;
+            document.getElementById('waitBadge').innerText = DB.waitlist.length;
         }
 
         window.setFilter = function(type) {
@@ -683,45 +569,42 @@
         window.applyFilters = function() { window.renderSeats(); }
 
         window.renderSeats = function() {
-            const container = document.getElementById('seatsContainer');
-            if(!container) return;
+            const container = document.getElementById('seatsContainer'); if(!container) return;
             container.innerHTML = ''; updateDashboard();
             const examQuery = document.getElementById('searchExam').value.toLowerCase();
-            const today = new Date().toISOString().split('T')[0];
 
             for (let seatId of window.seatLayout) {
                 const occupants = DB.getOccupants(seatId);
-                let hasDue = false, hasExpired = false, hasMatch = false;
+                let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
                 
                 occupants.forEach(s => {
                     if (s.feeStatus === 'Due') hasDue = true;
-                    if (s.validDate && s.validDate < today) hasExpired = true;
+                    const expStatus = checkExpiry(s.validDate);
+                    if (expStatus === 'expired') hasExpired = true;
+                    if (expStatus === 'warn') hasWarn = true;
                     if (!examQuery || (s.exam && s.exam.toLowerCase().includes(examQuery))) hasMatch = true;
                 });
 
                 if (window.currentFilter === 'free' && occupants.length > 0) continue;
                 if (window.currentFilter === 'due' && !hasDue) continue;
+                if (window.currentFilter === 'warn' && !hasWarn) continue;
                 if (window.currentFilter === 'expired' && !hasExpired) continue;
                 if (occupants.length > 0 && examQuery && !hasMatch) continue;
 
                 const div = document.createElement('div');
-                
                 if (occupants.length > 0) {
                     let alertClass = 'allotted';
                     if (hasExpired) alertClass = 'expired-alert';
+                    else if (hasWarn) alertClass = 'warn-alert';
                     else if (hasDue) alertClass = 'due-alert';
                     
                     div.className = `seat ${alertClass}`;
                     div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    occupants.forEach(s => {
-                        let shortShift = s.shift.charAt(0);
-                        div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${shortShift})</div>`;
-                    });
+                    occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
                     div.onclick = () => window.handleSeatClick(seatId);
                 } else {
                     if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
-                    div.className = `seat free`;
-                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
                     div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; };
                 }
                 container.appendChild(div);
@@ -729,264 +612,270 @@
         }
 
         window.allotSeat = function() {
-            const seatNo = document.getElementById('seatNo').value.toUpperCase().trim();
-            const name = document.getElementById('studentName').value;
-            
-            if (!seatNo || !window.seatLayout.includes(seatNo)) { window.toast('⚠️ Invalid Seat Number. Check the map.'); return; }
-            if (!name) { window.toast('⚠️ Student name required'); return; }
+            const seatNo = document.getElementById('seatNo').value.toUpperCase().trim(), name = document.getElementById('studentName').value;
+            if (!seatNo || !window.seatLayout.includes(seatNo)) return window.toast('⚠️ Invalid Seat Number.');
+            if (!name) return window.toast('⚠️ Name required');
 
             let shift = document.getElementById('shift').value === 'Custom' ? document.getElementById('customShift').value : document.getElementById('shift').value;
             const occupants = DB.getOccupants(seatNo);
 
-            let hasConflict = false; let conflictMsg = "";
+            let hasConflict = false, conflictMsg = "";
             for (let s of occupants) {
-                if (s.shift === shift) { hasConflict = true; conflictMsg = `Seat ${seatNo} is already booked for ${shift} by ${s.name}`; break; }
-                if (s.shift.includes("Full Day") && (shift.includes("Morning") || shift.includes("Evening"))) { hasConflict = true; conflictMsg = `Seat ${seatNo} is booked for the Full Day by ${s.name}`; break; }
-                if (shift.includes("Full Day") && (s.shift.includes("Morning") || s.shift.includes("Evening"))) { hasConflict = true; conflictMsg = `Seat ${seatNo} is booked for a half day by ${s.name}`; break; }
+                if (s.shift === shift) { hasConflict = true; conflictMsg = `Booked for ${shift} by ${s.name}`; break; }
+                if (s.shift.includes("Full Day") && (shift.includes("Morning") || shift.includes("Evening"))) { hasConflict = true; conflictMsg = `Booked Full Day by ${s.name}`; break; }
+                if (shift.includes("Full Day") && (s.shift.includes("Morning") || s.shift.includes("Evening"))) { hasConflict = true; conflictMsg = `Booked half day by ${s.name}`; break; }
             }
-            if (hasConflict) { window.toast('🚫 ' + conflictMsg); return; }
+            if (hasConflict) return window.toast('🚫 ' + conflictMsg);
 
-            let initialPayments = [];
-            const amt = document.getElementById('initialAmount').value;
-            if(amt) {
-                initialPayments.push({ date: document.getElementById('admDate').value, amount: amt, mode: document.getElementById('initialMode').value });
-            }
+            let initialPayments = []; const amt = document.getElementById('initialAmount').value;
+            if(amt) initialPayments.push({ date: document.getElementById('admDate').value, amount: amt, mode: document.getElementById('initialMode').value });
 
-            const newStudent = { 
-                id: Date.now().toString() + Math.random().toString(36).substr(2, 5), 
-                name, shift, phone: document.getElementById('phone').value || 'N/A', 
-                exam: document.getElementById('exam').value || 'General', admDate: document.getElementById('admDate').value, 
-                validDate: document.getElementById('validDate').value, feeStatus: document.getElementById('feeStatus').value,
-                payments: initialPayments
-            };
-            
-            DB.addStudent(seatNo, newStudent);
+            DB.addStudent(seatNo, { 
+                id: Date.now().toString(), name, shift, phone: document.getElementById('phone').value || 'N/A', exam: document.getElementById('exam').value || 'General', 
+                admDate: document.getElementById('admDate').value, validDate: document.getElementById('validDate').value, 
+                feeStatus: document.getElementById('feeStatus').value, payments: initialPayments
+            });
             
             ['seatNo', 'studentName', 'phone', 'exam', 'admDate', 'validDate', 'initialAmount', 'customShift'].forEach(id => document.getElementById(id).value = '');
-            window.switchTab('map'); window.toast(`🎉 ${name} allocated successfully!`);
+            window.switchTab('map'); window.toast(`🎉 ${name} allocated!`);
         }
 
-        window.addAnotherToSeat = function() {
-            const seatToFill = window.activeSeatNo;
-            window.closeModal();
-            window.switchTab('add');
-            document.getElementById('seatNo').value = seatToFill;
+        // --- WAITLIST LOGIC ---
+        window.addWaitlist = function() {
+            const name = document.getElementById('waitName').value;
+            if(!name) return window.toast('⚠️ Name required');
+            DB.waitlist.push({ id: Date.now().toString(), name, phone: document.getElementById('waitPhone').value || 'N/A', shift: document.getElementById('waitShift').value, date: new Date().toISOString().split('T')[0] });
+            DB.save();
+            document.getElementById('waitName').value = ''; document.getElementById('waitPhone').value = '';
+            window.renderWaitlist(); window.toast("Added to waitlist");
+        }
+        window.renderWaitlist = function() {
+            const cont = document.getElementById('waitlistContainer'); cont.innerHTML = '';
+            if(DB.waitlist.length === 0) { cont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">Waitlist is empty.</div>'; }
+            DB.waitlist.forEach(w => {
+                cont.innerHTML += `
+                    <div class="list-item">
+                        <div>
+                            <strong style="font-size:14px; display:block;">${w.name}</strong>
+                            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${w.phone} • ${w.shift}</div>
+                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Listed: ${w.date}</div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <button class="filter-btn" style="background:var(--primary); color:white; padding:6px 10px;" onclick="promoteWaitlist('${w.id}')">Allot Seat</button>
+                            <button class="filter-btn" style="background:transparent; border-color:var(--red); color:var(--red); padding:6px 10px;" onclick="removeWaitlist('${w.id}')">Remove</button>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('waitBadge').innerText = DB.waitlist.length;
+        }
+        window.removeWaitlist = function(id) { DB.waitlist = DB.waitlist.filter(w => w.id !== id); DB.save(); window.renderWaitlist(); window.toast("Removed from waitlist"); }
+        window.promoteWaitlist = function(id) {
+            const student = DB.waitlist.find(w => w.id === id);
+            if(student) {
+                window.switchTab('add');
+                document.getElementById('studentName').value = student.name;
+                document.getElementById('phone').value = student.phone !== 'N/A' ? student.phone : '';
+                document.getElementById('shift').value = student.shift;
+                window.removeWaitlist(id);
+                window.toast("Fill seat number to complete.");
+            }
         }
 
-        // --- SETTINGS MODAL ---
+        // --- FINANCE LOGIC ---
+        window.switchFinView = function(view) {
+            document.getElementById('finIncomeView').classList.toggle('hidden', view !== 'income');
+            document.getElementById('finExpenseView').classList.toggle('hidden', view !== 'expense');
+            document.getElementById('btnShowIncome').classList.toggle('active', view === 'income');
+            document.getElementById('btnShowExpense').classList.toggle('active', view === 'expense');
+        }
+
+        window.addExpense = function() {
+            const amt = document.getElementById('expAmount').value, date = document.getElementById('expDate').value, cat = document.getElementById('expCategory').value;
+            if(!amt || !date || !cat) return window.toast("⚠️ Fill all expense details");
+            DB.expenses.push({ id: Date.now().toString(), date, amount: parseFloat(amt), category: cat });
+            DB.save();
+            document.getElementById('expAmount').value = ''; document.getElementById('expCategory').value = '';
+            window.calculateFinances(); window.toast("Expense saved");
+        }
+        
+        window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
+
+        window.calculateFinances = function() {
+            const monthStr = document.getElementById('finMonth').value; // YYYY-MM
+            if(!monthStr) return;
+            
+            let totalIncome = 0, totalExpense = 0;
+            const incCont = document.getElementById('incomeLedgerContainer'); incCont.innerHTML = '';
+            const expCont = document.getElementById('expenseLedgerContainer'); expCont.innerHTML = '';
+
+            // Aggregate Income
+            let incomes = [];
+            for(let seatId of window.seatLayout) {
+                const occupants = DB.getOccupants(seatId);
+                occupants.forEach(s => {
+                    if(s.payments) {
+                        s.payments.forEach(p => {
+                            if(p.date.startsWith(monthStr)) {
+                                totalIncome += parseFloat(p.amount);
+                                incomes.push({ date: p.date, name: s.name, seat: seatId, amount: p.amount, mode: p.mode });
+                            }
+                        });
+                    }
+                });
+            }
+            
+            incomes.sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort newest first
+            if(incomes.length === 0) incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded this month.</div>';
+            incomes.forEach(i => {
+                incCont.innerHTML += `
+                    <div class="list-item">
+                        <div>
+                            <strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong>
+                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${i.date} • Mode: ${i.mode}</div>
+                        </div>
+                        <span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span>
+                    </div>`;
+            });
+
+            // Aggregate Expenses
+            let monthlyExps = DB.expenses.filter(e => e.date.startsWith(monthStr));
+            monthlyExps.sort((a,b) => new Date(b.date) - new Date(a.date));
+            monthlyExps.forEach(e => {
+                totalExpense += e.amount;
+                expCont.innerHTML += `
+                    <div class="list-item">
+                        <div>
+                            <strong style="font-size:13px; display:block;">${e.category}</strong>
+                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${e.date}</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span>
+                            <button style="background:none; border:none; color:var(--text-muted); cursor:pointer;" onclick="removeExpense('${e.id}')">×</button>
+                        </div>
+                    </div>`;
+            });
+            if(monthlyExps.length === 0) expCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No expenses recorded.</div>';
+
+            document.getElementById('finIncome').innerText = `₹${totalIncome}`;
+            document.getElementById('finExpense').innerText = `₹${totalExpense}`;
+            document.getElementById('finProfit').innerText = `₹${totalIncome - totalExpense}`;
+        }
+
+        // --- MODALS & SETTINGS ---
         window.openSettingsModal = function() {
             hideAllModalSections();
-            document.getElementById('cfgLibName').value = appConfig.libraryName || 'LibSync Pro';
-            document.getElementById('cfgTotalSeats').value = appConfig.totalSeats || 86;
-            document.getElementById('cfgCustomSeats').value = (appConfig.customSeats || []).join(', ');
-            document.getElementById('cfgShifts').value = (appConfig.shifts || []).join('\n');
-            triggerModalAnimation('modalSettingsSection');
-            document.getElementById('detailsModal').style.display = 'flex';
+            document.getElementById('cfgLibName').value = appConfig.libraryName;
+            document.getElementById('cfgTotalSeats').value = appConfig.totalSeats;
+            document.getElementById('cfgCustomSeats').value = appConfig.customSeats.join(', ');
+            document.getElementById('cfgShifts').value = appConfig.shifts.join('\n');
+            triggerModalAnimation('modalSettingsSection'); document.getElementById('detailsModal').style.display = 'flex';
         }
-
         window.saveSettings = function() {
-            const newName = document.getElementById('cfgLibName').value.trim();
-            const newTotal = parseInt(document.getElementById('cfgTotalSeats').value);
-            const newCustom = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s);
-            const newShifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s);
-
-            if(!newName || isNaN(newTotal) || newTotal < 1 || newShifts.length === 0) {
-                window.toast('⚠️ Please fill out all settings properly.'); return;
-            }
-
-            appConfig.libraryName = newName;
-            appConfig.totalSeats = newTotal;
-            appConfig.customSeats = newCustom;
-            appConfig.shifts = newShifts;
-
-            DB.save(); 
-
-            document.getElementById('appTitle').innerText = newName;
-            window.initializeAppStructure(); 
-            window.renderSeats();            
-            window.closeModal();
-            window.toast('✅ Settings applied & synced to cloud!');
+            appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "LibSync Pro";
+            appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 86;
+            appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s);
+            appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s);
+            DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName;
+            window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!');
         }
 
-        function hideAllModalSections() {
-            ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-                document.getElementById(id).classList.remove('modal-animate'); 
-            });
-        }
-
-        function triggerModalAnimation(sectionId) {
-            const el = document.getElementById(sectionId);
-            el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate');
-        }
+        function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection'].forEach(id => { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('modal-animate'); }); }
+        function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
 
         window.handleSeatClick = function(seatNo) {
-            window.activeSeatNo = seatNo;
-            const occupants = DB.getOccupants(seatNo);
-            if(occupants.length === 1) { window.openStudentProfile(occupants[0].id); } 
-            else { window.showListMenu(); }
+            window.activeSeatNo = seatNo; const occupants = DB.getOccupants(seatNo);
+            if(occupants.length === 1) window.openStudentProfile(occupants[0].id); else window.showListMenu();
             document.getElementById('detailsModal').style.display = 'flex';
         }
-
         window.showListMenu = function() {
-            hideAllModalSections();
-            const occupants = DB.getOccupants(window.activeSeatNo);
-            document.getElementById('listSeatNo').innerText = window.activeSeatNo;
+            hideAllModalSections(); document.getElementById('listSeatNo').innerText = window.activeSeatNo;
             const listCont = document.getElementById('occupantsContainer'); listCont.innerHTML = '';
-            
-            occupants.forEach(s => {
+            DB.getOccupants(window.activeSeatNo).forEach(s => {
                 let badgeColor = s.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
                 listCont.innerHTML += `
-                    <div class="student-list-item" onclick="openStudentProfile('${s.id}')">
-                        <div><strong style="display:block; font-size:15px; color:var(--text-main);">${s.name}</strong>
-                        <span style="font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:4px; margin-top:2px;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        ${s.shift}</span></div>
-                        <span style="background:${badgeColor}; color:white; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:600;">${s.feeStatus}</span>
+                    <div class="list-item" style="cursor:pointer;" onclick="openStudentProfile('${s.id}')">
+                        <div><strong style="display:block; font-size:14px;">${s.name}</strong>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.shift}</div></div>
+                        <span class="badge" style="background:${badgeColor};">${s.feeStatus}</span>
                     </div>`;
             });
             triggerModalAnimation('modalListSection');
         }
-
         window.openStudentProfile = function(studentId) {
-            window.activeStudentId = studentId;
-            hideAllModalSections();
-            window.isDeleteConfirmStep = false;
-            const rmvBtn = document.getElementById('btnRemoveStudent');
-            if(rmvBtn) { rmvBtn.innerText = "Remove"; rmvBtn.style.background = "var(--red)"; }
-            
+            window.activeStudentId = studentId; hideAllModalSections(); window.isDeleteConfirmStep = false;
+            const rmvBtn = document.getElementById('btnRemoveStudent'); if(rmvBtn) { rmvBtn.innerText = "Remove"; rmvBtn.style.background = "var(--red)"; }
             const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === studentId);
-            document.getElementById('modName').innerText = student.name;
-            document.getElementById('modPhone').innerText = student.phone;
-            document.getElementById('modShift').innerText = student.shift;
-            document.getElementById('modExam').innerText = student.exam;
-            document.getElementById('modDate').innerText = student.admDate || 'N/A';
-            document.getElementById('modValid').innerText = student.validDate || 'N/A';
+            document.getElementById('modSeatTitle').innerText = window.activeSeatNo;
+            ['Name','Phone','Shift','Exam','Date','Valid'].forEach(k => document.getElementById('mod'+k).innerText = student[k.toLowerCase() === 'date' ? 'admDate' : k.toLowerCase() === 'valid' ? 'validDate' : k.toLowerCase()] || 'N/A');
+            const feeEl = document.getElementById('modFee'); feeEl.innerText = student.feeStatus; feeEl.style.background = student.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
             
-            const feeEl = document.getElementById('modFee');
-            feeEl.innerText = student.feeStatus; feeEl.style.background = student.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
-
             const ledger = document.getElementById('paymentLedger'); ledger.innerHTML = '';
-            if(!student.payments || student.payments.length === 0) {
-                ledger.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center; padding:15px 0;">No payment history recorded.</div>';
-            } else {
-                for(let i = student.payments.length - 1; i >= 0; i--) {
-                    let p = student.payments[i];
-                    ledger.innerHTML += `
-                        <div class="payment-item">
-                            <div class="pay-left">
-                                <span class="pay-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> ${p.date}</span>
-                                <span class="pay-mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> ${p.mode}</span>
-                            </div>
-                            <span class="pay-amount">₹${p.amount}</span>
-                        </div>`;
-                }
-            }
-
+            if(!student.payments || student.payments.length === 0) ledger.innerHTML = '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No history.</div>';
+            else { [...student.payments].reverse().forEach(p => { ledger.innerHTML += `<div class="info-row"><div style="font-size:11px;"><strong style="color:var(--text-main); display:block;">${p.date}</strong>${p.mode}</div><div style="color:var(--green); font-weight:700;">₹${p.amount}</div></div>`; }); }
+            
             const btnBack = document.getElementById('btnViewBack');
-            if(DB.getOccupants(window.activeSeatNo).length > 1) { btnBack.innerHTML = "Back to List"; btnBack.onclick = window.backToListOrClose; } 
-            else { btnBack.innerHTML = "Close"; btnBack.onclick = window.closeModal; }
-
+            if(DB.getOccupants(window.activeSeatNo).length > 1) { btnBack.innerHTML = "Back"; btnBack.onclick = window.backToListOrClose; } else { btnBack.innerHTML = "Close"; btnBack.onclick = window.closeModal; }
             triggerModalAnimation('modalViewSection');
         }
 
-        window.backToListOrClose = function() {
-            if(DB.getOccupants(window.activeSeatNo).length > 1) window.showListMenu();
-            else window.closeModal();
-        }
+        window.backToListOrClose = function() { if(DB.getOccupants(window.activeSeatNo).length > 1) window.showListMenu(); else window.closeModal(); }
         window.closeModal = function() { document.getElementById('detailsModal').style.display = 'none'; window.activeSeatNo = null; window.activeStudentId = null; }
+        window.addAnotherToSeat = function() { const seat = window.activeSeatNo; window.closeModal(); window.switchTab('add'); document.getElementById('seatNo').value = seat; }
 
         window.showEditForm = function() {
-            hideAllModalSections();
-            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId);
-            document.getElementById('editName').value = student.name;
-            document.getElementById('editPhone').value = student.phone !== 'N/A' ? student.phone : '';
-            document.getElementById('editExam').value = student.exam;
-            document.getElementById('editAdmDate').value = student.admDate || '';
-            document.getElementById('editValidDate').value = student.validDate || '';
-            document.getElementById('editFeeStatus').value = student.feeStatus;
-            document.getElementById('editShift').value = student.shift;
+            hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId);
+            ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => document.getElementById('edit'+k).value = student[k.charAt(0).toLowerCase() + k.slice(1)] || '');
             triggerModalAnimation('modalEditSection');
         }
-
         window.saveEdit = function() {
-            const updatedData = {
-                name: document.getElementById('editName').value,
-                phone: document.getElementById('editPhone').value || 'N/A',
-                exam: document.getElementById('editExam').value || 'General',
-                admDate: document.getElementById('editAdmDate').value,
-                validDate: document.getElementById('editValidDate').value,
-                feeStatus: document.getElementById('editFeeStatus').value,
-                shift: document.getElementById('editShift').value
-            };
-            DB.updateStudent(window.activeSeatNo, window.activeStudentId, updatedData);
-            window.toast("✅ Profile Updated"); window.renderSeats(); window.openStudentProfile(window.activeStudentId); 
+            const d = {}; ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value);
+            DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast("Updated"); window.renderSeats(); window.openStudentProfile(window.activeStudentId); 
         }
-
         window.cancelEdit = function() { window.openStudentProfile(window.activeStudentId); }
 
         window.showPaymentForm = function() {
-            hideAllModalSections();
-            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId);
-            document.getElementById('payStudentName').innerText = student.name;
-            document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('payAmount').value = '';
-            document.getElementById('payValidDate').value = student.validDate || '';
-            document.getElementById('payFeeStatus').value = 'Paid';
+            hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId);
+            document.getElementById('payStudentName').innerText = student.name; document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('payAmount').value = ''; document.getElementById('payValidDate').value = student.validDate || ''; document.getElementById('payFeeStatus').value = 'Paid';
             triggerModalAnimation('modalPaySection');
         }
-
         window.hidePaymentForm = function() { window.openStudentProfile(window.activeStudentId); }
-
         window.savePayment = function() {
-            const amt = document.getElementById('payAmount').value;
-            if(!amt) { window.toast('⚠️ Enter amount'); return; }
-            const paymentObj = { date: document.getElementById('payDate').value, amount: amt, mode: document.getElementById('payMode').value };
-            const validDate = document.getElementById('payValidDate').value;
-            const feeStatus = document.getElementById('payFeeStatus').value;
-
-            DB.addPayment(window.activeSeatNo, window.activeStudentId, paymentObj, validDate, feeStatus);
-            window.toast('✅ Payment Saved'); window.renderSeats(); window.openStudentProfile(window.activeStudentId);
+            const amt = document.getElementById('payAmount').value; if(!amt) return window.toast('⚠️ Enter amount');
+            DB.addPayment(window.activeSeatNo, window.activeStudentId, { date: document.getElementById('payDate').value, amount: amt, mode: document.getElementById('payMode').value }, document.getElementById('payValidDate').value, document.getElementById('payFeeStatus').value);
+            window.toast('Payment Saved'); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId);
         }
 
         window.freeStudentSlot = function() {
             const btn = document.getElementById('btnRemoveStudent');
             if (!window.isDeleteConfirmStep) {
-                window.isDeleteConfirmStep = true;
-                btn.innerText = "Tap Again to Delete"; btn.style.background = "#991b1b"; 
-                setTimeout(() => {
-                    if (window.isDeleteConfirmStep) { window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)"; }
-                }, 4000);
-                return;
+                window.isDeleteConfirmStep = true; btn.innerText = "Tap Again to Delete"; btn.style.background = "#991b1b"; 
+                setTimeout(() => { if (window.isDeleteConfirmStep) { window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)"; } }, 4000); return;
             }
-            DB.removeStudent(window.activeSeatNo, window.activeStudentId);
-            window.renderSeats(); window.toast(`🗑️ Student removed.`);
+            DB.removeStudent(window.activeSeatNo, window.activeStudentId); window.renderSeats(); window.calculateFinances(); window.toast(`🗑️ Removed.`);
             window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)";
             if(DB.getOccupants(window.activeSeatNo).length > 0) window.showListMenu(); else window.closeModal();
         }
 
         window.exportData = function() {
-            const backupPayload = { config: appConfig, seatsData: DB.getAllData() };
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupPayload));
-            const anchor = document.createElement('a'); anchor.setAttribute("href", dataStr);
-            anchor.setAttribute("download", `Library_Backup_${new Date().toISOString().split('T')[0]}.json`);
-            document.body.appendChild(anchor); anchor.click(); anchor.remove(); window.toast("📥 Backup Downloaded!");
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ config: appConfig, seatsData: DB.seatsData, expenses: DB.expenses, waitlist: DB.waitlist }));
+            const a = document.createElement('a'); a.href = dataStr; a.download = `LibSync_Backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!");
         }
-        window.triggerImport = function() { document.getElementById('importFile').click(); }
         window.importData = function(input) {
             const reader = new FileReader();
             reader.onload = function(){
                 try {
                     const obj = JSON.parse(reader.result);
-                    if(obj.config && obj.seatsData) { appConfig = obj.config; DB.data = obj.seatsData; } 
-                    else { DB.data = obj; } // Fallback for old backups
-                    DB.save(); 
-                    document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro';
-                    window.initializeAppStructure(); window.renderSeats(); window.toast("📤 Data Restored & Synced to Cloud!"); 
+                    if(obj.config) { appConfig = obj.config; DB.seatsData = obj.seatsData || {}; DB.expenses = obj.expenses || []; DB.waitlist = obj.waitlist || []; } 
+                    else { DB.seatsData = obj; } // legacy
+                    DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName;
+                    window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); window.closeModal(); window.toast("📤 Data Restored to Cloud!"); 
                 } catch(e) { window.toast("⚠️ Error reading backup"); }
             };
             if(input.files[0]) reader.readAsText(input.files[0]);
         }
+        window.toggleCustomShift = function(selectId, inputId) { document.getElementById(inputId).classList.toggle('hidden', document.getElementById(selectId).value !== 'Custom'); }
     </script>
 </body>
 </html>
