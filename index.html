@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +19,11 @@
             
             --text-main: #1e293b; --text-muted: #64748b;
             --primary: #2563eb; --green: #10b981; --orange: #f59e0b; --red: #ef4444; --yellow: #eab308;
+            
+            /* New Auth Colors */
+            --auth-btn-bg: #2d4c3b;
+            --auth-btn-hover: #1e3628;
+            --auth-text: #1a1a1a;
         }
 
         .dark-theme {
@@ -35,6 +41,88 @@
         }
 
         body { font-family: 'Poppins', sans-serif; background: var(--bg-grad); background-attachment: fixed; color: var(--text-main); margin: 0; padding: 10px 10px 60px 10px; transition: background 0.4s ease, color 0.4s ease; min-height: 100vh; }
+        
+        /* --- NEW AUTHENTICATION UI STYLES --- */
+        #authScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
+            background: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=2000') no-repeat center center / cover;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* Desktop Layout (Split screen with paper cut) */
+        .auth-container {
+            width: 100%; height: 100%; display: flex; position: relative; overflow: hidden;
+        }
+        .auth-left {
+            width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
+            background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            position: relative; z-index: 10;
+        }
+        .paper-cut-svg { display: none; }
+
+        .auth-card {
+            width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; text-align: center;
+        }
+
+        .auth-card h2 { color: var(--auth-text); font-weight: 600; font-size: 28px; margin-bottom: 30px; letter-spacing: 0.5px; }
+        
+        .auth-input-group { text-align: left; margin-bottom: 20px; }
+        .auth-input-group label { display: block; font-size: 11px; color: #555; margin-bottom: 6px; font-weight: 500; }
+        .auth-input { 
+            width: 100%; padding: 12px 18px; border: 1px solid rgba(0,0,0,0.2); background: transparent;
+            border-radius: 25px; outline: none; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--auth-text);
+            box-sizing: border-box; transition: border-color 0.3s;
+        }
+        .auth-input:focus { border-color: var(--auth-btn-bg); background: rgba(255,255,255,0.5); }
+        
+        .auth-main-btn {
+            width: 100%; padding: 14px; background: var(--auth-btn-bg); color: white; border: none;
+            border-radius: 25px; font-size: 14px; font-weight: 500; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(45, 76, 59, 0.3); transition: all 0.3s ease; margin-top: 10px; font-family: 'Poppins', sans-serif;
+        }
+        .auth-main-btn:hover { background: var(--auth-btn-hover); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(45, 76, 59, 0.4); }
+        .auth-main-btn:active { transform: translateY(0); }
+
+        .auth-divider {
+            display: flex; align-items: center; text-align: center; margin: 25px 0; color: #666; font-size: 11px;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: ''; flex: 1; border-bottom: 1px solid rgba(0,0,0,0.2);
+        }
+        .auth-divider span { padding: 0 10px; }
+
+        .social-logins { display: flex; justify-content: center; gap: 15px; }
+        .social-btn {
+            width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.7); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .social-btn:hover { transform: scale(1.05); background: white; }
+        .social-btn img { width: 22px; height: 22px; }
+
+        .auth-footer-link { font-size: 12px; color: #555; margin-top: 25px; display: block; cursor: pointer; }
+        .auth-footer-link:hover { color: var(--auth-btn-bg); font-weight: 500; }
+
+        /* Mobile Glassmorphism Tweaks */
+        @media (max-width: 767px) {
+            .auth-left {
+                background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3);
+                border-radius: 30px; width: 90%; height: auto; padding: 20px 0; margin: auto;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            }
+            .auth-input { background: rgba(255, 255, 255, 0.4); border-color: rgba(255,255,255,0.5); }
+        }
+
+        /* Desktop Paper Cut Setup */
+        @media (min-width: 768px) {
+            .auth-left { width: 45%; max-width: 600px; background: white; border-radius: 0; align-items: center; z-index: 10; box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
+            .paper-cut-svg {
+                display: block; position: absolute; right: -99px; top: 0; width: 100px; height: 100%; z-index: 9;
+            }
+            .auth-card { padding: 0 60px; max-width: 500px;}
+        }
+
+        /* --- EXISTING STYLES --- */
         @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .animate-in { animation: fadeSlideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
@@ -110,26 +198,72 @@
 </head>
 <body>
 
-    <!-- AUTHENTICATION SCREEN -->
-    <div id="authScreen" class="modal" style="display:flex; background: var(--bg-grad); z-index: 9999;">
-        <div class="modal-content glass-panel" style="text-align: center;">
-            <h2 style="color:var(--primary); margin-bottom: 5px; font-weight:700; font-size: 24px;">LibSync Pro</h2>
-            <p id="authSubtitle" style="font-size: 13px; color:var(--text-muted); margin-bottom: 25px;">Welcome back! Please enter your details.</p>
-            
-            <div id="loginForm">
-                <input type="email" id="loginEmail" placeholder="Email Address">
-                <input type="password" id="loginPassword" placeholder="Password" style="margin-top:12px;">
-                <button class="action-btn" onclick="loginUser()">Log In</button>
-                <p style="font-size: 13px; color:var(--text-muted); margin-top: 20px;">Don't have an account? <span style="color:var(--primary); cursor:pointer; font-weight:600;" onclick="toggleAuthMode('signup')">Sign up</span></p>
-            </div>
+    <!-- NEW AUTHENTICATION SCREEN -->
+    <div id="authScreen">
+        <div class="auth-container">
+            <div class="auth-left">
+                
+                <!-- Desktop Layered Paper Cut SVG -->
+                <svg class="paper-cut-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
+                    <defs>
+                        <filter id="shadow-dark" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="8" dy="0" stdDeviation="10" flood-color="#000" flood-opacity="0.5"/>
+                        </filter>
+                        <filter id="shadow-light" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="5" dy="0" stdDeviation="5" flood-color="#000" flood-opacity="0.3"/>
+                        </filter>
+                    </defs>
+                    <!-- Back shadow layer -->
+                    <path d="M0,0 L40,0 C90,200 -10,400 40,650 C90,900 40,1000 40,1000 L0,1000 Z" fill="#b0bec5" filter="url(#shadow-dark)"/>
+                    <!-- Front white layer -->
+                    <path d="M0,0 L20,0 C70,200 -30,400 20,650 C70,900 20,1000 20,1000 L0,1000 Z" fill="white" filter="url(#shadow-light)"/>
+                </svg>
 
-            <div id="signupForm" class="hidden">
-                <input type="email" id="signupEmail" placeholder="Email Address">
-                <input type="password" id="signupPassword" placeholder="Create Password" style="margin-top:12px;">
-                <button class="action-btn" onclick="signupUser()" style="background:var(--green);">Create Account</button>
-                <p style="font-size: 13px; color:var(--text-muted); margin-top: 20px;">Already have an account? <span style="color:var(--primary); cursor:pointer; font-weight:600;" onclick="toggleAuthMode('login')">Log in</span></p>
+                <div class="auth-card">
+                    <h2 id="authTitle">Log in</h2>
+                    
+                    <div id="loginForm">
+                        <div class="auth-input-group">
+                            <label>Email address</label>
+                            <input type="email" id="loginEmail" class="auth-input" placeholder="Enter your email">
+                        </div>
+                        <div class="auth-input-group">
+                            <label>Password</label>
+                            <input type="password" id="loginPassword" class="auth-input" placeholder="Enter your password">
+                        </div>
+                        <button class="auth-main-btn" onclick="loginUser()">Log in</button>
+                        
+                        <div class="auth-divider"><span>or log in with</span></div>
+                        
+                        <div class="social-logins">
+                            <!-- Google Sign In -->
+                            <button class="social-btn" onclick="googleSignIn()" title="Sign in with Google">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="22px" height="22px"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571c.001-.001.002-.001.003-.002l6.19 5.238C36.971 39.205 44 34 44 24C44 22.659 43.862 21.35 43.611 20.083z"/></svg>
+                            </button>
+                        </div>
+                        
+                        <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
+                        
+                        <span class="auth-footer-link" onclick="toggleAuthMode('signup')">Don't have an account? Sign up</span>
+                    </div>
+
+                    <div id="signupForm" class="hidden">
+                        <div class="auth-input-group">
+                            <label>Email address</label>
+                            <input type="email" id="signupEmail" class="auth-input" placeholder="Enter your email">
+                        </div>
+                        <div class="auth-input-group">
+                            <label>Create Password</label>
+                            <input type="password" id="signupPassword" class="auth-input" placeholder="Create a password">
+                        </div>
+                        <button class="auth-main-btn" onclick="signupUser()">Create Account</button>
+                        
+                        <p id="signupError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
+                        
+                        <span class="auth-footer-link" onclick="toggleAuthMode('login')">Already have an account? Log in</span>
+                    </div>
+                </div>
             </div>
-            <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
         </div>
     </div>
 
@@ -258,7 +392,6 @@
 
     <!-- DETAILS MODAL (View/Edit Student) -->
     <div id="detailsModal" class="modal">
-        <!-- Re-using existing modal sections, slightly styled -->
         <div class="modal-content hidden" id="modalViewSection">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); padding-bottom:10px; margin-bottom:10px;">
                 <h3 style="margin:0; color:var(--primary); font-weight:700;">Seat <span id="modSeatTitle"></span> Profile</h3>
@@ -285,7 +418,6 @@
             </div>
         </div>
 
-        <!-- LIST SELECTION (For multiple shifts on one seat) -->
         <div class="modal-content hidden" id="modalListSection">
             <h3 style="margin-top:0; color:var(--primary);">Seat <span id="listSeatNo"></span> Occupants</h3>
             <div id="occupantsContainer" style="margin-bottom:15px;"></div>
@@ -293,7 +425,6 @@
             <button class="action-btn" style="background:var(--text-muted); padding:10px; margin:0;" onclick="closeModal()">Close</button>
         </div>
 
-        <!-- EDIT FORM -->
         <div class="modal-content hidden" id="modalEditSection">
             <h3 style="margin-top:0; color:var(--primary);">Edit Profile</h3>
             <input type="text" id="editName" placeholder="Name" style="margin-bottom:8px;">
@@ -311,7 +442,6 @@
             </div>
         </div>
 
-        <!-- PAYMENT FORM -->
         <div class="modal-content hidden" id="modalPaySection">
             <h3 style="margin-top:0; color:var(--primary);">Record Payment</h3>
             <p style="font-size: 12px; margin-bottom: 15px; color:var(--text-muted);">For: <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
@@ -329,7 +459,6 @@
             </div>
         </div>
 
-        <!-- SETTINGS MODAL -->
         <div class="modal-content hidden" id="modalSettingsSection">
             <h3 style="margin-top:0; color:var(--primary);">⚙️ Library Settings</h3>
             <label>Library Name</label> <input type="text" id="cfgLibName">
@@ -352,7 +481,6 @@
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Close</button>
             </div>
         </div>
-
     </div>
 
     <div id="toast-container"></div>
@@ -381,9 +509,7 @@
         };
 
         const DB = {
-            seatsData: {},
-            expenses: [],
-            waitlist: [],
+            seatsData: {}, expenses: [], waitlist: [],
             init: function() {
                 const rawData = {};
                 for(let seatId of window.seatLayout) rawData[seatId] = [];
@@ -436,12 +562,13 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        // --- AUTHENTICATION ---
+        // --- NEW AUTHENTICATION LOGIC ---
         window.toggleAuthMode = function(mode) {
             document.getElementById('loginForm').classList.toggle('hidden', mode === 'signup');
             document.getElementById('signupForm').classList.toggle('hidden', mode === 'login');
-            document.getElementById('authSubtitle').innerText = mode === 'signup' ? "Create an account to manage your library." : "Welcome back! Please enter your details.";
+            document.getElementById('authTitle').innerText = mode === 'signup' ? "Create Account" : "Log in";
             document.getElementById('authError').innerText = ''; 
+            document.getElementById('signupError').innerText = ''; 
         }
 
         auth.onAuthStateChanged((user) => {
@@ -450,7 +577,7 @@
                 document.getElementById('authScreen').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
-                loadDataFromCloud(); window.toast(`Logged in securely.`);
+                loadDataFromCloud(); window.toast(`Welcome back!`);
             } else {
                 currentUser = null; document.getElementById('authScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none';
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
@@ -462,13 +589,24 @@
             if(!email || !pass) return document.getElementById('authError').innerText = "Please enter email and password.";
             auth.signInWithEmailAndPassword(email, pass).catch(e => document.getElementById('authError').innerText = e.message.replace('Firebase:', '').trim());
         };
+        
         window.signupUser = () => {
             const email = document.getElementById('signupEmail').value, pass = document.getElementById('signupPassword').value;
-            if(!email || !pass) return document.getElementById('authError').innerText = "Please enter email and password.";
-            auth.createUserWithEmailAndPassword(email, pass).then(() => window.toast("Account created!")).catch(e => document.getElementById('authError').innerText = e.message.replace('Firebase:', '').trim());
+            if(!email || !pass) return document.getElementById('signupError').innerText = "Please enter email and password.";
+            auth.createUserWithEmailAndPassword(email, pass).then(() => window.toast("Account created!")).catch(e => document.getElementById('signupError').innerText = e.message.replace('Firebase:', '').trim());
         };
+
+        // Added Google Sign In
+        window.googleSignIn = () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch((error) => {
+                document.getElementById('authError').innerText = error.message.replace('Firebase:', '').trim();
+            });
+        };
+
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
 
+        // --- CLOUD SYNC ---
         function loadDataFromCloud() {
             const docRef = db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`);
             unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
@@ -480,12 +618,7 @@
                     DB.expenses = d.expenses || [];
                     DB.waitlist = d.waitlist || [];
                 } else {
-                    // Legacy migration
-                    const localConfig = JSON.parse(localStorage.getItem('libConfigPro'));
-                    const localSeats = JSON.parse(localStorage.getItem('libSeatsPro'));
-                    if(localConfig) appConfig = localConfig;
-                    DB.init(); if(localSeats) DB.seatsData = localSeats;
-                    DB.save();
+                    DB.init(); DB.save();
                 }
                 
                 document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro';
@@ -708,7 +841,6 @@
             const incCont = document.getElementById('incomeLedgerContainer'); incCont.innerHTML = '';
             const expCont = document.getElementById('expenseLedgerContainer'); expCont.innerHTML = '';
 
-            // Aggregate Income
             let incomes = [];
             for(let seatId of window.seatLayout) {
                 const occupants = DB.getOccupants(seatId);
@@ -724,7 +856,7 @@
                 });
             }
             
-            incomes.sort((a,b) => new Date(b.date) - new Date(a.date)); // Sort newest first
+            incomes.sort((a,b) => new Date(b.date) - new Date(a.date));
             if(incomes.length === 0) incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded this month.</div>';
             incomes.forEach(i => {
                 incCont.innerHTML += `
@@ -737,7 +869,6 @@
                     </div>`;
             });
 
-            // Aggregate Expenses
             let monthlyExps = DB.expenses.filter(e => e.date.startsWith(monthStr));
             monthlyExps.sort((a,b) => new Date(b.date) - new Date(a.date));
             monthlyExps.forEach(e => {
@@ -879,3 +1010,5 @@
     </script>
 </body>
 </html>
+
+```
