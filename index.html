@@ -199,7 +199,7 @@
     <div id="authScreen">
         <div class="auth-container">
             <div class="auth-left">
-                <!-- Desktop Layered Paper Cut SVG (Colored via CSS vars to match theme) -->
+                <!-- Desktop Layered Paper Cut SVG -->
                 <svg class="paper-cut-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
                     <defs>
                         <filter id="shadow-dark" x="-20%" y="-20%" width="140%" height="140%">
@@ -261,10 +261,10 @@
 
                     <!-- RESET PASSWORD FORM -->
                     <div id="resetForm" class="hidden animate-in">
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">Enter the recovery email address associated with your account to receive a secure password reset link.</p>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">Enter the email address associated with your account to receive a secure password reset link.</p>
                         <div class="auth-input-group">
-                            <label>Recovery Email address</label>
-                            <input type="email" id="resetEmail" class="auth-input" placeholder="Enter recovery email">
+                            <label>Email address</label>
+                            <input type="email" id="resetEmail" class="auth-input" placeholder="Enter your email">
                         </div>
                         <button class="auth-main-btn" onclick="resetPassword()">Send Reset Link</button>
                         <p id="resetError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
@@ -496,7 +496,7 @@
     <div id="toast-container"></div>
 
     <script>
-        // --- FIREBASE SETUP ---
+        // --- STREAMING_CHUNK: Initializing state and security rules architecture... ---
         const firebaseConfig = {
             apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4",
             authDomain: "librarymgt-2026.firebaseapp.com",
@@ -573,12 +573,12 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        // --- NEW AUTHENTICATION LOGIC ---
+        // --- STREAMING_CHUNK: Designing hybrid Admin ID & Local Lookup mechanism... ---
         window.toggleAuthMode = function(mode) {
             ['loginForm', 'signupForm', 'resetForm'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(mode + 'Form').classList.remove('hidden');
             
-            const titles = { 'login': 'Log in', 'signup': 'Create Account', 'reset': 'Reset Password' };
+            const titles = { 'login': 'Log in', 'signup': 'Create Account', 'reset': 'Forgot Password' };
             document.getElementById('authTitle').innerText = titles[mode];
             
             document.getElementById('authError').innerText = ''; 
@@ -599,13 +599,13 @@
             }
         });
 
-        // Safe Username to Email Resolution
-        async function getEmailFromUsername(username) {
-            if(!auth.currentUser) await auth.signInAnonymously();
-            const mapRef = db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`);
-            const snap = await mapRef.get();
-            if(snap.exists) return snap.data().email;
-            return null;
+        // Safe hybrid user mapping helper (Prevents Firestore Security Permission Errors completely)
+        function getDeviceRememberedEmail(username) {
+            return localStorage.getItem('libsync_user_' + username.toLowerCase().trim());
+        }
+
+        function rememberUserOnDevice(username, email) {
+            localStorage.setItem('libsync_user_' + username.toLowerCase().trim(), email.trim());
         }
 
         window.loginUser = async () => {
@@ -617,20 +617,20 @@
             errEl.innerText = "Logging in...";
             
             let emailToUse = idInput;
+            if (!idInput.includes('@')) {
+                const remembered = getDeviceRememberedEmail(idInput);
+                if (remembered) {
+                    emailToUse = remembered;
+                } else {
+                    return errEl.innerText = "First time on this device? Please log in using your registered Email address once to link your Admin ID.";
+                }
+            }
+            
             try {
-                if (!idInput.includes('@')) {
-                    const resolvedEmail = await getEmailFromUsername(idInput);
-                    if (resolvedEmail) emailToUse = resolvedEmail;
-                    else throw new Error("Admin ID not found.");
-                }
-                
-                // If we used signInAnonymously above to read public map, sign out before actual login
-                if (auth.currentUser && auth.currentUser.isAnonymous) {
-                    await auth.signOut();
-                }
-                
                 await auth.signInWithEmailAndPassword(emailToUse, pass);
-            } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
+            } catch(e) { 
+                errEl.innerText = e.message.replace('Firebase:', '').trim(); 
+            }
         };
         
         window.signupUser = async () => {
@@ -644,30 +644,29 @@
             
             errEl.innerText = "Creating workspace...";
             try {
-                // Check if username taken safely via anonymous auth
-                if(!auth.currentUser) await auth.signInAnonymously();
-                const existing = await getEmailFromUsername(username);
-                if(existing) throw new Error("This Admin ID is already taken.");
-                
-                // Proceed with signup
-                if (auth.currentUser && auth.currentUser.isAnonymous) {
-                    await auth.signOut();
-                }
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
                 
-                // Map the username publically so they can log in via username later
-                await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`).set({
-                    email: email, uid: cred.user.uid
-                });
+                // Link the mapping locally so the admin can log in seamlessly with username
+                rememberUserOnDevice(username, email);
                 
+                // Save profile details to private folder (which has write permissions)
+                await db.doc(`artifacts/${globalAppId}/users/${cred.user.uid}/libraryData/main`).set({
+                    config: { ...appConfig, adminId: username },
+                    seatsData: {},
+                    expenses: [],
+                    waitlist: []
+                }, { merge: true });
+
                 window.toast("Workspace Created!");
-            } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
+            } catch(e) { 
+                errEl.innerText = e.message.replace('Firebase:', '').trim(); 
+            }
         };
 
         window.resetPassword = () => {
             const email = document.getElementById('resetEmail').value.trim();
             const errEl = document.getElementById('resetError');
-            if(!email) return errEl.innerText = "Please enter your recovery email.";
+            if(!email) return errEl.innerText = "Please enter your email.";
             auth.sendPasswordResetEmail(email).then(() => {
                 errEl.style.color = "var(--green)";
                 errEl.innerText = "Reset link sent to your email!";
@@ -688,7 +687,13 @@
                 window.initializeAppStructure(); 
                 if (docSnap.exists) {
                     const d = docSnap.data();
-                    if (d.config) appConfig = d.config;
+                    if (d.config) {
+                        appConfig = d.config;
+                        // Always guarantee mapping is synced to device memory when profile loaded
+                        if (d.config.adminId && currentUser.email) {
+                            rememberUserOnDevice(d.config.adminId, currentUser.email);
+                        }
+                    }
                     if (d.seatsData) DB.seatsData = d.seatsData;
                     DB.expenses = d.expenses || [];
                     DB.waitlist = d.waitlist || [];
