@@ -19,10 +19,10 @@
             --text-main: #1e293b; --text-muted: #64748b;
             --primary: #2563eb; --green: #10b981; --orange: #f59e0b; --red: #ef4444; --yellow: #eab308;
             
-            /* New Auth Colors */
-            --auth-btn-bg: #2d4c3b;
-            --auth-btn-hover: #1e3628;
-            --auth-text: #1a1a1a;
+            /* Cohesive Auth Colors */
+            --auth-btn-bg: #2563eb;
+            --auth-btn-hover: #1d4ed8;
+            --auth-text: #1e293b;
         }
 
         .dark-theme {
@@ -37,14 +37,25 @@
 
             --text-main: #f8fafc; --text-muted: #94a3b8;
             --primary: #3b82f6; --green: #10b981; --orange: #f59e0b; --red: #ef4444; --yellow: #eab308;
+            --auth-btn-bg: #3b82f6;
+            --auth-btn-hover: #2563eb;
+            --auth-text: #f8fafc;
         }
 
         body { font-family: 'Poppins', sans-serif; background: var(--bg-grad); background-attachment: fixed; color: var(--text-main); margin: 0; padding: 10px 10px 60px 10px; transition: background 0.4s ease, color 0.4s ease; min-height: 100vh; }
         
         /* --- NEW AUTHENTICATION UI STYLES --- */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         #authScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
-            background: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=2000') no-repeat center center / cover;
+            background: var(--bg-grad);
+            background-size: 200% 200%;
+            animation: gradientBG 15s ease infinite;
             display: flex; justify-content: center; align-items: center;
         }
 
@@ -54,7 +65,7 @@
         }
         .auth-left {
             width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
-            background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             position: relative; z-index: 10;
         }
         .paper-cut-svg { display: none; }
@@ -63,61 +74,48 @@
             width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; text-align: center;
         }
 
-        .auth-card h2 { color: var(--auth-text); font-weight: 600; font-size: 28px; margin-bottom: 30px; letter-spacing: 0.5px; }
+        .auth-card h2 { color: var(--auth-text); font-weight: 700; font-size: 28px; margin-bottom: 30px; letter-spacing: -0.5px; }
         
         .auth-input-group { text-align: left; margin-bottom: 20px; }
-        .auth-input-group label { display: block; font-size: 11px; color: #555; margin-bottom: 6px; font-weight: 500; }
+        .auth-input-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
         .auth-input { 
-            width: 100%; padding: 12px 18px; border: 1px solid rgba(0,0,0,0.2); background: transparent;
-            border-radius: 25px; outline: none; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--auth-text);
-            box-sizing: border-box; transition: border-color 0.3s;
+            width: 100%; padding: 12px 18px; border: 1px solid var(--glass-border); background: var(--glass-input-bg);
+            border-radius: 12px; outline: none; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--auth-text);
+            box-sizing: border-box; transition: all 0.3s;
         }
-        .auth-input:focus { border-color: var(--auth-btn-bg); background: rgba(255,255,255,0.5); }
+        .auth-input:focus { border-color: var(--auth-btn-bg); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
         
         .auth-main-btn {
             width: 100%; padding: 14px; background: var(--auth-btn-bg); color: white; border: none;
-            border-radius: 25px; font-size: 14px; font-weight: 500; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(45, 76, 59, 0.3); transition: all 0.3s ease; margin-top: 10px; font-family: 'Poppins', sans-serif;
+            border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2); transition: all 0.3s ease; margin-top: 10px; font-family: 'Poppins', sans-serif;
         }
-        .auth-main-btn:hover { background: var(--auth-btn-hover); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(45, 76, 59, 0.4); }
+        .auth-main-btn:hover { background: var(--auth-btn-hover); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); }
         .auth-main-btn:active { transform: translateY(0); }
 
         .auth-divider {
-            display: flex; align-items: center; text-align: center; margin: 25px 0; color: #666; font-size: 11px;
+            display: flex; align-items: center; text-align: center; margin: 25px 0; color: var(--text-muted); font-size: 11px;
         }
         .auth-divider::before, .auth-divider::after {
-            content: ''; flex: 1; border-bottom: 1px solid rgba(0,0,0,0.2);
+            content: ''; flex: 1; border-bottom: 1px solid var(--glass-border);
         }
         .auth-divider span { padding: 0 10px; }
 
-        .social-logins { display: flex; justify-content: center; gap: 15px; }
-        .social-btn {
-            width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1);
-            background: rgba(255,255,255,0.7); display: flex; justify-content: center; align-items: center;
-            cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .social-btn:hover { transform: scale(1.05); background: white; }
-        .social-btn img { width: 22px; height: 22px; }
-
-        .auth-footer-link { font-size: 12px; color: #555; margin-top: 25px; display: block; cursor: pointer; }
-        .auth-footer-link:hover { color: var(--auth-btn-bg); font-weight: 500; }
+        .auth-footer-link { font-size: 12px; color: var(--text-muted); margin-top: 20px; display: block; cursor: pointer; font-weight:500; transition: color 0.2s; }
+        .auth-footer-link:hover { color: var(--auth-btn-bg); }
 
         /* Mobile Glassmorphism Tweaks */
         @media (max-width: 767px) {
             .auth-left {
-                background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3);
-                border-radius: 30px; width: 90%; height: auto; padding: 20px 0; margin: auto;
-                box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+                border: 1px solid var(--glass-border); border-radius: 30px; width: 90%; height: auto; 
+                padding: 20px 0; margin: auto; box-shadow: var(--glass-shadow);
             }
-            .auth-input { background: rgba(255, 255, 255, 0.4); border-color: rgba(255,255,255,0.5); }
         }
 
         /* Desktop Paper Cut Setup */
         @media (min-width: 768px) {
-            .auth-left { width: 45%; max-width: 600px; background: white; border-radius: 0; align-items: center; z-index: 10; box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
-            .paper-cut-svg {
-                display: block; position: absolute; right: -99px; top: 0; width: 100px; height: 100%; z-index: 9;
-            }
+            .auth-left { width: 45%; max-width: 600px; border-radius: 0; align-items: center; z-index: 10; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+            .paper-cut-svg { display: block; position: absolute; right: -99px; top: 0; width: 100px; height: 100%; z-index: 9; }
             .auth-card { padding: 0 60px; max-width: 500px;}
         }
 
@@ -197,56 +195,55 @@
 </head>
 <body>
 
-    <!-- NEW AUTHENTICATION SCREEN -->
+    <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen">
         <div class="auth-container">
             <div class="auth-left">
-                
-                <!-- Desktop Layered Paper Cut SVG -->
+                <!-- Desktop Layered Paper Cut SVG (Colored via CSS vars to match theme) -->
                 <svg class="paper-cut-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
                     <defs>
                         <filter id="shadow-dark" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="8" dy="0" stdDeviation="10" flood-color="#000" flood-opacity="0.5"/>
+                            <feDropShadow dx="8" dy="0" stdDeviation="10" flood-color="#000" flood-opacity="0.15"/>
                         </filter>
                         <filter id="shadow-light" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="5" dy="0" stdDeviation="5" flood-color="#000" flood-opacity="0.3"/>
+                            <feDropShadow dx="5" dy="0" stdDeviation="5" flood-color="#000" flood-opacity="0.05"/>
                         </filter>
                     </defs>
-                    <!-- Back shadow layer -->
-                    <path d="M0,0 L40,0 C90,200 -10,400 40,650 C90,900 40,1000 40,1000 L0,1000 Z" fill="#b0bec5" filter="url(#shadow-dark)"/>
-                    <!-- Front white layer -->
-                    <path d="M0,0 L20,0 C70,200 -30,400 20,650 C70,900 20,1000 20,1000 L0,1000 Z" fill="white" filter="url(#shadow-light)"/>
+                    <path d="M0,0 L40,0 C90,200 -10,400 40,650 C90,900 40,1000 40,1000 L0,1000 Z" fill="var(--glass-border)" filter="url(#shadow-dark)"/>
+                    <path d="M0,0 L20,0 C70,200 -30,400 20,650 C70,900 20,1000 20,1000 L0,1000 Z" fill="var(--glass-bg)" filter="url(#shadow-light)"/>
                 </svg>
 
                 <div class="auth-card">
                     <h2 id="authTitle">Log in</h2>
                     
-                    <div id="loginForm">
+                    <!-- LOGIN FORM -->
+                    <div id="loginForm" class="animate-in">
                         <div class="auth-input-group">
-                            <label>Email address</label>
-                            <input type="email" id="loginEmail" class="auth-input" placeholder="Enter your email">
+                            <label>Admin ID or Email</label>
+                            <input type="text" id="loginId" class="auth-input" placeholder="Enter ID or Email">
                         </div>
                         <div class="auth-input-group">
                             <label>Password</label>
                             <input type="password" id="loginPassword" class="auth-input" placeholder="Enter your password">
                         </div>
-                        <button class="auth-main-btn" onclick="loginUser()">Log in</button>
                         
-                        <div class="auth-divider"><span>or log in with</span></div>
-                        
-                        <div class="social-logins">
-                            <!-- Google Sign In -->
-                            <button class="social-btn" onclick="googleSignIn()" title="Sign in with Google">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="22px" height="22px"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571c.001-.001.002-.001.003-.002l6.19 5.238C36.971 39.205 44 34 44 24C44 22.659 43.862 21.35 43.611 20.083z"/></svg>
-                            </button>
+                        <div style="display:flex; justify-content:flex-end; margin-bottom: 15px;">
+                            <span class="auth-footer-link" style="margin-top:0;" onclick="toggleAuthMode('reset')">Forgot password?</span>
                         </div>
-                        
+
+                        <button class="auth-main-btn" onclick="loginUser()">Log in</button>
                         <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
                         
+                        <div class="auth-divider"><span>or create new workspace</span></div>
                         <span class="auth-footer-link" onclick="toggleAuthMode('signup')">Don't have an account? Sign up</span>
                     </div>
 
-                    <div id="signupForm" class="hidden">
+                    <!-- SIGNUP FORM -->
+                    <div id="signupForm" class="hidden animate-in">
+                        <div class="auth-input-group">
+                            <label>Admin ID (Username)</label>
+                            <input type="text" id="signupUsername" class="auth-input" placeholder="e.g. manager123">
+                        </div>
                         <div class="auth-input-group">
                             <label>Email address</label>
                             <input type="email" id="signupEmail" class="auth-input" placeholder="Enter your email">
@@ -256,10 +253,24 @@
                             <input type="password" id="signupPassword" class="auth-input" placeholder="Create a password">
                         </div>
                         <button class="auth-main-btn" onclick="signupUser()">Create Account</button>
-                        
                         <p id="signupError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
                         
-                        <span class="auth-footer-link" onclick="toggleAuthMode('login')">Already have an account? Log in</span>
+                        <div class="auth-divider"><span>already registered?</span></div>
+                        <span class="auth-footer-link" onclick="toggleAuthMode('login')">Log in instead</span>
+                    </div>
+
+                    <!-- RESET PASSWORD FORM -->
+                    <div id="resetForm" class="hidden animate-in">
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">Enter the recovery email address associated with your account to receive a secure password reset link.</p>
+                        <div class="auth-input-group">
+                            <label>Recovery Email address</label>
+                            <input type="email" id="resetEmail" class="auth-input" placeholder="Enter recovery email">
+                        </div>
+                        <button class="auth-main-btn" onclick="resetPassword()">Send Reset Link</button>
+                        <p id="resetError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
+                        
+                        <div class="auth-divider"><span>back to safety</span></div>
+                        <span class="auth-footer-link" onclick="toggleAuthMode('login')">Return to Log in</span>
                     </div>
                 </div>
             </div>
@@ -387,7 +398,7 @@
                 <div id="expenseLedgerContainer"></div>
             </div>
         </div>
-    </div> <!-- End Main App -->
+    </div>
 
     <!-- DETAILS MODAL (View/Edit Student) -->
     <div id="detailsModal" class="modal">
@@ -497,6 +508,7 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const globalAppId = typeof __app_id !== 'undefined' ? __app_id : 'library-saas';
         let currentUser = null;
         let unsubscribeSnapshot = null;
 
@@ -515,8 +527,8 @@
                 this.seatsData = rawData;
             },
             save: function() {
-                if (!currentUser) return;
-                db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`).set({
+                if (!currentUser || currentUser.isAnonymous) return;
+                db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).set({
                     config: appConfig, seatsData: this.seatsData, expenses: this.expenses, waitlist: this.waitlist
                 }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
             },
@@ -563,15 +575,19 @@
 
         // --- NEW AUTHENTICATION LOGIC ---
         window.toggleAuthMode = function(mode) {
-            document.getElementById('loginForm').classList.toggle('hidden', mode === 'signup');
-            document.getElementById('signupForm').classList.toggle('hidden', mode === 'login');
-            document.getElementById('authTitle').innerText = mode === 'signup' ? "Create Account" : "Log in";
+            ['loginForm', 'signupForm', 'resetForm'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById(mode + 'Form').classList.remove('hidden');
+            
+            const titles = { 'login': 'Log in', 'signup': 'Create Account', 'reset': 'Reset Password' };
+            document.getElementById('authTitle').innerText = titles[mode];
+            
             document.getElementById('authError').innerText = ''; 
             document.getElementById('signupError').innerText = ''; 
+            document.getElementById('resetError').innerText = ''; 
         }
 
         auth.onAuthStateChanged((user) => {
-            if (user) {
+            if (user && !user.isAnonymous) {
                 currentUser = user;
                 document.getElementById('authScreen').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
@@ -583,23 +599,82 @@
             }
         });
 
-        window.loginUser = () => {
-            const email = document.getElementById('loginEmail').value, pass = document.getElementById('loginPassword').value;
-            if(!email || !pass) return document.getElementById('authError').innerText = "Please enter email and password.";
-            auth.signInWithEmailAndPassword(email, pass).catch(e => document.getElementById('authError').innerText = e.message.replace('Firebase:', '').trim());
+        // Safe Username to Email Resolution
+        async function getEmailFromUsername(username) {
+            if(!auth.currentUser) await auth.signInAnonymously();
+            const mapRef = db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`);
+            const snap = await mapRef.get();
+            if(snap.exists) return snap.data().email;
+            return null;
+        }
+
+        window.loginUser = async () => {
+            const idInput = document.getElementById('loginId').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+            const errEl = document.getElementById('authError');
+            
+            if(!idInput || !pass) return errEl.innerText = "Please enter ID/Email and password.";
+            errEl.innerText = "Logging in...";
+            
+            let emailToUse = idInput;
+            try {
+                if (!idInput.includes('@')) {
+                    const resolvedEmail = await getEmailFromUsername(idInput);
+                    if (resolvedEmail) emailToUse = resolvedEmail;
+                    else throw new Error("Admin ID not found.");
+                }
+                
+                // If we used signInAnonymously above to read public map, sign out before actual login
+                if (auth.currentUser && auth.currentUser.isAnonymous) {
+                    await auth.signOut();
+                }
+                
+                await auth.signInWithEmailAndPassword(emailToUse, pass);
+            } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
         
-        window.signupUser = () => {
-            const email = document.getElementById('signupEmail').value, pass = document.getElementById('signupPassword').value;
-            if(!email || !pass) return document.getElementById('signupError').innerText = "Please enter email and password.";
-            auth.createUserWithEmailAndPassword(email, pass).then(() => window.toast("Account created!")).catch(e => document.getElementById('signupError').innerText = e.message.replace('Firebase:', '').trim());
+        window.signupUser = async () => {
+            const username = document.getElementById('signupUsername').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const pass = document.getElementById('signupPassword').value;
+            const errEl = document.getElementById('signupError');
+            
+            if(!username || !email || !pass) return errEl.innerText = "Please fill all fields.";
+            if(username.includes('@')) return errEl.innerText = "Admin ID cannot contain '@'.";
+            
+            errEl.innerText = "Creating workspace...";
+            try {
+                // Check if username taken safely via anonymous auth
+                if(!auth.currentUser) await auth.signInAnonymously();
+                const existing = await getEmailFromUsername(username);
+                if(existing) throw new Error("This Admin ID is already taken.");
+                
+                // Proceed with signup
+                if (auth.currentUser && auth.currentUser.isAnonymous) {
+                    await auth.signOut();
+                }
+                const cred = await auth.createUserWithEmailAndPassword(email, pass);
+                
+                // Map the username publically so they can log in via username later
+                await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`).set({
+                    email: email, uid: cred.user.uid
+                });
+                
+                window.toast("Workspace Created!");
+            } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
 
-        // Added Google Sign In
-        window.googleSignIn = () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).catch((error) => {
-                document.getElementById('authError').innerText = error.message.replace('Firebase:', '').trim();
+        window.resetPassword = () => {
+            const email = document.getElementById('resetEmail').value.trim();
+            const errEl = document.getElementById('resetError');
+            if(!email) return errEl.innerText = "Please enter your recovery email.";
+            auth.sendPasswordResetEmail(email).then(() => {
+                errEl.style.color = "var(--green)";
+                errEl.innerText = "Reset link sent to your email!";
+                setTimeout(() => window.toggleAuthMode('login'), 3000);
+            }).catch(e => {
+                errEl.style.color = "var(--red)";
+                errEl.innerText = e.message.replace('Firebase:', '').trim();
             });
         };
 
@@ -607,7 +682,8 @@
 
         // --- CLOUD SYNC ---
         function loadDataFromCloud() {
-            const docRef = db.doc(`artifacts/library-saas/users/${currentUser.uid}/libraryData/main`);
+            if(!currentUser || currentUser.isAnonymous) return;
+            const docRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`);
             unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
                 window.initializeAppStructure(); 
                 if (docSnap.exists) {
