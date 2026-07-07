@@ -167,6 +167,11 @@
         @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
         @keyframes pulse-yellow { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
 
+        /* Center and constrain form tabs on desktop screens */
+        @media (min-width: 768px) {
+            #addSeatTab, #waitlistTab, #financeTab { max-width: 750px; margin: 0 auto; }
+        }
+
         /* Finance & Lists UI */
         .finance-card { background: var(--glass-input-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
         .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:10px; }
