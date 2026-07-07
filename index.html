@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LibSync Pro - Library SaaS</title>
+    
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Driver.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <!-- Driver.js Script -->
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+
     <style>
         :root {
             --bg-grad: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
@@ -44,7 +52,12 @@
 
         body { font-family: 'Poppins', sans-serif; background: var(--bg-grad); background-attachment: fixed; color: var(--text-main); margin: 0; padding: 10px 10px 60px 10px; transition: background 0.4s ease, color 0.4s ease; min-height: 100vh; }
         
-        /* --- NEW AUTHENTICATION UI STYLES --- */
+        /* --- DESKTOP CENTERING --- */
+        @media (min-width: 768px) {
+            #addSeatTab, #waitlistTab, #financeTab { max-width: 750px; margin: 0 auto; }
+        }
+
+        /* --- AUTHENTICATION UI STYLES --- */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -59,10 +72,7 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* Desktop Layout (Split screen with paper cut) */
-        .auth-container {
-            width: 100%; height: 100%; display: flex; position: relative; overflow: hidden;
-        }
+        .auth-container { width: 100%; height: 100%; display: flex; position: relative; overflow: hidden; }
         .auth-left {
             width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
             background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -70,10 +80,7 @@
         }
         .paper-cut-svg { display: none; }
 
-        .auth-card {
-            width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; text-align: center;
-        }
-
+        .auth-card { width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; text-align: center; }
         .auth-card h2 { color: var(--auth-text); font-weight: 700; font-size: 28px; margin-bottom: 30px; letter-spacing: -0.5px; }
         
         .auth-input-group { text-align: left; margin-bottom: 20px; }
@@ -93,33 +100,23 @@
         .auth-main-btn:hover { background: var(--auth-btn-hover); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); }
         .auth-main-btn:active { transform: translateY(0); }
 
-        .auth-divider {
-            display: flex; align-items: center; text-align: center; margin: 25px 0; color: var(--text-muted); font-size: 11px;
-        }
-        .auth-divider::before, .auth-divider::after {
-            content: ''; flex: 1; border-bottom: 1px solid var(--glass-border);
-        }
+        .auth-divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: var(--text-muted); font-size: 11px; }
+        .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--glass-border); }
         .auth-divider span { padding: 0 10px; }
 
         .auth-footer-link { font-size: 12px; color: var(--text-muted); margin-top: 20px; display: block; cursor: pointer; font-weight:500; transition: color 0.2s; }
         .auth-footer-link:hover { color: var(--auth-btn-bg); }
 
-        /* Mobile Glassmorphism Tweaks */
         @media (max-width: 767px) {
-            .auth-left {
-                border: 1px solid var(--glass-border); border-radius: 30px; width: 90%; height: auto; 
-                padding: 20px 0; margin: auto; box-shadow: var(--glass-shadow);
-            }
+            .auth-left { border: 1px solid var(--glass-border); border-radius: 30px; width: 90%; height: auto; padding: 20px 0; margin: auto; box-shadow: var(--glass-shadow); }
         }
-
-        /* Desktop Paper Cut Setup */
         @media (min-width: 768px) {
             .auth-left { width: 45%; max-width: 600px; border-radius: 0; align-items: center; z-index: 10; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
             .paper-cut-svg { display: block; position: absolute; right: -99px; top: 0; width: 100px; height: 100%; z-index: 9; }
             .auth-card { padding: 0 60px; max-width: 500px;}
         }
 
-        /* --- EXISTING STYLES --- */
+        /* --- EXISTING MAIN APP STYLES --- */
         @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .animate-in { animation: fadeSlideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
@@ -167,11 +164,6 @@
         @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
         @keyframes pulse-yellow { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
 
-        /* Center and constrain form tabs on desktop screens */
-        @media (min-width: 768px) {
-            #addSeatTab, #waitlistTab, #financeTab { max-width: 750px; margin: 0 auto; }
-        }
-
         /* Finance & Lists UI */
         .finance-card { background: var(--glass-input-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
         .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:10px; }
@@ -192,6 +184,37 @@
         .toast.show { opacity: 1; transform: translateY(0); }
         .hidden { display: none !important; }
         .flex-row { display: flex; gap: 10px; }
+
+        /* --- DRIVER.JS CUSTOM GLASSMORPHISM THEME --- */
+        .driver-popover {
+            background: rgba(30, 41, 59, 0.95) !important;
+            backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        }
+        .driver-popover-title {
+            font-size: 18px !important;
+            color: #38bdf8 !important; /* Tailwind Light Blue */
+            font-weight: 700 !important;
+            margin-bottom: 8px !important;
+        }
+        .driver-popover-description {
+            color: #cbd5e1 !important; /* Tailwind Slate 300 */
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+        }
+        .driver-popover-navigation-btns button {
+            background: #3b82f6 !important; /* Tailwind Blue */
+            color: white !important;
+            border: none !important;
+            text-shadow: none !important;
+            border-radius: 6px !important;
+            padding: 6px 12px !important;
+        }
+        .driver-popover-navigation-btns button:hover { background: #2563eb !important; }
+        .driver-popover-close-btn { color: #94a3b8 !important; }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -266,10 +289,10 @@
 
                     <!-- RESET PASSWORD FORM -->
                     <div id="resetForm" class="hidden animate-in">
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">Enter the email address associated with your account to receive a secure password reset link.</p>
+                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">Enter the recovery email address associated with your account to receive a secure password reset link.</p>
                         <div class="auth-input-group">
-                            <label>Email address</label>
-                            <input type="email" id="resetEmail" class="auth-input" placeholder="Enter your email">
+                            <label>Recovery Email address</label>
+                            <input type="email" id="resetEmail" class="auth-input" placeholder="Enter recovery email">
                         </div>
                         <button class="auth-main-btn" onclick="resetPassword()">Send Reset Link</button>
                         <p id="resetError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
@@ -288,7 +311,7 @@
             <h2 id="appTitle">LibSync Pro</h2>
             <div class="utility-bar">
                 <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-                <button class="icon-btn" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
                 <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
@@ -307,12 +330,13 @@
             <button class="tab-btn" id="tabFinBtn" onclick="switchTab('fin')">💰 Finance</button>
         </div>
 
-        <!-- TAB 1: SEATS MAP -->
+        <!-- TAB 1: SEATS MATRIX -->
         <div id="seatMapTab" class="animate-in">
             <div class="glass-panel" style="padding:12px;">
-                <div style="display:flex; gap:8px; margin-bottom:8px;">
-                    <input type="text" id="searchExam" class="search-box" style="margin-bottom:0; flex:1; padding:10px;" placeholder="Search Exam..." oninput="applyFilters()">
-                    <select id="filterShift" class="search-box" style="margin-bottom:0; flex:1; padding:10px; width:auto;" onchange="applyFilters()">
+                <div class="flex-row" style="margin-bottom:8px;">
+                    <input type="text" id="searchExam" class="search-box" style="margin-bottom:0; padding:10px; flex: 1;" placeholder="Search Exam..." oninput="applyFilters()">
+                    <!-- Shift Wise Seat Allotment Filter -->
+                    <select id="shiftFilter" class="search-box" style="margin-bottom:0; padding:10px; flex: 1;" onchange="applyFilters()">
                         <option value="all">All Shifts</option>
                     </select>
                 </div>
@@ -506,7 +530,7 @@
     <div id="toast-container"></div>
 
     <script>
-        // --- STREAMING_CHUNK: Initializing state and security rules architecture... ---
+        // --- FIREBASE SETUP ---
         const firebaseConfig = {
             apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4",
             authDomain: "librarymgt-2026.firebaseapp.com",
@@ -537,7 +561,7 @@
                 this.seatsData = rawData;
             },
             save: function() {
-                if (!currentUser || currentUser.isAnonymous) return;
+                if (!currentUser) return;
                 db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).set({
                     config: appConfig, seatsData: this.seatsData, expenses: this.expenses, waitlist: this.waitlist
                 }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
@@ -583,12 +607,12 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        // --- STREAMING_CHUNK: Designing hybrid Admin ID & Local Lookup mechanism... ---
+        // --- HYBRID AUTHENTICATION LOGIC (Device Linked Admin ID) ---
         window.toggleAuthMode = function(mode) {
             ['loginForm', 'signupForm', 'resetForm'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(mode + 'Form').classList.remove('hidden');
             
-            const titles = { 'login': 'Log in', 'signup': 'Create Account', 'reset': 'Forgot Password' };
+            const titles = { 'login': 'Log in', 'signup': 'Create Account', 'reset': 'Reset Password' };
             document.getElementById('authTitle').innerText = titles[mode];
             
             document.getElementById('authError').innerText = ''; 
@@ -597,26 +621,19 @@
         }
 
         auth.onAuthStateChanged((user) => {
-            if (user && !user.isAnonymous) {
+            if (user) {
                 currentUser = user;
                 document.getElementById('authScreen').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
-                loadDataFromCloud(); window.toast(`Welcome back!`);
+                loadDataFromCloud(); 
+                window.toast(`Welcome back!`);
+                setTimeout(startAppTour, 1000);
             } else {
                 currentUser = null; document.getElementById('authScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none';
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
             }
         });
-
-        // Safe hybrid user mapping helper (Prevents Firestore Security Permission Errors completely)
-        function getDeviceRememberedEmail(username) {
-            return localStorage.getItem('libsync_user_' + username.toLowerCase().trim());
-        }
-
-        function rememberUserOnDevice(username, email) {
-            localStorage.setItem('libsync_user_' + username.toLowerCase().trim(), email.trim());
-        }
 
         window.loginUser = async () => {
             const idInput = document.getElementById('loginId').value.trim();
@@ -627,20 +644,20 @@
             errEl.innerText = "Logging in...";
             
             let emailToUse = idInput;
-            if (!idInput.includes('@')) {
-                const remembered = getDeviceRememberedEmail(idInput);
-                if (remembered) {
-                    emailToUse = remembered;
-                } else {
-                    return errEl.innerText = "First time on this device? Please log in using your registered Email address once to link your Admin ID.";
-                }
-            }
-            
             try {
+                // Device-Remembered Logic: Resolve Username from localStorage
+                if (!idInput.includes('@')) {
+                    const resolvedEmail = localStorage.getItem('lib_admin_' + idInput.toLowerCase());
+                    if (resolvedEmail) {
+                        emailToUse = resolvedEmail;
+                    } else {
+                        throw new Error("Admin ID not recognized on this device. Please log in with your email once to link this device.");
+                    }
+                }
+                
                 await auth.signInWithEmailAndPassword(emailToUse, pass);
-            } catch(e) { 
-                errEl.innerText = e.message.replace('Firebase:', '').trim(); 
-            }
+                // On successful email login, if they used an email, map it to a quick ID if they want (handled on signup mostly).
+            } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
         
         window.signupUser = async () => {
@@ -654,29 +671,17 @@
             
             errEl.innerText = "Creating workspace...";
             try {
-                const cred = await auth.createUserWithEmailAndPassword(email, pass);
-                
-                // Link the mapping locally so the admin can log in seamlessly with username
-                rememberUserOnDevice(username, email);
-                
-                // Save profile details to private folder (which has write permissions)
-                await db.doc(`artifacts/${globalAppId}/users/${cred.user.uid}/libraryData/main`).set({
-                    config: { ...appConfig, adminId: username },
-                    seatsData: {},
-                    expenses: [],
-                    waitlist: []
-                }, { merge: true });
-
-                window.toast("Workspace Created!");
-            } catch(e) { 
-                errEl.innerText = e.message.replace('Firebase:', '').trim(); 
-            }
+                await auth.createUserWithEmailAndPassword(email, pass);
+                // Save the link safely on the device memory to bypass Firestore permission errors entirely
+                localStorage.setItem('lib_admin_' + username.toLowerCase(), email);
+                window.toast("Workspace Created! Device Linked.");
+            } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
 
         window.resetPassword = () => {
             const email = document.getElementById('resetEmail').value.trim();
             const errEl = document.getElementById('resetError');
-            if(!email) return errEl.innerText = "Please enter your email.";
+            if(!email) return errEl.innerText = "Please enter your recovery email.";
             auth.sendPasswordResetEmail(email).then(() => {
                 errEl.style.color = "var(--green)";
                 errEl.innerText = "Reset link sent to your email!";
@@ -691,19 +696,13 @@
 
         // --- CLOUD SYNC ---
         function loadDataFromCloud() {
-            if(!currentUser || currentUser.isAnonymous) return;
+            if(!currentUser) return;
             const docRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`);
             unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
                 window.initializeAppStructure(); 
                 if (docSnap.exists) {
                     const d = docSnap.data();
-                    if (d.config) {
-                        appConfig = d.config;
-                        // Always guarantee mapping is synced to device memory when profile loaded
-                        if (d.config.adminId && currentUser.email) {
-                            rememberUserOnDevice(d.config.adminId, currentUser.email);
-                        }
-                    }
+                    if (d.config) appConfig = d.config;
                     if (d.seatsData) DB.seatsData = d.seatsData;
                     DB.expenses = d.expenses || [];
                     DB.waitlist = d.waitlist || [];
@@ -717,6 +716,30 @@
                 window.renderWaitlist();
                 window.calculateFinances();
             }, (error) => { window.toast("Sync error"); });
+        }
+
+        // --- INTERACTIVE APP TOUR (Driver.js) ---
+        function startAppTour() {
+            if (localStorage.getItem('hasSeenLibSyncTour') === 'true') return;
+
+            const driverObj = window.driver.js.driver;
+            const tour = driverObj({
+                showProgress: true,
+                animate: true,
+                steps: [
+                    { popover: { title: 'Welcome to LibSync Pro! 👋', description: 'Let us take a quick 30-second tour to show you how to automate your library management.', align: 'center' } },
+                    { element: '#settingsTab', popover: { title: '1. Initial Setup', description: 'Start here. Enter your Library Name, total number of seats, and define your shifts.', side: "bottom", align: 'start' } },
+                    { element: '#seatMapTab', popover: { title: '2. The Seat Matrix', description: 'Your command center. Use the shift dropdown here to see exactly which seats are vacant or occupied in real-time.', side: "bottom", align: 'start' } },
+                    { element: '#tabAddBtn', popover: { title: '3. Allot Seats', description: 'When a new student joins, use this tab. Select a seat, assign a shift, and their data is saved instantly.', side: "bottom", align: 'start' } },
+                    { element: '#tabWaitBtn', popover: { title: '4. Smart Waitlist', description: 'Is a shift completely full? Add students to the waitlist here so you never lose a potential admission.', side: "bottom", align: 'start' } },
+                    { element: '#tabFinBtn', popover: { title: '5. Financial Hub', description: 'View all your financial aspects in one place. Track fee collections, monitor pending dues, and view monthly revenue.', side: "bottom", align: 'start' } }
+                ],
+                onDestroyStarted: () => {
+                    localStorage.setItem('hasSeenLibSyncTour', 'true');
+                    tour.destroy();
+                }
+            });
+            tour.drive();
         }
 
         // --- NAVIGATION ---
@@ -741,19 +764,17 @@
                     const match = seat.match(/^(\d+)[A-Za-z]+$/); return match && parseInt(match[1]) === i;
                 }));
             }
-            const shiftSelect = document.getElementById('shift');
-            const waitShift = document.getElementById('waitShift');
-            const filterShift = document.getElementById('filterShift');
-            if(shiftSelect && waitShift) {
-                shiftSelect.innerHTML = ''; waitShift.innerHTML = '';
-                if(filterShift) filterShift.innerHTML = '<option value="all">All Shifts</option>';
-                appConfig.shifts.forEach(s => {
-                    shiftSelect.innerHTML += `<option value="${s}">${s}</option>`;
-                    waitShift.innerHTML += `<option value="${s}">${s}</option>`;
-                    if(filterShift) filterShift.innerHTML += `<option value="${s}">${s}</option>`;
-                });
-                shiftSelect.innerHTML += `<option value="Custom">Custom Shift...</option>`;
-            }
+            
+            // Populate Shift Dropdowns
+            const shiftSelects = ['shift', 'waitShift', 'shiftFilter'];
+            shiftSelects.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.innerHTML = id === 'shiftFilter' ? '<option value="all">All Shifts</option>' : '';
+                    appConfig.shifts.forEach(s => { el.innerHTML += `<option value="${s}">${s}</option>`; });
+                    if(id === 'shift') el.innerHTML += `<option value="Custom">Custom Shift...</option>`;
+                }
+            });
         }
 
         // --- DASHBOARD & SEATS MATRIX ---
@@ -798,33 +819,21 @@
             const container = document.getElementById('seatsContainer'); if(!container) return;
             container.innerHTML = ''; updateDashboard();
             const examQuery = document.getElementById('searchExam').value.toLowerCase();
-            const shiftFilter = document.getElementById('filterShift') ? document.getElementById('filterShift').value : 'all';
+            const selectedShift = document.getElementById('shiftFilter').value;
 
             for (let seatId of window.seatLayout) {
-                const occupants = DB.getOccupants(seatId);
-                let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
+                const allOccupants = DB.getOccupants(seatId);
                 
-                let isAvailableForTargetShift = true;
-                let activeOccupantsForShift = [];
-
-                if (shiftFilter !== 'all') {
-                    occupants.forEach(s => {
-                        let conflict = false;
-                        if (s.shift === shiftFilter) conflict = true;
-                        else if (s.shift.toLowerCase().includes("full") || shiftFilter.toLowerCase().includes("full")) conflict = true;
-                        
-                        if (conflict) {
-                            isAvailableForTargetShift = false;
-                            activeOccupantsForShift.push(s);
-                        }
-                    });
-                } else {
-                    activeOccupantsForShift = occupants;
+                // Shift Wise Filter Application
+                let occupants = allOccupants;
+                if (selectedShift !== 'all') {
+                    // Filter occupants who belong to the exact selected shift or a "Full Day" encompassing shift
+                    occupants = allOccupants.filter(o => o.shift === selectedShift || o.shift.toLowerCase().includes('full day'));
                 }
 
-                let relevantOccupants = shiftFilter !== 'all' ? activeOccupantsForShift : occupants;
-
-                relevantOccupants.forEach(s => {
+                let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
+                
+                occupants.forEach(s => {
                     if (s.feeStatus === 'Due') hasDue = true;
                     const expStatus = checkExpiry(s.validDate);
                     if (expStatus === 'expired') hasExpired = true;
@@ -832,52 +841,35 @@
                     if (!examQuery || (s.exam && s.exam.toLowerCase().includes(examQuery))) hasMatch = true;
                 });
 
-                if (window.currentFilter === 'free') {
-                    if (shiftFilter !== 'all' && !isAvailableForTargetShift) continue;
-                    if (shiftFilter === 'all' && occupants.length > 0) continue;
-                } else if (window.currentFilter !== 'all') {
-                    if (window.currentFilter === 'due' && !hasDue) continue;
-                    if (window.currentFilter === 'warn' && !hasWarn) continue;
-                    if (window.currentFilter === 'expired' && !hasExpired) continue;
-                }
-                
-                if (relevantOccupants.length > 0 && examQuery && !hasMatch) continue;
+                if (window.currentFilter === 'free' && occupants.length > 0) continue;
+                if (window.currentFilter === 'due' && !hasDue) continue;
+                if (window.currentFilter === 'warn' && !hasWarn) continue;
+                if (window.currentFilter === 'expired' && !hasExpired) continue;
+                if (occupants.length > 0 && examQuery && !hasMatch) continue;
 
                 const div = document.createElement('div');
-                
-                if (shiftFilter !== 'all') {
-                    if (isAvailableForTargetShift) {
-                         if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
-                         div.className = `seat free`; 
-                         div.innerHTML = `<div class="seat-number">${seatId}</div><div class="seat-name" style="color:var(--green)">Available</div>`;
-                         div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; document.getElementById('shift').value = shiftFilter; };
-                    } else {
-                         let alertClass = 'allotted';
-                         if (hasExpired) alertClass = 'expired-alert';
-                         else if (hasWarn) alertClass = 'warn-alert';
-                         else if (hasDue) alertClass = 'due-alert';
-                         
-                         div.className = `seat ${alertClass}`;
-                         div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                         activeOccupantsForShift.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]}</div>`; });
-                         div.onclick = () => window.handleSeatClick(seatId);
-                    }
+                if (occupants.length > 0) {
+                    let alertClass = 'allotted';
+                    if (hasExpired) alertClass = 'expired-alert';
+                    else if (hasWarn) alertClass = 'warn-alert';
+                    else if (hasDue) alertClass = 'due-alert';
+                    
+                    div.className = `seat ${alertClass}`;
+                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
+                    
+                    // Always show full details on click
+                    div.onclick = () => window.handleSeatClick(seatId);
                 } else {
-                    if (occupants.length > 0) {
-                        let alertClass = 'allotted';
-                        if (hasExpired) alertClass = 'expired-alert';
-                        else if (hasWarn) alertClass = 'warn-alert';
-                        else if (hasDue) alertClass = 'due-alert';
-                        
-                        div.className = `seat ${alertClass}`;
-                        div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                        occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
-                        div.onclick = () => window.handleSeatClick(seatId);
-                    } else {
-                        if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
-                        div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                        div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; };
-                    }
+                    if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
+                    div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    
+                    // Click empty seat: Auto-fill shift in Admission tab!
+                    div.onclick = () => { 
+                        window.switchTab('add'); 
+                        document.getElementById('seatNo').value = seatId; 
+                        if (selectedShift !== 'all') document.getElementById('shift').value = selectedShift;
+                    };
                 }
                 container.appendChild(div);
             }
@@ -1138,7 +1130,7 @@
                 try {
                     const obj = JSON.parse(reader.result);
                     if(obj.config) { appConfig = obj.config; DB.seatsData = obj.seatsData || {}; DB.expenses = obj.expenses || []; DB.waitlist = obj.waitlist || []; } 
-                    else { DB.seatsData = obj; } // legacy
+                    else { DB.seatsData = obj; }
                     DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName;
                     window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); window.closeModal(); window.toast("📤 Data Restored to Cloud!"); 
                 } catch(e) { window.toast("⚠️ Error reading backup"); }
