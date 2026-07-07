@@ -305,7 +305,12 @@
         <!-- TAB 1: SEATS MAP -->
         <div id="seatMapTab" class="animate-in">
             <div class="glass-panel" style="padding:12px;">
-                <input type="text" id="searchExam" class="search-box" style="margin-bottom:8px; padding:10px;" placeholder="Search Exam..." oninput="applyFilters()">
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                    <input type="text" id="searchExam" class="search-box" style="margin-bottom:0; flex:1; padding:10px;" placeholder="Search Exam..." oninput="applyFilters()">
+                    <select id="filterShift" class="search-box" style="margin-bottom:0; flex:1; padding:10px; width:auto;" onchange="applyFilters()">
+                        <option value="all">All Shifts</option>
+                    </select>
+                </div>
                 <div class="filter-btn-group">
                     <button class="filter-btn active" id="fltAll" onclick="setFilter('all')">All</button>
                     <button class="filter-btn" id="fltFree" onclick="setFilter('free')">Empty</button>
@@ -733,11 +738,14 @@
             }
             const shiftSelect = document.getElementById('shift');
             const waitShift = document.getElementById('waitShift');
+            const filterShift = document.getElementById('filterShift');
             if(shiftSelect && waitShift) {
                 shiftSelect.innerHTML = ''; waitShift.innerHTML = '';
+                if(filterShift) filterShift.innerHTML = '<option value="all">All Shifts</option>';
                 appConfig.shifts.forEach(s => {
                     shiftSelect.innerHTML += `<option value="${s}">${s}</option>`;
                     waitShift.innerHTML += `<option value="${s}">${s}</option>`;
+                    if(filterShift) filterShift.innerHTML += `<option value="${s}">${s}</option>`;
                 });
                 shiftSelect.innerHTML += `<option value="Custom">Custom Shift...</option>`;
             }
@@ -785,12 +793,33 @@
             const container = document.getElementById('seatsContainer'); if(!container) return;
             container.innerHTML = ''; updateDashboard();
             const examQuery = document.getElementById('searchExam').value.toLowerCase();
+            const shiftFilter = document.getElementById('filterShift') ? document.getElementById('filterShift').value : 'all';
 
             for (let seatId of window.seatLayout) {
                 const occupants = DB.getOccupants(seatId);
                 let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
                 
-                occupants.forEach(s => {
+                let isAvailableForTargetShift = true;
+                let activeOccupantsForShift = [];
+
+                if (shiftFilter !== 'all') {
+                    occupants.forEach(s => {
+                        let conflict = false;
+                        if (s.shift === shiftFilter) conflict = true;
+                        else if (s.shift.toLowerCase().includes("full") || shiftFilter.toLowerCase().includes("full")) conflict = true;
+                        
+                        if (conflict) {
+                            isAvailableForTargetShift = false;
+                            activeOccupantsForShift.push(s);
+                        }
+                    });
+                } else {
+                    activeOccupantsForShift = occupants;
+                }
+
+                let relevantOccupants = shiftFilter !== 'all' ? activeOccupantsForShift : occupants;
+
+                relevantOccupants.forEach(s => {
                     if (s.feeStatus === 'Due') hasDue = true;
                     const expStatus = checkExpiry(s.validDate);
                     if (expStatus === 'expired') hasExpired = true;
@@ -798,27 +827,52 @@
                     if (!examQuery || (s.exam && s.exam.toLowerCase().includes(examQuery))) hasMatch = true;
                 });
 
-                if (window.currentFilter === 'free' && occupants.length > 0) continue;
-                if (window.currentFilter === 'due' && !hasDue) continue;
-                if (window.currentFilter === 'warn' && !hasWarn) continue;
-                if (window.currentFilter === 'expired' && !hasExpired) continue;
-                if (occupants.length > 0 && examQuery && !hasMatch) continue;
+                if (window.currentFilter === 'free') {
+                    if (shiftFilter !== 'all' && !isAvailableForTargetShift) continue;
+                    if (shiftFilter === 'all' && occupants.length > 0) continue;
+                } else if (window.currentFilter !== 'all') {
+                    if (window.currentFilter === 'due' && !hasDue) continue;
+                    if (window.currentFilter === 'warn' && !hasWarn) continue;
+                    if (window.currentFilter === 'expired' && !hasExpired) continue;
+                }
+                
+                if (relevantOccupants.length > 0 && examQuery && !hasMatch) continue;
 
                 const div = document.createElement('div');
-                if (occupants.length > 0) {
-                    let alertClass = 'allotted';
-                    if (hasExpired) alertClass = 'expired-alert';
-                    else if (hasWarn) alertClass = 'warn-alert';
-                    else if (hasDue) alertClass = 'due-alert';
-                    
-                    div.className = `seat ${alertClass}`;
-                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
-                    div.onclick = () => window.handleSeatClick(seatId);
+                
+                if (shiftFilter !== 'all') {
+                    if (isAvailableForTargetShift) {
+                         if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
+                         div.className = `seat free`; 
+                         div.innerHTML = `<div class="seat-number">${seatId}</div><div class="seat-name" style="color:var(--green)">Available</div>`;
+                         div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; document.getElementById('shift').value = shiftFilter; };
+                    } else {
+                         let alertClass = 'allotted';
+                         if (hasExpired) alertClass = 'expired-alert';
+                         else if (hasWarn) alertClass = 'warn-alert';
+                         else if (hasDue) alertClass = 'due-alert';
+                         
+                         div.className = `seat ${alertClass}`;
+                         div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                         activeOccupantsForShift.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]}</div>`; });
+                         div.onclick = () => window.handleSeatClick(seatId);
+                    }
                 } else {
-                    if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
-                    div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; };
+                    if (occupants.length > 0) {
+                        let alertClass = 'allotted';
+                        if (hasExpired) alertClass = 'expired-alert';
+                        else if (hasWarn) alertClass = 'warn-alert';
+                        else if (hasDue) alertClass = 'due-alert';
+                        
+                        div.className = `seat ${alertClass}`;
+                        div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                        occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
+                        div.onclick = () => window.handleSeatClick(seatId);
+                    } else {
+                        if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
+                        div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                        div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; };
+                    }
                 }
                 container.appendChild(div);
             }
