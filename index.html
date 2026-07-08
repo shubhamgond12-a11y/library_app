@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +55,7 @@
         
         /* --- DESKTOP CENTERING --- */
         @media (min-width: 768px) {
-            #addSeatTab, #waitlistTab, #financeTab { max-width: 750px; margin: 0 auto; }
+            #addSeatTab, #waitlistTab, #financeTab, #adminDashboard { max-width: 750px; margin: 0 auto; }
         }
 
         /* --- AUTHENTICATION UI STYLES --- */
@@ -195,23 +196,13 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
         }
         .driver-popover-title {
-            font-size: 18px !important;
-            color: #38bdf8 !important; /* Tailwind Light Blue */
-            font-weight: 700 !important;
-            margin-bottom: 8px !important;
+            font-size: 18px !important; color: #38bdf8 !important; font-weight: 700 !important; margin-bottom: 8px !important;
         }
         .driver-popover-description {
-            color: #cbd5e1 !important; /* Tailwind Slate 300 */
-            font-size: 14px !important;
-            line-height: 1.5 !important;
+            color: #cbd5e1 !important; font-size: 14px !important; line-height: 1.5 !important;
         }
         .driver-popover-navigation-btns button {
-            background: #3b82f6 !important; /* Tailwind Blue */
-            color: white !important;
-            border: none !important;
-            text-shadow: none !important;
-            border-radius: 6px !important;
-            padding: 6px 12px !important;
+            background: #3b82f6 !important; color: white !important; border: none !important; text-shadow: none !important; border-radius: 6px !important; padding: 6px 12px !important;
         }
         .driver-popover-navigation-btns button:hover { background: #2563eb !important; }
         .driver-popover-close-btn { color: #94a3b8 !important; }
@@ -230,12 +221,8 @@
                 <!-- Desktop Layered Paper Cut SVG -->
                 <svg class="paper-cut-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
                     <defs>
-                        <filter id="shadow-dark" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="8" dy="0" stdDeviation="10" flood-color="#000" flood-opacity="0.15"/>
-                        </filter>
-                        <filter id="shadow-light" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="5" dy="0" stdDeviation="5" flood-color="#000" flood-opacity="0.05"/>
-                        </filter>
+                        <filter id="shadow-dark" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="8" dy="0" stdDeviation="10" flood-color="#000" flood-opacity="0.15"/></filter>
+                        <filter id="shadow-light" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="5" dy="0" stdDeviation="5" flood-color="#000" flood-opacity="0.05"/></filter>
                     </defs>
                     <path d="M0,0 L40,0 C90,200 -10,400 40,650 C90,900 40,1000 40,1000 L0,1000 Z" fill="var(--glass-border)" filter="url(#shadow-dark)"/>
                     <path d="M0,0 L20,0 C70,200 -30,400 20,650 C70,900 20,1000 20,1000 L0,1000 Z" fill="var(--glass-bg)" filter="url(#shadow-light)"/>
@@ -305,13 +292,13 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
+    <!-- MAIN NORMAL APP -->
     <div id="mainApp" style="display:none;">
         <header class="animate-in">
             <h2 id="appTitle">LibSync Pro</h2>
             <div class="utility-bar">
                 <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-                <button class="icon-btn" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
                 <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
@@ -335,10 +322,7 @@
             <div class="glass-panel" style="padding:12px;">
                 <div class="flex-row" style="margin-bottom:8px;">
                     <input type="text" id="searchExam" class="search-box" style="margin-bottom:0; padding:10px; flex: 1;" placeholder="Search Exam..." oninput="applyFilters()">
-                    <!-- Shift Wise Seat Allotment Filter -->
-                    <select id="shiftFilter" class="search-box" style="margin-bottom:0; padding:10px; flex: 1;" onchange="applyFilters()">
-                        <option value="all">All Shifts</option>
-                    </select>
+                    <select id="shiftFilter" class="search-box" style="margin-bottom:0; padding:10px; flex: 1;" onchange="applyFilters()"><option value="all">All Shifts</option></select>
                 </div>
                 <div class="filter-btn-group">
                     <button class="filter-btn active" id="fltAll" onclick="setFilter('all')">All</button>
@@ -384,11 +368,7 @@
                     <div style="flex:2"><input type="tel" id="waitPhone" placeholder="Phone"></div>
                 </div>
                 <div class="flex-row" style="margin-top:10px;">
-                    <div style="flex:2">
-                        <select id="waitShift">
-                            <!-- Populated from config -->
-                        </select>
-                    </div>
+                    <div style="flex:2"><select id="waitShift"></select></div>
                     <button class="action-btn" style="margin-top:0; flex:1;" onclick="addWaitlist()">Add</button>
                 </div>
             </div>
@@ -432,16 +412,42 @@
                 <div id="expenseLedgerContainer"></div>
             </div>
         </div>
+    </div> <!-- End Main App -->
+
+    <!-- --- SUPER ADMIN DASHBOARD --- -->
+    <div id="adminDashboard" style="display:none;" class="animate-in">
+        <header>
+            <h2 style="color:var(--primary);">🛡️ Super Admin Console</h2>
+            <div class="utility-bar">
+                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
+                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
+            </div>
+        </header>
+
+        <div class="dashboard glass-panel" style="grid-template-columns: 1fr;">
+            <div class="stat-card" style="padding:20px;">
+                <span style="font-size:14px; color:var(--text-muted);">Total Active Workspaces</span>
+                <span class="num" id="adminTotalWorkspaces" style="color:var(--primary); font-size:32px;">0</span>
+            </div>
+        </div>
+
+        <div class="glass-panel" style="padding:15px; margin-bottom:15px;">
+            <h3 style="margin-top:0; color:var(--text-main);">All Registered Users</h3>
+            <input type="text" id="adminSearch" class="search-box" placeholder="Search by ID or Email..." oninput="filterAdminList()">
+            <div id="adminUserList" style="margin-top:10px; display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto;">
+                <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:12px;">Loading workspaces...</div>
+            </div>
+        </div>
     </div>
 
-    <!-- DETAILS MODAL (View/Edit Student) -->
+    <!-- DETAILS MODALS -->
     <div id="detailsModal" class="modal">
+        <!-- Student View Section -->
         <div class="modal-content hidden" id="modalViewSection">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); padding-bottom:10px; margin-bottom:10px;">
                 <h3 style="margin:0; color:var(--primary); font-weight:700;">Seat <span id="modSeatTitle"></span> Profile</h3>
                 <button class="icon-btn" onclick="showEditForm()" style="width:30px; height:30px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
             </div>
-            
             <div class="info-row"><span class="info-label">Name</span> <span class="info-value" id="modName"></span></div>
             <div class="info-row"><span class="info-label">Phone</span> <span class="info-value" id="modPhone"></span></div>
             <div class="info-row"><span class="info-label">Shift</span> <span class="info-value" id="modShift"></span></div>
@@ -525,6 +531,15 @@
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Close</button>
             </div>
         </div>
+
+        <!-- SUPER ADMIN: VIEW WORKSPACE MODAL -->
+        <div class="modal-content hidden" id="modalAdminWorkspaceView">
+            <h3 style="margin-top:0; color:var(--primary);">Workspace Overview</h3>
+            <div id="adminWorkspaceData">
+                <div style="text-align:center; padding:20px; color:var(--text-muted);">Fetching live data...</div>
+            </div>
+            <button class="action-btn" style="background:var(--text-muted); margin-top:15px;" onclick="closeModal()">Close Details</button>
+        </div>
     </div>
 
     <div id="toast-container"></div>
@@ -543,6 +558,10 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
         const globalAppId = typeof __app_id !== 'undefined' ? __app_id : 'library-saas';
+        
+        // SUPER ADMIN CONSTANT
+        const SUPER_ADMIN_UID = 'cwBkWqFBuHeqpLyNBKdQSeF1iu83';
+
         let currentUser = null;
         let unsubscribeSnapshot = null;
 
@@ -561,7 +580,7 @@
                 this.seatsData = rawData;
             },
             save: function() {
-                if (!currentUser) return;
+                if (!currentUser || currentUser.uid === SUPER_ADMIN_UID) return; // Admins shouldn't overwrite user configs
                 db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).set({
                     config: appConfig, seatsData: this.seatsData, expenses: this.expenses, waitlist: this.waitlist
                 }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
@@ -607,7 +626,7 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        // --- HYBRID AUTHENTICATION LOGIC (Device Linked Admin ID) ---
+        // --- HYBRID AUTHENTICATION LOGIC ---
         window.toggleAuthMode = function(mode) {
             ['loginForm', 'signupForm', 'resetForm'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(mode + 'Form').classList.remove('hidden');
@@ -624,13 +643,25 @@
             if (user) {
                 currentUser = user;
                 document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('mainApp').style.display = 'block';
-                document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
-                loadDataFromCloud(); 
-                window.toast(`Welcome back!`);
-                setTimeout(startAppTour, 1000);
+
+                if (user.uid === SUPER_ADMIN_UID) {
+                    // SUPER ADMIN ROUTING
+                    document.getElementById('mainApp').style.display = 'none';
+                    document.getElementById('adminDashboard').style.display = 'block';
+                    window.toast(`Welcome Super Admin!`);
+                    loadAdminData();
+                } else {
+                    // NORMAL USER ROUTING
+                    document.getElementById('adminDashboard').style.display = 'none';
+                    document.getElementById('mainApp').style.display = 'block';
+                    document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
+                    loadDataFromCloud(); 
+                    window.toast(`Welcome back!`);
+                    setTimeout(startAppTour, 1000);
+                }
             } else {
-                currentUser = null; document.getElementById('authScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none';
+                currentUser = null; document.getElementById('authScreen').style.display = 'flex'; 
+                document.getElementById('mainApp').style.display = 'none'; document.getElementById('adminDashboard').style.display = 'none';
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
             }
         });
@@ -645,7 +676,6 @@
             
             let emailToUse = idInput;
             try {
-                // Device-Remembered Logic: Resolve Username from localStorage
                 if (!idInput.includes('@')) {
                     const resolvedEmail = localStorage.getItem('lib_admin_' + idInput.toLowerCase());
                     if (resolvedEmail) {
@@ -654,9 +684,7 @@
                         throw new Error("Admin ID not recognized on this device. Please log in with your email once to link this device.");
                     }
                 }
-                
                 await auth.signInWithEmailAndPassword(emailToUse, pass);
-                // On successful email login, if they used an email, map it to a quick ID if they want (handled on signup mostly).
             } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
         
@@ -671,9 +699,14 @@
             
             errEl.innerText = "Creating workspace...";
             try {
-                await auth.createUserWithEmailAndPassword(email, pass);
-                // Save the link safely on the device memory to bypass Firestore permission errors entirely
+                const cred = await auth.createUserWithEmailAndPassword(email, pass);
                 localStorage.setItem('lib_admin_' + username.toLowerCase(), email);
+                
+                // Save mapping for admin to see
+                await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`).set({
+                    email: email, uid: cred.user.uid, createdAt: new Date().toISOString(), username: username
+                });
+                
                 window.toast("Workspace Created! Device Linked.");
             } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
@@ -686,17 +719,121 @@
                 errEl.style.color = "var(--green)";
                 errEl.innerText = "Reset link sent to your email!";
                 setTimeout(() => window.toggleAuthMode('login'), 3000);
-            }).catch(e => {
-                errEl.style.color = "var(--red)";
-                errEl.innerText = e.message.replace('Firebase:', '').trim();
-            });
+            }).catch(e => { errEl.style.color = "var(--red)"; errEl.innerText = e.message.replace('Firebase:', '').trim(); });
         };
 
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
 
-        // --- CLOUD SYNC ---
+        // --- SUPER ADMIN LOGIC ---
+        let allRegisteredUsers = [];
+
+        async function loadAdminData() {
+            try {
+                // Because Admin has super rules, we can fetch all mappings
+                const mapRef = db.collection(`artifacts/${globalAppId}/public/data/usernameMap`);
+                const snapshot = await mapRef.get();
+                
+                allRegisteredUsers = [];
+                snapshot.forEach(doc => {
+                    allRegisteredUsers.push({ id: doc.id, ...doc.data() });
+                });
+                
+                document.getElementById('adminTotalWorkspaces').innerText = allRegisteredUsers.length;
+                renderAdminList(allRegisteredUsers);
+
+            } catch(e) {
+                console.error(e);
+                document.getElementById('adminUserList').innerHTML = `<div style="color:var(--red); padding:10px;">Error fetching users. Check Firestore Rules.</div>`;
+            }
+        }
+
+        function renderAdminList(users) {
+            const container = document.getElementById('adminUserList');
+            container.innerHTML = '';
+            
+            if(users.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:12px; padding:10px;">No users found.</div>`;
+                return;
+            }
+
+            users.forEach(u => {
+                container.innerHTML += `
+                    <div class="list-item" style="cursor:pointer;" onclick="openAdminWorkspaceView('${u.uid}', '${u.username}')">
+                        <div>
+                            <strong style="display:block; font-size:14px; color:var(--primary);">${u.username || 'N/A'}</strong>
+                            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${u.email}</div>
+                        </div>
+                        <span class="badge" style="background:var(--text-muted); font-size:9px;">View Data &rarr;</span>
+                    </div>`;
+            });
+        }
+
+        window.filterAdminList = function() {
+            const q = document.getElementById('adminSearch').value.toLowerCase();
+            const filtered = allRegisteredUsers.filter(u => 
+                (u.username && u.username.toLowerCase().includes(q)) || 
+                (u.email && u.email.toLowerCase().includes(q))
+            );
+            renderAdminList(filtered);
+        }
+
+        window.openAdminWorkspaceView = async function(targetUid, username) {
+            hideAllModalSections();
+            document.getElementById('detailsModal').style.display = 'flex';
+            triggerModalAnimation('modalAdminWorkspaceView');
+            
+            const dataContainer = document.getElementById('adminWorkspaceData');
+            dataContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">Fetching live data for ${username}...</div>`;
+
+            try {
+                // Super Admin has permission to read other user's private data!
+                const docRef = db.doc(`artifacts/${globalAppId}/users/${targetUid}/libraryData/main`);
+                const snap = await docRef.get();
+                
+                if (!snap.exists) {
+                    dataContainer.innerHTML = `<div style="padding:15px; text-align:center; color:var(--orange);">This user has created an account but hasn't saved any library data yet.</div>`;
+                    return;
+                }
+
+                const d = snap.data();
+                const totalSeats = d.config ? d.config.totalSeats : 0;
+                const libName = d.config ? d.config.libraryName : 'Unnamed';
+                
+                let totalIncome = 0;
+                let totalEnrolled = 0;
+                let activeWaitlist = d.waitlist ? d.waitlist.length : 0;
+
+                if (d.seatsData) {
+                    Object.values(d.seatsData).forEach(occupants => {
+                        occupants.forEach(student => {
+                            totalEnrolled++;
+                            if(student.payments) {
+                                student.payments.forEach(p => totalIncome += parseFloat(p.amount || 0));
+                            }
+                        });
+                    });
+                }
+
+                dataContainer.innerHTML = `
+                    <div style="margin-top:15px;">
+                        <div class="info-row"><span class="info-label">Library Name</span> <span class="info-value">${libName}</span></div>
+                        <div class="info-row"><span class="info-label">Configured Seats</span> <span class="info-value">${totalSeats}</span></div>
+                        <div class="info-row"><span class="info-label">Total Enrolled</span> <span class="info-value" style="color:var(--primary);">${totalEnrolled}</span></div>
+                        <div class="info-row"><span class="info-label">In Waitlist</span> <span class="info-value">${activeWaitlist}</span></div>
+                        <div class="info-row" style="border:none;"><span class="info-label">Total Historic Income</span> <span class="info-value" style="color:var(--green); font-size:16px;">₹${totalIncome}</span></div>
+                    </div>
+                `;
+
+            } catch(e) {
+                console.error(e);
+                dataContainer.innerHTML = `<div style="color:var(--red); padding:15px;">Permission denied or data missing.</div>`;
+            }
+        }
+
+
+        // --- NORMAL USER CLOUD SYNC ---
         function loadDataFromCloud() {
-            if(!currentUser) return;
+            if(!currentUser || currentUser.uid === SUPER_ADMIN_UID) return;
             const docRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`);
             unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
                 window.initializeAppStructure(); 
@@ -765,7 +902,6 @@
                 }));
             }
             
-            // Populate Shift Dropdowns
             const shiftSelects = ['shift', 'waitShift', 'shiftFilter'];
             shiftSelects.forEach(id => {
                 const el = document.getElementById(id);
@@ -823,16 +959,10 @@
 
             for (let seatId of window.seatLayout) {
                 const allOccupants = DB.getOccupants(seatId);
-                
-                // Shift Wise Filter Application
                 let occupants = allOccupants;
-                if (selectedShift !== 'all') {
-                    // Filter occupants who belong to the exact selected shift or a "Full Day" encompassing shift
-                    occupants = allOccupants.filter(o => o.shift === selectedShift || o.shift.toLowerCase().includes('full day'));
-                }
+                if (selectedShift !== 'all') occupants = allOccupants.filter(o => o.shift === selectedShift || o.shift.toLowerCase().includes('full day'));
 
                 let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
-                
                 occupants.forEach(s => {
                     if (s.feeStatus === 'Due') hasDue = true;
                     const expStatus = checkExpiry(s.validDate);
@@ -857,14 +987,10 @@
                     div.className = `seat ${alertClass}`;
                     div.innerHTML = `<div class="seat-number">${seatId}</div>`;
                     occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
-                    
-                    // Always show full details on click
                     div.onclick = () => window.handleSeatClick(seatId);
                 } else {
                     if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
                     div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    
-                    // Click empty seat: Auto-fill shift in Admission tab!
                     div.onclick = () => { 
                         window.switchTab('add'); 
                         document.getElementById('seatNo').value = seatId; 
@@ -1041,7 +1167,7 @@
             window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!');
         }
 
-        function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection'].forEach(id => { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('modal-animate'); }); }
+        function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'modalAdminWorkspaceView'].forEach(id => { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('modal-animate'); }); }
         function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
 
         window.handleSeatClick = function(seatNo) {
