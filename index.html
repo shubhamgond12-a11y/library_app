@@ -8,8 +8,9 @@
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Driver.js CSS & Script for App Tour -->
+    <!-- Driver.js CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <!-- Driver.js Script -->
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
 
     <style>
@@ -53,7 +54,7 @@
         
         /* --- DESKTOP CENTERING --- */
         @media (min-width: 768px) {
-            #addSeatTab, #waitlistTab, #financeTab, #adminApp { max-width: 750px; margin: 0 auto; }
+            #addSeatTab, #waitlistTab, #financeTab { max-width: 750px; margin: 0 auto; }
         }
 
         /* --- AUTHENTICATION UI STYLES --- */
@@ -304,13 +305,13 @@
         </div>
     </div>
 
-    <!-- MAIN USER APP -->
+    <!-- MAIN APP -->
     <div id="mainApp" style="display:none;">
         <header class="animate-in">
             <h2 id="appTitle">LibSync Pro</h2>
             <div class="utility-bar">
                 <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-                <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                <button class="icon-btn" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
                 <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
@@ -431,24 +432,9 @@
                 <div id="expenseLedgerContainer"></div>
             </div>
         </div>
-    </div> <!-- End Main App -->
-
-    <!-- ADMIN APP (ONLY SHOWN TO cwBkWqFBuHeqpLyNBKdQSeF1iu83) -->
-    <div id="adminApp" style="display:none;">
-        <header class="animate-in">
-            <h2>Admin Hub</h2>
-            <div class="utility-bar">
-                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
-            </div>
-        </header>
-        <div class="glass-panel animate-in" style="padding: 15px;">
-            <h3 style="margin-top:0; margin-bottom: 15px; color:var(--primary);">All Workspaces & Users</h3>
-            <div id="adminUsersContainer">Loading users...</div>
-        </div>
     </div>
 
-    <!-- DETAILS MODAL (View/Edit Student & Admin Functions) -->
+    <!-- DETAILS MODAL (View/Edit Student) -->
     <div id="detailsModal" class="modal">
         <div class="modal-content hidden" id="modalViewSection">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); padding-bottom:10px; margin-bottom:10px;">
@@ -539,38 +525,6 @@
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Close</button>
             </div>
         </div>
-
-        <!-- ADMIN USER MANAGE MODAL (ONLY FOR ADMIN) -->
-        <div class="modal-content hidden" id="adminUserSection">
-            <h3 style="margin-top:0; color:var(--primary);">Manage User</h3>
-            <p style="font-size:14px; font-weight:600; margin-bottom:2px;" id="adminModUsername"></p>
-            <p style="font-size:11px; color:var(--text-muted); margin-top:0; margin-bottom:15px;" id="adminModEmail"></p>
-            
-            <label>Subscription Status</label>
-            <select id="adminSubStatus" style="margin-bottom:8px;">
-                <option value="trialing">Trialing (Active)</option>
-                <option value="active">Premium (Active)</option>
-                <option value="inactive">Expired / Inactive</option>
-            </select>
-            <label>Subscription Valid Until</label>
-            <input type="date" id="adminSubValid" style="margin-bottom:15px;">
-            
-            <div class="flex-row">
-                <button class="action-btn" style="margin:0; background:var(--primary); flex:1;" onclick="saveAdminSub()">Update Status</button>
-            </div>
-
-            <h4 style="margin: 20px 0 10px 0; font-size: 13px; color:var(--primary); border-top:1px solid var(--glass-border); padding-top:15px;">Record Payment & Invoice</h4>
-            <div class="flex-row" style="margin-bottom:8px;">
-                <input type="number" id="adminTxAmount" placeholder="Amount (₹)" style="flex:1;">
-                <input type="date" id="adminTxDate" style="flex:1;">
-            </div>
-            <button class="action-btn" style="margin:0 0 15px 0; background:var(--green); padding:10px; font-size:12px;" onclick="addAdminTransaction()">Add Transaction & Generate Invoice</button>
-
-            <h4 style="margin: 15px 0 5px 0; font-size: 13px; color:var(--text-muted);">Transaction History</h4>
-            <div id="adminTxHistory" style="max-height: 120px; overflow-y:auto; border:1px solid var(--glass-border); border-radius:10px; padding:5px;"></div>
-
-            <button class="action-btn" style="background:var(--text-muted); margin-top:15px;" onclick="closeModal()">Close Panel</button>
-        </div>
     </div>
 
     <div id="toast-container"></div>
@@ -589,8 +543,6 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
         const globalAppId = typeof __app_id !== 'undefined' ? __app_id : 'library-saas';
-        const ADMIN_UID = 'cwBkWqFBuHeqpLyNBKdQSeF1iu83';
-        
         let currentUser = null;
         let unsubscribeSnapshot = null;
 
@@ -609,7 +561,7 @@
                 this.seatsData = rawData;
             },
             save: function() {
-                if (!currentUser || currentUser.uid === ADMIN_UID) return; // Admins don't save to their own library profile usually
+                if (!currentUser) return;
                 db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).set({
                     config: appConfig, seatsData: this.seatsData, expenses: this.expenses, waitlist: this.waitlist
                 }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
@@ -655,7 +607,7 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        // --- AUTHENTICATION LOGIC ---
+        // --- HYBRID AUTHENTICATION LOGIC (Device Linked Admin ID) ---
         window.toggleAuthMode = function(mode) {
             ['loginForm', 'signupForm', 'resetForm'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(mode + 'Form').classList.remove('hidden');
@@ -671,28 +623,14 @@
         auth.onAuthStateChanged((user) => {
             if (user) {
                 currentUser = user;
-                
-                // Admin Routing Logic
-                if (user.uid === ADMIN_UID) {
-                    document.getElementById('authScreen').style.display = 'none';
-                    document.getElementById('mainApp').style.display = 'none';
-                    document.getElementById('adminApp').style.display = 'block';
-                    window.loadAdminDashboard();
-                    window.toast(`Welcome to the Admin Hub!`);
-                } else {
-                    document.getElementById('authScreen').style.display = 'none';
-                    document.getElementById('adminApp').style.display = 'none';
-                    document.getElementById('mainApp').style.display = 'block';
-                    document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
-                    loadDataFromCloud(); 
-                    window.toast(`Welcome back!`);
-                    setTimeout(startAppTour, 1000);
-                }
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
+                loadDataFromCloud(); 
+                window.toast(`Welcome back!`);
+                setTimeout(startAppTour, 1000);
             } else {
-                currentUser = null; 
-                document.getElementById('authScreen').style.display = 'flex'; 
-                document.getElementById('mainApp').style.display = 'none';
-                document.getElementById('adminApp').style.display = 'none';
+                currentUser = null; document.getElementById('authScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none';
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
             }
         });
@@ -707,6 +645,7 @@
             
             let emailToUse = idInput;
             try {
+                // Device-Remembered Logic: Resolve Username from localStorage
                 if (!idInput.includes('@')) {
                     const resolvedEmail = localStorage.getItem('lib_admin_' + idInput.toLowerCase());
                     if (resolvedEmail) {
@@ -717,6 +656,7 @@
                 }
                 
                 await auth.signInWithEmailAndPassword(emailToUse, pass);
+                // On successful email login, if they used an email, map it to a quick ID if they want (handled on signup mostly).
             } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
         
@@ -731,14 +671,9 @@
             
             errEl.innerText = "Creating workspace...";
             try {
-                const cred = await auth.createUserWithEmailAndPassword(email, pass);
+                await auth.createUserWithEmailAndPassword(email, pass);
+                // Save the link safely on the device memory to bypass Firestore permission errors entirely
                 localStorage.setItem('lib_admin_' + username.toLowerCase(), email);
-                
-                // Map username for Admin visibility
-                await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`).set({
-                    email: email, uid: cred.user.uid
-                });
-                
                 window.toast("Workspace Created! Device Linked.");
             } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
@@ -759,172 +694,9 @@
 
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
 
-        // --- ADMIN DASHBOARD & INVOICE LOGIC ---
-        window.activeAdminUserId = null;
-        window.activeAdminUsername = null;
-        window.activeAdminUserEmail = null;
-
-        window.loadAdminDashboard = async function() {
-            const cont = document.getElementById('adminUsersContainer');
-            cont.innerHTML = '<div style="text-align:center; padding:20px; font-size:13px;">Fetching all users...</div>';
-            try {
-                const mapRef = db.collection(`artifacts/${globalAppId}/public/data/usernameMap`);
-                const snap = await mapRef.get();
-                let html = '';
-                
-                for(let doc of snap.docs) {
-                    const data = doc.data();
-                    if(!data.uid || data.uid === ADMIN_UID) continue;
-
-                    html += `
-                        <div class="list-item">
-                            <div>
-                                <strong style="font-size:14px;">${doc.id}</strong>
-                                <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${data.email}</div>
-                            </div>
-                            <button class="action-btn" style="margin:0; width:auto; padding:6px 14px; font-size:11px; border-radius:8px;" onclick="openAdminUser('${data.uid}', '${doc.id}', '${data.email}')">Manage Sub</button>
-                        </div>
-                    `;
-                }
-                cont.innerHTML = html || '<div style="text-align:center; font-size:13px; color:var(--text-muted);">No users found.</div>';
-            } catch(e) {
-                cont.innerHTML = '<div style="color:var(--red); text-align:center;">Error loading users. Check Security Rules.</div>';
-                console.error(e);
-            }
-        };
-
-        window.openAdminUser = async function(uid, username, email) {
-            window.activeAdminUserId = uid;
-            window.activeAdminUsername = username;
-            window.activeAdminUserEmail = email;
-            
-            hideAllModalSections();
-            document.getElementById('adminModUsername').innerText = username;
-            document.getElementById('adminModEmail').innerText = email;
-            document.getElementById('adminTxDate').value = new Date().toISOString().split('T')[0];
-            
-            const subRef = db.doc(`artifacts/${globalAppId}/users/${uid}/subscription/info`);
-            const subSnap = await subRef.get();
-            const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: '', history: [] };
-            
-            document.getElementById('adminSubStatus').value = subData.status || 'trialing';
-            document.getElementById('adminSubValid').value = subData.validUntil || '';
-            
-            renderAdminTxHistory(subData.history || []);
-            
-            triggerModalAnimation('adminUserSection');
-            document.getElementById('detailsModal').style.display = 'flex';
-        };
-
-        window.saveAdminSub = async function() {
-            const status = document.getElementById('adminSubStatus').value;
-            const validUntil = document.getElementById('adminSubValid').value;
-            const uid = window.activeAdminUserId;
-            
-            await db.doc(`artifacts/${globalAppId}/users/${uid}/subscription/info`).set({
-                status: status, validUntil: validUntil
-            }, { merge: true });
-            
-            window.toast('User Subscription Updated!');
-        };
-
-        window.addAdminTransaction = async function() {
-            const amt = document.getElementById('adminTxAmount').value;
-            const date = document.getElementById('adminTxDate').value;
-            if(!amt || !date) return window.toast('⚠️ Please enter an amount and date');
-            
-            const uid = window.activeAdminUserId;
-            const subRef = db.doc(`artifacts/${globalAppId}/users/${uid}/subscription/info`);
-            
-            const tx = { id: Date.now().toString(), amount: amt, date: date };
-            
-            const snap = await subRef.get();
-            let history = snap.exists && snap.data().history ? snap.data().history : [];
-            history.push(tx);
-            
-            await subRef.set({ history: history }, { merge: true });
-            
-            renderAdminTxHistory(history);
-            window.toast('Transaction Saved!');
-            
-            window.printInvoice(amt, date, window.activeAdminUsername, window.activeAdminUserEmail, tx.id);
-            document.getElementById('adminTxAmount').value = '';
-        };
-
-        function renderAdminTxHistory(history) {
-            const cont = document.getElementById('adminTxHistory');
-            cont.innerHTML = '';
-            if(history.length === 0) {
-                cont.innerHTML = '<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No transactions recorded.</div>';
-                return;
-            }
-            
-            [...history].reverse().forEach(tx => {
-                cont.innerHTML += `
-                    <div class="list-item" style="margin-bottom:4px; padding:10px; background:transparent;">
-                        <div>
-                            <strong style="font-size:13px; display:block;">${tx.date}</strong>
-                            <span style="font-size:9px; color:var(--text-muted);">Ref: ${tx.id}</span>
-                        </div>
-                        <div style="display:flex; gap:10px; align-items:center;">
-                            <span style="color:var(--green); font-weight:700; font-size:14px;">₹${tx.amount}</span>
-                            <button class="filter-btn" style="background:var(--primary); color:white; padding:4px 8px; font-size:10px;" onclick="printInvoice('${tx.amount}', '${tx.date}', '${window.activeAdminUsername}', '${window.activeAdminUserEmail}', '${tx.id}')">Invoice</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        window.printInvoice = function(amount, date, username, email, txId) {
-            const w = window.open('', '_blank');
-            w.document.write(`
-                <html><head><title>Invoice - ${txId}</title>
-                <style>
-                    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 40px; color: #333; }
-                    .invoice-box { max-width: 800px; margin: auto; padding: 40px; border: 1px solid #eee; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
-                    h2 { color: #2563eb; font-size: 28px; margin-bottom: 5px; }
-                    .details { margin-top: 40px; line-height: 1.8; font-size: 14px; }
-                    .total { margin-top: 30px; font-size: 22px; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px; }
-                    @media print { .invoice-box { box-shadow: none; border: none; } }
-                </style>
-                </head>
-                <body>
-                    <div class="invoice-box">
-                        <h2>LibSync Pro</h2>
-                        <p style="color:#777; margin-top:0;">SaaS Subscription Invoice</p>
-                        
-                        <div class="details">
-                            <p><strong>Billed To Workspace:</strong> ${username}</p>
-                            <p><strong>Registered Email:</strong> ${email}</p>
-                            <p><strong>Invoice Date:</strong> ${date}</p>
-                            <p><strong>Transaction Ref:</strong> ${txId}</p>
-                        </div>
-                        
-                        <table style="width:100%; margin-top:40px; border-collapse: collapse; font-size: 15px;">
-                            <tr style="background:#f8fafc; text-align:left;">
-                                <th style="padding:15px; border-bottom:1px solid #e2e8f0; border-radius: 8px 0 0 8px;">Description</th>
-                                <th style="padding:15px; border-bottom:1px solid #e2e8f0; text-align:right; border-radius: 0 8px 8px 0;">Amount</th>
-                            </tr>
-                            <tr>
-                                <td style="padding:15px; border-bottom:1px solid #f1f5f9;">LibSync Pro Premium Subscription Access</td>
-                                <td style="padding:15px; border-bottom:1px solid #f1f5f9; text-align:right;">₹${amount}</td>
-                            </tr>
-                        </table>
-                        
-                        <div class="total" style="text-align:right;">Total Paid: ₹${amount}</div>
-                        <p style="margin-top:70px; font-size:12px; color:#94a3b8; text-align:center;">Thank you for your business. This is a computer-generated invoice and requires no signature.</p>
-                    </div>
-                    <script>
-                        setTimeout(() => { window.print(); }, 500);
-                    <\/script>
-                </body></html>
-            `);
-            w.document.close();
-        }
-
-        // --- CLOUD SYNC & APP LOAD ---
+        // --- CLOUD SYNC ---
         function loadDataFromCloud() {
-            if(!currentUser || currentUser.uid === ADMIN_UID) return;
+            if(!currentUser) return;
             const docRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`);
             unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
                 window.initializeAppStructure(); 
@@ -993,6 +765,7 @@
                 }));
             }
             
+            // Populate Shift Dropdowns
             const shiftSelects = ['shift', 'waitShift', 'shiftFilter'];
             shiftSelects.forEach(id => {
                 const el = document.getElementById(id);
@@ -1051,8 +824,10 @@
             for (let seatId of window.seatLayout) {
                 const allOccupants = DB.getOccupants(seatId);
                 
+                // Shift Wise Filter Application
                 let occupants = allOccupants;
                 if (selectedShift !== 'all') {
+                    // Filter occupants who belong to the exact selected shift or a "Full Day" encompassing shift
                     occupants = allOccupants.filter(o => o.shift === selectedShift || o.shift.toLowerCase().includes('full day'));
                 }
 
@@ -1082,10 +857,14 @@
                     div.className = `seat ${alertClass}`;
                     div.innerHTML = `<div class="seat-number">${seatId}</div>`;
                     occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
+                    
+                    // Always show full details on click
                     div.onclick = () => window.handleSeatClick(seatId);
                 } else {
                     if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
                     div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    
+                    // Click empty seat: Auto-fill shift in Admission tab!
                     div.onclick = () => { 
                         window.switchTab('add'); 
                         document.getElementById('seatNo').value = seatId; 
@@ -1186,7 +965,7 @@
         window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
 
         window.calculateFinances = function() {
-            const monthStr = document.getElementById('finMonth').value; 
+            const monthStr = document.getElementById('finMonth').value; // YYYY-MM
             if(!monthStr) return;
             
             let totalIncome = 0, totalExpense = 0;
@@ -1262,12 +1041,7 @@
             window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!');
         }
 
-        function hideAllModalSections() { 
-            ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection'].forEach(id => { 
-                const el = document.getElementById(id);
-                if(el) { el.classList.add('hidden'); el.classList.remove('modal-animate'); }
-            }); 
-        }
+        function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection'].forEach(id => { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('modal-animate'); }); }
         function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
 
         window.handleSeatClick = function(seatNo) {
