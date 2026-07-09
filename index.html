@@ -593,6 +593,12 @@
     <div id="toast-container" class="no-print"></div>
 
     <script>
+        // Safe LocalStorage Wrapper (Prevents sandboxed iframe DOMException crashes)
+        const SafeStorage = {
+            get: function(k) { try { return localStorage.getItem(k); } catch(e) { return null; } },
+            set: function(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+        };
+
         // --- FIREBASE SETUP ---
         const firebaseConfig = {
             apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4",
@@ -642,13 +648,13 @@
         // --- STATE & UTILS ---
         window.seatLayout = []; window.currentFilter = 'all'; window.activeSeatNo = null; window.activeStudentId = null; window.isDeleteConfirmStep = false; 
 
-        if(localStorage.getItem('libTheme') === 'dark') document.body.classList.add('dark-theme');
+        if(SafeStorage.get('libTheme') === 'dark') document.body.classList.add('dark-theme');
         window.toast = function(message) {
             const container = document.getElementById('toast-container');
             const el = document.createElement('div'); el.className = 'toast'; el.innerText = message;
             container.appendChild(el); setTimeout(() => el.classList.add('show'), 10); setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
         }
-        window.toggleTheme = function() { document.body.classList.toggle('dark-theme'); localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
+        window.toggleTheme = function() { document.body.classList.toggle('dark-theme'); SafeStorage.set('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
 
         // --- HYBRID AUTHENTICATION LOGIC ---
         window.toggleAuthMode = function(mode) {
@@ -691,11 +697,11 @@
             let emailToUse = idInput;
             try {
                 if (!idInput.includes('@')) {
-                    const resolvedEmail = localStorage.getItem('lib_admin_' + idInput.toLowerCase());
+                    const resolvedEmail = SafeStorage.get('lib_admin_' + idInput.toLowerCase());
                     if (resolvedEmail) emailToUse = resolvedEmail; else throw new Error("Admin ID not recognized on this device. Please log in with your email once to link this device.");
                 }
                 await auth.signInWithEmailAndPassword(emailToUse, pass);
-            } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
+            } catch(e) { errEl.innerText = (e.message || String(e)).replace('Firebase:', '').trim(); }
         };
         
         window.signupUser = async () => {
@@ -704,7 +710,7 @@
             errEl.innerText = "Creating workspace...";
             try {
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
-                localStorage.setItem('lib_admin_' + username.toLowerCase(), email);
+                SafeStorage.set('lib_admin_' + username.toLowerCase(), email);
                 
                 // Save public mapping
                 await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`).set({ email: email, uid: cred.user.uid, createdAt: new Date().toISOString(), username: username });
@@ -718,13 +724,13 @@
                     }]
                 });
                 window.toast("Workspace Created! Device Linked.");
-            } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
+            } catch(e) { errEl.innerText = (e.message || String(e)).replace('Firebase:', '').trim(); }
         };
 
         window.resetPassword = () => {
             const email = document.getElementById('resetEmail').value.trim(); const errEl = document.getElementById('resetError'); if(!email) return errEl.innerText = "Please enter your recovery email.";
             auth.sendPasswordResetEmail(email).then(() => { errEl.style.color = "var(--green)"; errEl.innerText = "Reset link sent to your email!"; setTimeout(() => window.toggleAuthMode('login'), 3000);
-            }).catch(e => { errEl.style.color = "var(--red)"; errEl.innerText = e.message.replace('Firebase:', '').trim(); });
+            }).catch(e => { errEl.style.color = "var(--red)"; errEl.innerText = (e.message || String(e)).replace('Firebase:', '').trim(); });
         };
 
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
@@ -929,7 +935,9 @@
 
         // --- INTERACTIVE APP TOUR (Driver.js) ---
         function startAppTour() {
-            if (localStorage.getItem('hasSeenLibSyncTour') === 'true') return;
+            if (SafeStorage.get('hasSeenLibSyncTour') === 'true') return;
+            if (typeof window.driver === 'undefined') return; // Prevent crashes if library fails to load
+            
             const driverObj = window.driver.js.driver;
             const tour = driverObj({
                 showProgress: true, animate: true,
@@ -940,7 +948,7 @@
                     { element: '#tabAddBtn', popover: { title: '3. Allot Seats', description: 'When a new student joins, use this tab. Select a seat, assign a shift, and save instantly.', side: "bottom", align: 'start' } },
                     { element: '#tabFinBtn', popover: { title: '4. Financial Hub', description: 'View all your financial aspects in one place. Track fee collections and monthly revenue.', side: "bottom", align: 'start' } }
                 ],
-                onDestroyStarted: () => { localStorage.setItem('hasSeenLibSyncTour', 'true'); tour.destroy(); }
+                onDestroyStarted: () => { SafeStorage.set('hasSeenLibSyncTour', 'true'); tour.destroy(); }
             });
             tour.drive();
         }
