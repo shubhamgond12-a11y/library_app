@@ -306,11 +306,16 @@
 
     <!-- MAIN USER APP -->
     <div id="mainApp" style="display:none;">
+        <!-- Broadcast Announcements Banner -->
+        <div id="broadcastBanner" class="hidden animate-in" style="background: linear-gradient(90deg, #2563eb, #3b82f6); color: white; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(37,99,235,0.2);">
+            <span>📢 Update:</span> <span id="broadcastText" style="font-weight:400;"></span>
+        </div>
+
         <header class="animate-in">
             <h2 id="appTitle">LibSync Pro</h2>
             <div class="utility-bar">
                 <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-                <button class="icon-btn" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
                 <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
@@ -436,15 +441,35 @@
     <!-- ADMIN APP (ONLY SHOWN TO cwBkWqFBuHeqpLyNBKdQSeF1iu83) -->
     <div id="adminApp" style="display:none;">
         <header class="animate-in">
-            <h2>Admin Dashboard</h2>
+            <h2>Admin Dashboard Hub</h2>
             <div class="utility-bar">
                 <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
                 <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
+
+        <!-- Dynamic Admin Analytics Cards -->
+        <div class="dashboard glass-panel animate-in" style="grid-template-columns: repeat(3, 1fr); margin-bottom:15px; padding: 12px;">
+            <div class="stat-card">Workspaces <span class="num" id="adminStatWorkspaces" style="color:var(--primary)">0</span></div>
+            <div class="stat-card">Active Premium <span class="num" id="adminStatPremium" style="color:var(--green)">0</span></div>
+            <div class="stat-card">Monthly SaaS Rev. <span class="num" id="adminStatRevenue" style="color:var(--orange)">₹0</span></div>
+        </div>
+
+        <!-- Global Announcement Broadcaster -->
+        <div class="glass-panel animate-in" style="padding: 15px; margin-bottom:15px;">
+            <h4 style="margin-top:0; margin-bottom:8px; font-size:13px; color:var(--primary);">📢 System Broadcast Banner</h4>
+            <div class="flex-row">
+                <input type="text" id="adminBroadcastMsg" placeholder="Type global system notification message..." style="flex:1;">
+            </div>
+            <div class="flex-row" style="margin-top:8px;">
+                <button class="action-btn" style="margin:0; flex:1; background:var(--primary);" onclick="saveBroadcast()">Activate Announcement</button>
+                <button class="action-btn" style="margin:0; flex:1; background:var(--red);" onclick="clearBroadcast()">Deactivate / Clear</button>
+            </div>
+        </div>
+
         <div class="glass-panel animate-in" style="padding: 15px;">
-            <h3 style="margin-top:0; margin-bottom: 15px; color:var(--primary);">All Workspaces & Users</h3>
-            <div id="adminUsersContainer">Loading users...</div>
+            <h3 style="margin-top:0; margin-bottom: 15px; color:var(--primary);">Registered Client Workspaces</h3>
+            <div id="adminUsersContainer">Loading registered SaaS users...</div>
         </div>
     </div>
 
@@ -542,7 +567,7 @@
 
         <!-- ADMIN USER MANAGE MODAL (ONLY FOR ADMIN) -->
         <div class="modal-content hidden" id="adminUserSection">
-            <h3 style="margin-top:0; color:var(--primary);">Manage User</h3>
+            <h3 style="margin-top:0; color:var(--primary);">Manage Workspace</h3>
             <p style="font-size:14px; font-weight:600; margin-bottom:2px;" id="adminModUsername"></p>
             <p style="font-size:11px; color:var(--text-muted); margin-top:0; margin-bottom:15px;" id="adminModEmail"></p>
             
@@ -556,7 +581,7 @@
             <input type="date" id="adminSubValid" style="margin-bottom:15px;">
             
             <div class="flex-row">
-                <button class="action-btn" style="margin:0; background:var(--primary); flex:1;" onclick="saveAdminSub()">Update Status</button>
+                <button class="action-btn" style="margin:0; background:var(--primary); flex:1;" onclick="saveAdminSub()">Update Sub Status</button>
             </div>
 
             <h4 style="margin: 20px 0 10px 0; font-size: 13px; color:var(--primary); border-top:1px solid var(--glass-border); padding-top:15px;">Record Payment & Invoice</h4>
@@ -570,6 +595,16 @@
             <div id="adminTxHistory" style="max-height: 120px; overflow-y:auto; border:1px solid var(--glass-border); border-radius:10px; padding:5px;"></div>
 
             <button class="action-btn" style="background:var(--text-muted); margin-top:15px;" onclick="closeModal()">Close Panel</button>
+        </div>
+
+        <!-- READ-ONLY VISUAL MATRIX INSPECTOR (FOR ADMIN TROUBLESHOOTING) -->
+        <div class="modal-content hidden" id="adminInspectSection" style="max-width: 650px;">
+            <h3 style="margin-top:0; color:var(--primary);">Inspecting: <span id="inspectLibName"></span></h3>
+            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">Real-time read-only inspection matrix loaded securely from Firestore paths.</p>
+            
+            <div id="inspectSeatsContainer" class="seat-grid" style="max-height: 350px; overflow-y: auto; padding:5px;"></div>
+            
+            <button class="action-btn" style="background:var(--text-muted); margin-top:20px;" onclick="closeModal()">Close Inspector</button>
         </div>
     </div>
 
@@ -593,6 +628,7 @@
         
         let currentUser = null;
         let unsubscribeSnapshot = null;
+        let unsubscribeBroadcast = null;
 
         // --- APP CONFIG & DB LAYER ---
         let appConfig = {
@@ -609,7 +645,7 @@
                 this.seatsData = rawData;
             },
             save: function() {
-                if (!currentUser || currentUser.uid === ADMIN_UID) return; // Admins don't save to their own library profile usually
+                if (!currentUser || currentUser.uid === ADMIN_UID) return; 
                 db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).set({
                     config: appConfig, seatsData: this.seatsData, expenses: this.expenses, waitlist: this.waitlist
                 }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
@@ -700,6 +736,7 @@
                         document.getElementById('mainApp').style.display = 'block';
                         document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
                         loadDataFromCloud(); 
+                        listenForBroadcasts();
                         window.toast(`Welcome back!`);
                         setTimeout(startAppTour, 1000);
                         
@@ -715,6 +752,7 @@
                 document.getElementById('mainApp').style.display = 'none';
                 document.getElementById('adminApp').style.display = 'none';
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
+                if (unsubscribeBroadcast) unsubscribeBroadcast();
             }
         });
 
@@ -780,36 +818,152 @@
 
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
 
-        // --- ADMIN DASHBOARD & INVOICE LOGIC ---
+
+        // --- REAL-TIME BROADCAST LISTENER (SYSTEM NOTIFICATIONS) ---
+        function listenForBroadcasts() {
+            const docRef = db.doc(`artifacts/${globalAppId}/public/data/broadcast`);
+            unsubscribeBroadcast = docRef.onSnapshot((docSnap) => {
+                const banner = document.getElementById('broadcastBanner');
+                const bannerText = document.getElementById('broadcastText');
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    if (data.active && data.message) {
+                        bannerText.innerText = data.message;
+                        banner.classList.remove('hidden');
+                    } else {
+                        banner.classList.add('hidden');
+                    }
+                } else {
+                    banner.classList.add('hidden');
+                }
+            });
+        }
+
+
+        // --- ADMIN DASHBOARD, BROADCAST, MATRIX INSPECTOR & INVOICE LOGIC ---
         window.activeAdminUserId = null;
         window.activeAdminUsername = null;
         window.activeAdminUserEmail = null;
 
+        window.saveBroadcast = async function() {
+            const msg = document.getElementById('adminBroadcastMsg').value.trim();
+            if (!msg) return window.toast("⚠️ Enter message to broadcast!");
+            await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).set({
+                message: msg,
+                active: true,
+                updatedAt: new Date().toISOString()
+            });
+            window.toast("📢 Broadcast Announcement Activated!");
+        };
+
+        window.clearBroadcast = async function() {
+            await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).set({ active: false });
+            document.getElementById('adminBroadcastMsg').value = '';
+            window.toast("📢 Announcement deactivated.");
+        };
+
         window.loadAdminDashboard = async function() {
             const cont = document.getElementById('adminUsersContainer');
-            cont.innerHTML = '<div style="text-align:center; padding:20px; font-size:13px;">Fetching all users...</div>';
+            cont.innerHTML = '<div style="text-align:center; padding:20px; font-size:13px;">Fetching SaaS workspaces...</div>';
+            
             try {
+                // Fetch broadcast info
+                const bSnap = await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).get();
+                if (bSnap.exists && bSnap.data().active) {
+                    document.getElementById('adminBroadcastMsg').value = bSnap.data().message || '';
+                }
+
+                // Fetch registered users mapping
                 const mapRef = db.collection(`artifacts/${globalAppId}/public/data/usernameMap`);
                 const snap = await mapRef.get();
-                let html = '';
                 
-                for(let doc of snap.docs) {
+                let workspacesCount = 0;
+                let activePremiumCount = 0;
+                let monthRevenue = 0;
+                const currentMonth = new Date().toISOString().substring(0, 7); // YYYY-MM
+                
+                let html = '';
+                const promises = [];
+
+                snap.docs.forEach(doc => {
                     const data = doc.data();
-                    if(!data.uid || data.uid === ADMIN_UID) continue;
+                    if(!data.uid || data.uid === ADMIN_UID) return;
+                    workspacesCount++;
+                    
+                    const subPromise = db.doc(`artifacts/${globalAppId}/users/${data.uid}/subscription/info`).get().then(async (subSnap) => {
+                        const libMainSnap = await db.doc(`artifacts/${globalAppId}/users/${data.uid}/libraryData/main`).get();
+                        const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: '', history: [] };
+                        const libData = libMainSnap.exists ? libMainSnap.data() : { config: {} };
+                        
+                        return {
+                            username: doc.id,
+                            email: data.email,
+                            uid: data.uid,
+                            status: subData.status || 'trialing',
+                            validUntil: subData.validUntil || 'No End Date',
+                            history: subData.history || [],
+                            libraryName: (libData.config && libData.config.libraryName) ? libData.config.libraryName : "Not Configured Yet",
+                            libConfig: libData.config || null,
+                            seatsData: libData.seatsData || null
+                        };
+                    });
+                    promises.push(subPromise);
+                });
+
+                const workspaceProfiles = await Promise.all(promises);
+
+                workspaceProfiles.forEach(prof => {
+                    // Update dynamic SaaS revenue (this month)
+                    prof.history.forEach(tx => {
+                        if (tx.date && tx.date.startsWith(currentMonth)) {
+                            monthRevenue += parseFloat(tx.amount || 0);
+                        }
+                    });
+
+                    // Update Sub Counts
+                    if (prof.status === 'active' || prof.status === 'trialing') {
+                        activePremiumCount++;
+                    }
+
+                    // Format Badge Theme
+                    let badgeBg = 'var(--yellow)';
+                    let statusLabel = 'Trialing';
+                    if (prof.status === 'active') { badgeBg = 'var(--green)'; statusLabel = 'Active Premium'; }
+                    else if (prof.status === 'inactive') { badgeBg = 'var(--red)'; statusLabel = 'Expired'; }
+
+                    // Package details into temporary string to inspect workspace
+                    const safeConfigStr = encodeURIComponent(JSON.stringify(prof.libConfig || {}));
+                    const safeSeatsStr = encodeURIComponent(JSON.stringify(prof.seatsData || {}));
 
                     html += `
-                        <div class="list-item">
-                            <div>
-                                <strong style="font-size:14px;">${doc.id}</strong>
-                                <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${data.email}</div>
+                        <div class="list-item" style="flex-direction:column; align-items:flex-start; gap:8px; padding:15px;">
+                            <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <strong style="font-size:15px; color:var(--primary);">${prof.username}</strong>
+                                    <span style="font-size:10px; color:var(--text-muted); margin-left:5px;">(${prof.libraryName})</span>
+                                </div>
+                                <span class="badge" style="background:${badgeBg};">${statusLabel}</span>
                             </div>
-                            <button class="action-btn" style="margin:0; width:auto; padding:6px 14px; font-size:11px; border-radius:8px;" onclick="openAdminUser('${data.uid}', '${doc.id}', '${data.email}')">Manage Sub</button>
+                            <div style="font-size:11px; color:var(--text-muted); line-height:1.5;">
+                                ✉️ Email: ${prof.email}<br>
+                                📅 Expiration: <strong style="color:var(--text-main);">${prof.validUntil}</strong>
+                            </div>
+                            <div style="display:flex; gap:8px; width:100%; margin-top:5px;">
+                                <button class="action-btn" style="margin:0; padding:8px 12px; font-size:11px; border-radius:8px; flex:1;" onclick="openAdminUser('${prof.uid}', '${prof.username}', '${prof.email}')">Manage Sub & Tx</button>
+                                <button class="action-btn" style="margin:0; padding:8px 12px; font-size:11px; border-radius:8px; flex:1; background:var(--orange);" onclick="inspectUserMatrix('${prof.username}', '${safeConfigStr}', '${safeSeatsStr}')">Inspect Seats</button>
+                            </div>
                         </div>
                     `;
-                }
-                cont.innerHTML = html || '<div style="text-align:center; font-size:13px; color:var(--text-muted);">No users found.</div>';
+                });
+
+                document.getElementById('adminStatWorkspaces').innerText = workspacesCount;
+                document.getElementById('adminStatPremium').innerText = activePremiumCount;
+                document.getElementById('adminStatRevenue').innerText = `₹${monthRevenue}`;
+
+                cont.innerHTML = html || '<div style="text-align:center; font-size:13px; color:var(--text-muted);">No workspaces configured.</div>';
+
             } catch(e) {
-                cont.innerHTML = '<div style="color:var(--red); text-align:center;">Error loading users. Check Security Rules.</div>';
+                cont.innerHTML = '<div style="color:var(--red); text-align:center;">Error loading. Check Security Rules.</div>';
                 console.error(e);
             }
         };
@@ -847,6 +1001,7 @@
             }, { merge: true });
             
             window.toast('User Subscription Updated!');
+            window.loadAdminDashboard();
         };
 
         window.addAdminTransaction = async function() {
@@ -870,6 +1025,7 @@
             
             window.printInvoice(amt, date, window.activeAdminUsername, window.activeAdminUserEmail, tx.id);
             document.getElementById('adminTxAmount').value = '';
+            window.loadAdminDashboard();
         };
 
         function renderAdminTxHistory(history) {
@@ -943,6 +1099,50 @@
             w.document.close();
         }
 
+        // --- READ-ONLY WORKSPACE INSPECTOR LOGIC ---
+        window.inspectUserMatrix = function(username, configStr, seatsDataStr) {
+            hideAllModalSections();
+            document.getElementById('inspectLibName').innerText = username;
+            
+            const config = JSON.parse(decodeURIComponent(configStr));
+            const seatsData = JSON.parse(decodeURIComponent(seatsDataStr)) || {};
+            const container = document.getElementById('inspectSeatsContainer');
+            container.innerHTML = '';
+
+            const total = parseInt(config.totalSeats) || 20;
+            const customs = config.customSeats || [];
+            
+            // Build temporary inspected layout
+            const inspectLayout = [];
+            for (let i = 1; i <= total; i++) {
+                inspectLayout.push(i.toString());
+                inspectLayout.push(...customs.filter(seat => {
+                    const match = seat.match(/^(\d+)[A-Za-z]+$/); return match && parseInt(match[1]) === i;
+                }));
+            }
+
+            inspectLayout.forEach(seatId => {
+                const occupants = seatsData[seatId] || [];
+                const div = document.createElement('div');
+                
+                if (occupants.length > 0) {
+                    let alertClass = 'allotted';
+                    div.className = `seat ${alertClass}`;
+                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    occupants.forEach(s => { 
+                        div.innerHTML += `<div class="seat-name" style="font-size:8px;">${s.name.split(' ')[0]}</div>`; 
+                    });
+                } else {
+                    div.className = `seat free`;
+                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                }
+                container.appendChild(div);
+            });
+
+            triggerModalAnimation('adminInspectSection');
+            document.getElementById('detailsModal').style.display = 'flex';
+        };
+
         // --- CLOUD SYNC & APP LOAD ---
         function loadDataFromCloud() {
             if(!currentUser || currentUser.uid === ADMIN_UID) return;
@@ -1007,9 +1207,11 @@
 
         window.initializeAppStructure = function() {
             window.seatLayout = [];
-            for (let i = 1; i <= appConfig.totalSeats; i++) {
+            const total = parseInt(appConfig.totalSeats) || 20;
+            const customs = appConfig.customSeats || [];
+            for (let i = 1; i <= total; i++) {
                 window.seatLayout.push(i.toString());
-                window.seatLayout.push(...appConfig.customSeats.filter(seat => {
+                window.seatLayout.push(...customs.filter(seat => {
                     const match = seat.match(/^(\d+)[A-Za-z]+$/); return match && parseInt(match[1]) === i;
                 }));
             }
@@ -1019,7 +1221,7 @@
                 const el = document.getElementById(id);
                 if (el) {
                     el.innerHTML = id === 'shiftFilter' ? '<option value="all">All Shifts</option>' : '';
-                    appConfig.shifts.forEach(s => { el.innerHTML += `<option value="${s}">${s}</option>`; });
+                    (appConfig.shifts || []).forEach(s => { el.innerHTML += `<option value="${s}">${s}</option>`; });
                     if(id === 'shift') el.innerHTML += `<option value="Custom">Custom Shift...</option>`;
                 }
             });
@@ -1052,7 +1254,7 @@
             document.getElementById('statOccupied').innerText = totalEnrolled;
             document.getElementById('statDue').innerText = dueProfiles;
             document.getElementById('statWarn').innerText = warnProfiles;
-            document.getElementById('waitBadge').innerText = DB.waitlist.length;
+            document.getElementById('waitBadge').innerText = (DB.waitlist || []).length;
         }
 
         window.setFilter = function(type) {
@@ -1157,8 +1359,8 @@
         }
         window.renderWaitlist = function() {
             const cont = document.getElementById('waitlistContainer'); cont.innerHTML = '';
-            if(DB.waitlist.length === 0) { cont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">Waitlist is empty.</div>'; }
-            DB.waitlist.forEach(w => {
+            if(!DB.waitlist || DB.waitlist.length === 0) { cont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">Waitlist is empty.</div>'; }
+            (DB.waitlist || []).forEach(w => {
                 cont.innerHTML += `
                     <div class="list-item">
                         <div>
@@ -1172,7 +1374,7 @@
                         </div>
                     </div>`;
             });
-            document.getElementById('waitBadge').innerText = DB.waitlist.length;
+            document.getElementById('waitBadge').innerText = (DB.waitlist || []).length;
         }
         window.removeWaitlist = function(id) { DB.waitlist = DB.waitlist.filter(w => w.id !== id); DB.save(); window.renderWaitlist(); window.toast("Removed from waitlist"); }
         window.promoteWaitlist = function(id) {
@@ -1242,7 +1444,7 @@
                     </div>`;
             });
 
-            let monthlyExps = DB.expenses.filter(e => e.date.startsWith(monthStr));
+            let monthlyExps = (DB.expenses || []).filter(e => e.date.startsWith(monthStr));
             monthlyExps.sort((a,b) => new Date(b.date) - new Date(a.date));
             monthlyExps.forEach(e => {
                 totalExpense += e.amount;
@@ -1268,15 +1470,15 @@
         // --- MODALS & SETTINGS ---
         window.openSettingsModal = function() {
             hideAllModalSections();
-            document.getElementById('cfgLibName').value = appConfig.libraryName;
-            document.getElementById('cfgTotalSeats').value = appConfig.totalSeats;
-            document.getElementById('cfgCustomSeats').value = appConfig.customSeats.join(', ');
-            document.getElementById('cfgShifts').value = appConfig.shifts.join('\n');
+            document.getElementById('cfgLibName').value = appConfig.libraryName || '';
+            document.getElementById('cfgTotalSeats').value = appConfig.totalSeats || 20;
+            document.getElementById('cfgCustomSeats').value = (appConfig.customSeats || []).join(', ');
+            document.getElementById('cfgShifts').value = (appConfig.shifts || []).join('\n');
             triggerModalAnimation('modalSettingsSection'); document.getElementById('detailsModal').style.display = 'flex';
         }
         window.saveSettings = function() {
             appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "LibSync Pro";
-            appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 86;
+            appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 20;
             appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s);
             appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s);
             DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName;
@@ -1284,7 +1486,7 @@
         }
 
         function hideAllModalSections() { 
-            ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection'].forEach(id => { 
+            ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection', 'adminInspectSection'].forEach(id => { 
                 const el = document.getElementById(id);
                 if(el) { el.classList.add('hidden'); el.classList.remove('modal-animate'); }
             }); 
