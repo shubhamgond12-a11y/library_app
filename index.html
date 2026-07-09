@@ -668,7 +668,7 @@
             document.getElementById('resetError').innerText = ''; 
         }
 
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged(async (user) => {
             if (user) {
                 currentUser = user;
                 
@@ -680,13 +680,34 @@
                     window.loadAdminDashboard();
                     window.toast(`Welcome to the Admin Hub!`);
                 } else {
-                    document.getElementById('authScreen').style.display = 'none';
-                    document.getElementById('adminApp').style.display = 'none';
-                    document.getElementById('mainApp').style.display = 'block';
-                    document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
-                    loadDataFromCloud(); 
-                    window.toast(`Welcome back!`);
-                    setTimeout(startAppTour, 1000);
+                    try {
+                        // Check subscription status BEFORE letting them in
+                        const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
+                        const subSnap = await subRef.get();
+                        
+                        if (subSnap.exists) {
+                            const subData = subSnap.data();
+                            if (subData.status === 'inactive') {
+                                window.toast("⚠️ Your workspace subscription has expired or is inactive.");
+                                auth.signOut(); // Kick them out
+                                return; // Stop execution
+                            }
+                        }
+                        
+                        // If active/trialing, load the app normally
+                        document.getElementById('authScreen').style.display = 'none';
+                        document.getElementById('adminApp').style.display = 'none';
+                        document.getElementById('mainApp').style.display = 'block';
+                        document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
+                        loadDataFromCloud(); 
+                        window.toast(`Welcome back!`);
+                        setTimeout(startAppTour, 1000);
+                        
+                    } catch(err) {
+                        console.error("Auth routing error:", err);
+                        window.toast("Error verifying workspace status.");
+                        auth.signOut();
+                    }
                 }
             } else {
                 currentUser = null; 
