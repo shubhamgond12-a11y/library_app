@@ -27,9 +27,9 @@
             --primary: #2563eb; --green: #10b981; --orange: #f59e0b; --red: #ef4444; --yellow: #eab308;
             
             /* Cohesive Auth Colors */
-            --auth-btn-bg: #2563eb;
-            --auth-btn-hover: #1d4ed8;
-            --auth-text: #1e293b;
+            --auth-btn-bg: #2d4c3b;
+            --auth-btn-hover: #1e3628;
+            --auth-text: #1a1a1a;
         }
 
         .dark-theme {
@@ -717,20 +717,37 @@
                     window.toast(`Welcome to the Admin Hub!`);
                 } else {
                     try {
-                        // Check subscription status BEFORE letting them in
+                        // Check subscription status BEFORE letting them in, catching permission errors gracefully
                         const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
-                        const subSnap = await subRef.get();
+                        let isInactive = false;
                         
-                        if (subSnap.exists) {
-                            const subData = subSnap.data();
-                            if (subData.status === 'inactive') {
-                                window.toast("⚠️ Your workspace subscription has expired or is inactive.");
-                                auth.signOut(); // Kick them out
-                                return; // Stop execution
+                        try {
+                            const subSnap = await subRef.get();
+                            if (subSnap.exists) {
+                                const subData = subSnap.data();
+                                if (subData.status === 'inactive') {
+                                    isInactive = true;
+                                }
+                            } else {
+                                // Dynamically generate active/trial status if document doesn't exist
+                                await subRef.set({
+                                    status: 'trialing',
+                                    validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 7 Days Free Trial
+                                    history: []
+                                }, { merge: true });
                             }
+                        } catch(dbErr) {
+                            // If security rules or collections fail to evaluate, fail-open to let standard users continue
+                            console.warn("Evaluating Subscription Status asynchronously failed. Defaulting to Active:", dbErr);
                         }
                         
-                        // If active/trialing, load the app normally
+                        if (isInactive) {
+                            window.toast("⚠️ Your workspace subscription has expired or is inactive.");
+                            auth.signOut(); // Kick them out
+                            return;
+                        }
+                        
+                        // Proceed to launch workspace normally
                         document.getElementById('authScreen').style.display = 'none';
                         document.getElementById('adminApp').style.display = 'none';
                         document.getElementById('mainApp').style.display = 'block';
@@ -836,6 +853,8 @@
                 } else {
                     banner.classList.add('hidden');
                 }
+            }, (error) => {
+                console.warn("Broadcast channel initialization skipped (Check Security Rules):", error);
             });
         }
 
@@ -867,11 +886,13 @@
             cont.innerHTML = '<div style="text-align:center; padding:20px; font-size:13px;">Fetching SaaS workspaces...</div>';
             
             try {
-                // Fetch broadcast info
-                const bSnap = await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).get();
-                if (bSnap.exists && bSnap.data().active) {
-                    document.getElementById('adminBroadcastMsg').value = bSnap.data().message || '';
-                }
+                // Fetch broadcast info safely
+                try {
+                    const bSnap = await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).get();
+                    if (bSnap.exists && bSnap.data().active) {
+                        document.getElementById('adminBroadcastMsg').value = bSnap.data().message || '';
+                    }
+                } catch(e) { console.warn("Broadcast config unreachable."); }
 
                 // Fetch registered users mapping
                 const mapRef = db.collection(`artifacts/${globalAppId}/public/data/usernameMap`);
@@ -891,9 +912,13 @@
                     workspacesCount++;
                     
                     const subPromise = db.doc(`artifacts/${globalAppId}/users/${data.uid}/subscription/info`).get().then(async (subSnap) => {
-                        const libMainSnap = await db.doc(`artifacts/${globalAppId}/users/${data.uid}/libraryData/main`).get();
-                        const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: '', history: [] };
-                        const libData = libMainSnap.exists ? libMainSnap.data() : { config: {} };
+                        let libMainSnap;
+                        try {
+                            libMainSnap = await db.doc(`artifacts/${globalAppId}/users/${data.uid}/libraryData/main`).get();
+                        } catch(e) { console.warn("User workspace main file unreachable:", data.uid); }
+                        
+                        const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: 'No End Date', history: [] };
+                        const libData = (libMainSnap && libMainSnap.exists) ? libMainSnap.data() : { config: {} };
                         
                         return {
                             username: doc.id,
@@ -963,8 +988,46 @@
                 cont.innerHTML = html || '<div style="text-align:center; font-size:13px; color:var(--text-muted);">No workspaces configured.</div>';
 
             } catch(e) {
-                cont.innerHTML = '<div style="color:var(--red); text-align:center;">Error loading. Check Security Rules.</div>';
-                console.error(e);
+                // RENDER EXTREMELY HELPFUL STEP-BY-STEP COPYABLE FIRESTORE RULES FOR THE ADMIN USER
+                cont.innerHTML = `
+                    <div style="padding: 20px; text-align: left; background: rgba(239, 68, 68, 0.08); border: 1px solid var(--red); border-radius: 16px; color: var(--text-main); margin-top: 5px;" class="animate-in">
+                        <h4 style="margin-top:0; color: var(--red); font-size: 15px; font-weight: 700; display:flex; align-items:center; gap:6px;">
+                            <span>🔒 Firestore Security Rules Required</span>
+                        </h4>
+                        <p style="font-size: 12px; line-height: 1.6; color: var(--text-muted); margin-bottom: 15px;">
+                            To load workspaces, update subscriptions, and record SaaS payments, you must authorize this admin user inside your project's security policy.
+                        </p>
+                        <ol style="font-size: 11px; margin-left: 15px; padding-left: 0; color: var(--text-muted); line-height: 1.8; margin-bottom: 15px;">
+                            <li>Log in to your <a href="https://console.firebase.google.com/" target="_blank" style="color:var(--primary); font-weight:600; text-decoration:underline;">Firebase Console</a>.</li>
+                            <li>Navigate to <strong>Firestore Database</strong> &gt; <strong>Rules</strong> tab.</li>
+                            <li>Copy and paste the custom config rules provided below:</li>
+                        </ol>
+                        <textarea readonly style="width:100%; height:200px; font-family: monospace; font-size:11px; background: rgba(0,0,0,0.25); border:1px solid var(--glass-border); border-radius:12px; padding:12px; color:var(--text-main); margin-top:5px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.25); outline:none; resize:none;" onclick="this.select()">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == 'cwBkWqFBuHeqpLyNBKdQSeF1iu83';
+    }
+    match /artifacts/{appId} {
+      match /public/data/usernameMap/{username} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null;
+      }
+      match /public/data/broadcast {
+        allow read: if request.auth != null;
+        allow write: if isAdmin();
+      }
+      match /users/{userId}/{document=**} {
+        allow read, write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      }
+    }
+  }
+}</textarea>
+                        <p style="font-size:10px; color:var(--text-muted); margin-top:8px;">💡 Clicking the code box will select everything for easy copying. Publish the rules in Firebase and try again!</p>
+                        <button class="action-btn" style="margin-top:15px; background:var(--primary);" onclick="loadAdminDashboard()">🔄 Check Rules & Reload</button>
+                    </div>
+                `;
+                console.error("Admin workspace dashboard access blocked:", e);
             }
         };
 
@@ -1589,4 +1652,4 @@
         window.toggleCustomShift = function(selectId, inputId) { document.getElementById(inputId).classList.toggle('hidden', document.getElementById(selectId).value !== 'Custom'); }
     </script>
 </body>
-</html>
+</html> 
