@@ -58,63 +58,34 @@
         }
 
         /* --- AUTHENTICATION UI STYLES --- */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         #authScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
-            background: var(--bg-grad);
-            background-size: 200% 200%;
-            animation: gradientBG 15s ease infinite;
+            background: var(--bg-grad); background-size: 200% 200%; animation: gradientBG 15s ease infinite;
             display: flex; justify-content: center; align-items: center;
         }
 
         .auth-container { width: 100%; height: 100%; display: flex; position: relative; overflow: hidden; }
-        .auth-left {
-            width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
-            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            position: relative; z-index: 10;
-        }
+        .auth-left { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative; z-index: 10; }
         .paper-cut-svg { display: none; }
-
         .auth-card { width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; text-align: center; }
         .auth-card h2 { color: var(--auth-text); font-weight: 700; font-size: 28px; margin-bottom: 30px; letter-spacing: -0.5px; }
-        
         .auth-input-group { text-align: left; margin-bottom: 20px; }
         .auth-input-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
-        .auth-input { 
-            width: 100%; padding: 12px 18px; border: 1px solid var(--glass-border); background: var(--glass-input-bg);
-            border-radius: 12px; outline: none; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--auth-text);
-            box-sizing: border-box; transition: all 0.3s;
-        }
+        .auth-input { width: 100%; padding: 12px 18px; border: 1px solid var(--glass-border); background: var(--glass-input-bg); border-radius: 12px; outline: none; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--auth-text); box-sizing: border-box; transition: all 0.3s; }
         .auth-input:focus { border-color: var(--auth-btn-bg); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
-        
-        .auth-main-btn {
-            width: 100%; padding: 14px; background: var(--auth-btn-bg); color: white; border: none;
-            border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2); transition: all 0.3s ease; margin-top: 10px; font-family: 'Poppins', sans-serif;
-        }
+        .auth-main-btn { width: 100%; padding: 14px; background: var(--auth-btn-bg); color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2); transition: all 0.3s ease; margin-top: 10px; font-family: 'Poppins', sans-serif; }
         .auth-main-btn:hover { background: var(--auth-btn-hover); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); }
         .auth-main-btn:active { transform: translateY(0); }
-
         .auth-divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: var(--text-muted); font-size: 11px; }
         .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--glass-border); }
         .auth-divider span { padding: 0 10px; }
-
         .auth-footer-link { font-size: 12px; color: var(--text-muted); margin-top: 20px; display: block; cursor: pointer; font-weight:500; transition: color 0.2s; }
         .auth-footer-link:hover { color: var(--auth-btn-bg); }
 
-        @media (max-width: 767px) {
-            .auth-left { border: 1px solid var(--glass-border); border-radius: 30px; width: 90%; height: auto; padding: 20px 0; margin: auto; box-shadow: var(--glass-shadow); }
-        }
-        @media (min-width: 768px) {
-            .auth-left { width: 45%; max-width: 600px; border-radius: 0; align-items: center; z-index: 10; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
-            .paper-cut-svg { display: block; position: absolute; right: -99px; top: 0; width: 100px; height: 100%; z-index: 9; }
-            .auth-card { padding: 0 60px; max-width: 500px;}
-        }
+        @media (max-width: 767px) { .auth-left { border: 1px solid var(--glass-border); border-radius: 30px; width: 90%; height: auto; padding: 20px 0; margin: auto; box-shadow: var(--glass-shadow); } }
+        @media (min-width: 768px) { .auth-left { width: 45%; max-width: 600px; border-radius: 0; align-items: center; z-index: 10; box-shadow: 10px 0 30px rgba(0,0,0,0.1); } .paper-cut-svg { display: block; position: absolute; right: -99px; top: 0; width: 100px; height: 100%; z-index: 9; } .auth-card { padding: 0 60px; max-width: 500px;} }
 
         /* --- EXISTING MAIN APP STYLES --- */
         @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -124,7 +95,7 @@
 
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 5px; }
         h2 { margin: 0; font-weight: 700; font-size: 20px; letter-spacing: -0.5px;}
-        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); border-radius: 16px; }
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); border-radius: 16px; position: relative; overflow: hidden; }
 
         .utility-bar { display: flex; gap: 8px; align-items: center; }
         .icon-btn { border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-main); padding: 6px; cursor: pointer; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
@@ -178,7 +149,9 @@
         .info-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
         .info-value { font-size: 13px; font-weight: 600; color: var(--text-main); text-align: right; }
 
-        svg { stroke-width: 2; width: 18px; height: 18px; }
+        /* FIXED SVG ICONS */
+        svg { stroke-width: 2; width: 18px; height: 18px; stroke-linecap: round; stroke-linejoin: round; }
+        
         #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: max-content; max-width: 90%; pointer-events: none; }
         .toast { background: rgba(15, 23, 42, 0.9); color: white; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-weight: 500; text-align: center; margin-top: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); opacity: 0; transition: all 0.3s; transform: translateY(20px); }
         .toast.show { opacity: 1; transform: translateY(0); }
@@ -186,35 +159,34 @@
         .flex-row { display: flex; gap: 10px; }
 
         /* --- DRIVER.JS CUSTOM GLASSMORPHISM THEME --- */
-        .driver-popover {
-            background: rgba(30, 41, 59, 0.95) !important;
-            backdrop-filter: blur(10px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: white !important;
-            border-radius: 12px !important;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-        }
-        .driver-popover-title {
-            font-size: 18px !important; color: #38bdf8 !important; font-weight: 700 !important; margin-bottom: 8px !important;
-        }
-        .driver-popover-description {
-            color: #cbd5e1 !important; font-size: 14px !important; line-height: 1.5 !important;
-        }
-        .driver-popover-navigation-btns button {
-            background: #3b82f6 !important; color: white !important; border: none !important; text-shadow: none !important; border-radius: 6px !important; padding: 6px 12px !important;
-        }
+        .driver-popover { background: rgba(30, 41, 59, 0.95) !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: white !important; border-radius: 12px !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important; }
+        .driver-popover-title { font-size: 18px !important; color: #38bdf8 !important; font-weight: 700 !important; margin-bottom: 8px !important; }
+        .driver-popover-description { color: #cbd5e1 !important; font-size: 14px !important; line-height: 1.5 !important; }
+        .driver-popover-navigation-btns button { background: #3b82f6 !important; color: white !important; border: none !important; text-shadow: none !important; border-radius: 6px !important; padding: 6px 12px !important; }
         .driver-popover-navigation-btns button:hover { background: #2563eb !important; }
         .driver-popover-close-btn { color: #94a3b8 !important; }
-    </style>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+        /* --- PAYWALL & INVOICE STYLES --- */
+        #paywallScreen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            border-radius: 16px; padding: 20px; box-sizing: border-box; color: white;
+        }
+        
+        @media print {
+            body * { visibility: hidden; }
+            #invoicePrintArea, #invoicePrintArea * { visibility: visible; }
+            #invoicePrintArea { position: absolute; left: 0; top: 0; width: 100%; background: white; color: black; padding: 40px; box-sizing: border-box; }
+            .no-print { display: none !important; }
+            body { background: white; }
+        }
+    </style>
 </head>
 <body>
 
     <!-- AUTHENTICATION SCREEN -->
-    <div id="authScreen">
+    <div id="authScreen" class="no-print">
         <div class="auth-container">
             <div class="auth-left">
                 <!-- Desktop Layered Paper Cut SVG -->
@@ -230,7 +202,6 @@
                 <div class="auth-card">
                     <h2 id="authTitle">Log in</h2>
                     
-                    <!-- LOGIN FORM -->
                     <div id="loginForm" class="animate-in">
                         <div class="auth-input-group">
                             <label>Admin ID or Email</label>
@@ -252,7 +223,6 @@
                         <span class="auth-footer-link" onclick="toggleAuthMode('signup')">Don't have an account? Sign up</span>
                     </div>
 
-                    <!-- SIGNUP FORM -->
                     <div id="signupForm" class="hidden animate-in">
                         <div class="auth-input-group">
                             <label>Admin ID (Username)</label>
@@ -273,7 +243,6 @@
                         <span class="auth-footer-link" onclick="toggleAuthMode('login')">Log in instead</span>
                     </div>
 
-                    <!-- RESET PASSWORD FORM -->
                     <div id="resetForm" class="hidden animate-in">
                         <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">Enter the recovery email address associated with your account to receive a secure password reset link.</p>
                         <div class="auth-input-group">
@@ -292,13 +261,22 @@
     </div>
 
     <!-- MAIN NORMAL APP -->
-    <div id="mainApp" style="display:none;">
+    <div id="mainApp" style="display:none; position:relative;" class="no-print">
+        
+        <!-- SUBSCRIPTION PAYWALL (Hidden by default) -->
+        <div id="paywallScreen" class="hidden">
+            <svg viewBox="0 0 24 24" style="width:64px; height:64px; margin-bottom:15px; color:#f59e0b;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <h2 style="margin:0 0 10px 0; color:white;">Subscription Expired</h2>
+            <p style="font-size:14px; color:#cbd5e1; max-width:300px; line-height:1.5;">Your workspace trial or subscription has concluded. Please contact the administrator to renew your access.</p>
+            <button class="action-btn" style="width:auto; padding:10px 20px; margin-top:20px; background:white; color:var(--text-main);" onclick="logoutUser()">Log Out</button>
+        </div>
+
         <header class="animate-in">
             <h2 id="appTitle">LibSync Pro</h2>
             <div class="utility-bar">
-                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-                <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
-                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
+                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
+                <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
 
@@ -414,12 +392,13 @@
     </div> <!-- End Main App -->
 
     <!-- --- SUPER ADMIN DASHBOARD --- -->
-    <div id="adminDashboard" style="display:none;" class="animate-in">
+    <div id="adminDashboard" style="display:none;" class="animate-in no-print">
         <header>
             <h2 style="color:var(--primary);">🛡️ Super Admin Console</h2>
             <div class="utility-bar">
-                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
-                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
+                <button class="icon-btn" onclick="loadAdminData()" title="Refresh Data"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg></button>
+                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
+                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
 
@@ -432,6 +411,7 @@
 
         <div class="glass-panel" style="padding:15px; margin-bottom:15px;">
             <h3 style="margin-top:0; color:var(--text-main);">All Registered Users</h3>
+            <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Click on a user to view their stats and manage their SaaS Subscription.</p>
             <input type="text" id="adminSearch" class="search-box" placeholder="Search by ID or Email..." oninput="filterAdminList()">
             <div id="adminUserList" style="margin-top:10px; display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto;">
                 <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:12px;">Loading workspaces...</div>
@@ -440,12 +420,12 @@
     </div>
 
     <!-- DETAILS MODALS -->
-    <div id="detailsModal" class="modal">
+    <div id="detailsModal" class="modal no-print">
         <!-- Student View Section -->
         <div class="modal-content hidden" id="modalViewSection">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); padding-bottom:10px; margin-bottom:10px;">
                 <h3 style="margin:0; color:var(--primary); font-weight:700;">Seat <span id="modSeatTitle"></span> Profile</h3>
-                <button class="icon-btn" onclick="showEditForm()" style="width:30px; height:30px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
+                <button class="icon-btn" onclick="showEditForm()" style="width:30px; height:30px;"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
             </div>
             <div class="info-row"><span class="info-label">Name</span> <span class="info-value" id="modName"></span></div>
             <div class="info-row"><span class="info-label">Phone</span> <span class="info-value" id="modPhone"></span></div>
@@ -531,17 +511,86 @@
             </div>
         </div>
 
-        <!-- SUPER ADMIN: VIEW WORKSPACE MODAL -->
-        <div class="modal-content hidden" id="modalAdminWorkspaceView">
-            <h3 style="margin-top:0; color:var(--primary);">Workspace Overview</h3>
+        <!-- SUPER ADMIN: VIEW WORKSPACE & SUBSCRIPTION MODAL -->
+        <div class="modal-content hidden" id="modalAdminWorkspaceView" style="max-width: 500px;">
+            <h3 style="margin-top:0; color:var(--primary);">Workspace Management</h3>
+            
             <div id="adminWorkspaceData">
                 <div style="text-align:center; padding:20px; color:var(--text-muted);">Fetching live data...</div>
             </div>
-            <button class="action-btn" style="background:var(--text-muted); margin-top:15px;" onclick="closeModal()">Close Details</button>
+
+            <hr style="border:0; border-top:1px solid var(--glass-border); margin:20px 0;">
+            
+            <h4 style="margin:0 0 10px 0; color:var(--text-main);">SaaS Subscription</h4>
+            <div id="adminSubscriptionData">
+                <div style="text-align:center; padding:10px; color:var(--text-muted);">Fetching billing...</div>
+            </div>
+
+            <div id="adminSaaSForm" class="hidden glass-panel" style="padding:15px; margin-top:15px; border-color:var(--primary);">
+                <h5 style="margin:0 0 10px 0; color:var(--primary);">Record New SaaS Payment</h5>
+                <div class="flex-row" style="margin-bottom:8px;">
+                    <div style="flex:1"><label>Plan</label><select id="saasPlan"><option value="1 Month">1 Month</option><option value="6 Months">6 Months</option><option value="1 Year">1 Year</option><option value="Custom">Custom</option></select></div>
+                    <div style="flex:1"><label>Amount (₹)</label><input type="number" id="saasAmount" placeholder="e.g. 999"></div>
+                </div>
+                <label>Extend Validity To</label><input type="date" id="saasValidDate" style="margin-bottom:10px;">
+                <div class="flex-row">
+                    <button class="action-btn" style="margin:0; background:var(--green); flex:2;" onclick="adminSaveSaaSPayment()">Save Payment</button>
+                    <button class="action-btn" style="margin:0; background:var(--text-muted); flex:1;" onclick="document.getElementById('adminSaaSForm').classList.add('hidden')">Cancel</button>
+                </div>
+            </div>
+
+            <button class="action-btn" style="background:var(--text-muted); margin-top:20px;" onclick="closeModal()">Close Details</button>
         </div>
     </div>
 
-    <div id="toast-container"></div>
+    <!-- HIDDEN INVOICE PRINT TEMPLATE -->
+    <div id="invoicePrintArea" style="display:none;">
+        <div style="max-width: 800px; margin: 0 auto; font-family: 'Poppins', sans-serif;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px;">
+                <div>
+                    <h1 style="color:#2563eb; margin:0; font-size:32px; font-weight:700;">LibSync Pro</h1>
+                    <p style="margin:5px 0 0 0; color:#64748b; font-size:14px;">Library Management SaaS</p>
+                </div>
+                <div style="text-align:right;">
+                    <h2 style="margin:0; color:#1e293b;">INVOICE</h2>
+                    <p style="margin:5px 0 0 0; color:#64748b; font-size:14px;" id="invDate">Date: --</p>
+                    <p style="margin:5px 0 0 0; color:#64748b; font-size:14px;" id="invNumber">Invoice #: --</p>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 40px;">
+                <h3 style="color:#64748b; font-size:12px; text-transform:uppercase; margin-bottom:5px;">Billed To:</h3>
+                <p style="margin:0; font-weight:600; font-size:18px; color:#1e293b;" id="invClientName">Workspace Name</p>
+                <p style="margin:5px 0 0 0; color:#64748b; font-size:14px;" id="invClientEmail">email@example.com</p>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                <thead>
+                    <tr style="background:#f1f5f9; border-bottom:2px solid #cbd5e1; text-align:left;">
+                        <th style="padding:12px; color:#1e293b; font-weight:600;">Description</th>
+                        <th style="padding:12px; color:#1e293b; font-weight:600; text-align:right;">Amount (INR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid #e2e8f0;">
+                        <td style="padding:15px 12px; color:#334155;" id="invDesc">Software Subscription Plan</td>
+                        <td style="padding:15px 12px; color:#334155; text-align:right; font-weight:600;" id="invAmt">₹0.00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="text-align:right;">
+                <h3 style="margin:0; color:#1e293b; font-size:24px;">Total Paid: <span id="invTotal" style="color:#2563eb;">₹0.00</span></h3>
+                <p style="margin:10px 0 0 0; color:#10b981; font-weight:600;">Payment Successful</p>
+            </div>
+
+            <div style="margin-top: 60px; border-top: 1px solid #e2e8f0; padding-top: 20px; text-align:center; color:#94a3b8; font-size:12px;">
+                Thank you for choosing LibSync Pro to manage your library.
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="no-print"></div>
 
     <script>
         // --- FIREBASE SETUP ---
@@ -563,79 +612,51 @@
 
         let currentUser = null;
         let unsubscribeSnapshot = null;
+        let unsubscribeBilling = null;
+
+        // Current Admin Target tracking
+        let adminTargetUid = null;
+        let adminTargetUserObj = null;
+        let adminTargetBillingObj = null;
 
         // --- APP CONFIG & DB LAYER ---
-        let appConfig = {
-            libraryName: "LibSync Pro", totalSeats: 86,
-            customSeats: ["6A", "6B", "12A", "12B", "28A", "28B", "28C"],
-            shifts: ["Morning (8 AM - 2 PM)", "Evening (2 PM - 8 PM)", "Full Day (7 AM - 9 PM)"]
-        };
+        let appConfig = { libraryName: "LibSync Pro", totalSeats: 86, customSeats: ["6A", "6B", "12A", "12B", "28A", "28B", "28C"], shifts: ["Morning (8 AM - 2 PM)", "Evening (2 PM - 8 PM)", "Full Day (7 AM - 9 PM)"] };
 
         const DB = {
             seatsData: {}, expenses: [], waitlist: [],
-            init: function() {
-                const rawData = {};
-                for(let seatId of window.seatLayout) rawData[seatId] = [];
-                this.seatsData = rawData;
-            },
+            init: function() { const rawData = {}; for(let seatId of window.seatLayout) rawData[seatId] = []; this.seatsData = rawData; },
             save: function() {
-                if (!currentUser || currentUser.uid === SUPER_ADMIN_UID) return; // Admins shouldn't overwrite user configs
-                db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).set({
-                    config: appConfig, seatsData: this.seatsData, expenses: this.expenses, waitlist: this.waitlist
-                }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
+                if (!currentUser || currentUser.uid === SUPER_ADMIN_UID) return;
+                db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).set({ config: appConfig, seatsData: this.seatsData, expenses: this.expenses, waitlist: this.waitlist }, { merge: true }).catch(err => console.error("Cloud Error: ", err));
             },
             getOccupants: function(seatNo) { return this.seatsData[seatNo] || []; },
-            addStudent: function(seatNo, studentData) {
-                if(!this.seatsData[seatNo]) this.seatsData[seatNo] = [];
-                this.seatsData[seatNo].push(studentData); this.save();
-            },
-            updateStudent: function(seatNo, studentId, updatedData) {
-                const idx = this.seatsData[seatNo].findIndex(s => s.id === studentId);
-                if(idx > -1) { this.seatsData[seatNo][idx] = { ...this.seatsData[seatNo][idx], ...updatedData }; this.save(); }
-            },
-            removeStudent: function(seatNo, studentId) {
-                this.seatsData[seatNo] = this.seatsData[seatNo].filter(s => s.id !== studentId); this.save();
-            },
+            addStudent: function(seatNo, studentData) { if(!this.seatsData[seatNo]) this.seatsData[seatNo] = []; this.seatsData[seatNo].push(studentData); this.save(); },
+            updateStudent: function(seatNo, studentId, updatedData) { const idx = this.seatsData[seatNo].findIndex(s => s.id === studentId); if(idx > -1) { this.seatsData[seatNo][idx] = { ...this.seatsData[seatNo][idx], ...updatedData }; this.save(); } },
+            removeStudent: function(seatNo, studentId) { this.seatsData[seatNo] = this.seatsData[seatNo].filter(s => s.id !== studentId); this.save(); },
             addPayment: function(seatNo, studentId, paymentObj, validDate, feeStatus) {
                 const student = this.seatsData[seatNo].find(s => s.id === studentId);
-                if(student) {
-                    if(!student.payments) student.payments = [];
-                    student.payments.push(paymentObj);
-                    if(validDate) student.validDate = validDate;
-                    if(feeStatus) student.feeStatus = feeStatus;
-                    this.save();
-                }
+                if(student) { if(!student.payments) student.payments = []; student.payments.push(paymentObj); if(validDate) student.validDate = validDate; if(feeStatus) student.feeStatus = feeStatus; this.save(); }
             }
         };
 
         // --- STATE & UTILS ---
-        window.seatLayout = []; window.currentFilter = 'all'; 
-        window.activeSeatNo = null; window.activeStudentId = null; window.isDeleteConfirmStep = false; 
+        window.seatLayout = []; window.currentFilter = 'all'; window.activeSeatNo = null; window.activeStudentId = null; window.isDeleteConfirmStep = false; 
 
         if(localStorage.getItem('libTheme') === 'dark') document.body.classList.add('dark-theme');
         window.toast = function(message) {
             const container = document.getElementById('toast-container');
             const el = document.createElement('div'); el.className = 'toast'; el.innerText = message;
-            container.appendChild(el);
-            setTimeout(() => el.classList.add('show'), 10);
-            setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
+            container.appendChild(el); setTimeout(() => el.classList.add('show'), 10); setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
         }
-        window.toggleTheme = function() {
-            document.body.classList.toggle('dark-theme');
-            localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-        }
+        window.toggleTheme = function() { document.body.classList.toggle('dark-theme'); localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); }
 
         // --- HYBRID AUTHENTICATION LOGIC ---
         window.toggleAuthMode = function(mode) {
             ['loginForm', 'signupForm', 'resetForm'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(mode + 'Form').classList.remove('hidden');
-            
             const titles = { 'login': 'Log in', 'signup': 'Create Account', 'reset': 'Reset Password' };
             document.getElementById('authTitle').innerText = titles[mode];
-            
-            document.getElementById('authError').innerText = ''; 
-            document.getElementById('signupError').innerText = ''; 
-            document.getElementById('resetError').innerText = ''; 
+            document.getElementById('authError').innerText = ''; document.getElementById('signupError').innerText = ''; document.getElementById('resetError').innerText = ''; 
         }
 
         auth.onAuthStateChanged((user) => {
@@ -644,13 +665,11 @@
                 document.getElementById('authScreen').style.display = 'none';
 
                 if (user.uid === SUPER_ADMIN_UID) {
-                    // SUPER ADMIN ROUTING
                     document.getElementById('mainApp').style.display = 'none';
                     document.getElementById('adminDashboard').style.display = 'block';
                     window.toast(`Welcome Super Admin!`);
                     loadAdminData();
                 } else {
-                    // NORMAL USER ROUTING
                     document.getElementById('adminDashboard').style.display = 'none';
                     document.getElementById('mainApp').style.display = 'block';
                     document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
@@ -662,218 +681,266 @@
                 currentUser = null; document.getElementById('authScreen').style.display = 'flex'; 
                 document.getElementById('mainApp').style.display = 'none'; document.getElementById('adminDashboard').style.display = 'none';
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
+                if (unsubscribeBilling) unsubscribeBilling();
             }
         });
 
         window.loginUser = async () => {
-            const idInput = document.getElementById('loginId').value.trim();
-            const pass = document.getElementById('loginPassword').value;
-            const errEl = document.getElementById('authError');
-            
-            if(!idInput || !pass) return errEl.innerText = "Please enter ID/Email and password.";
-            errEl.innerText = "Logging in...";
-            
+            const idInput = document.getElementById('loginId').value.trim(); const pass = document.getElementById('loginPassword').value; const errEl = document.getElementById('authError');
+            if(!idInput || !pass) return errEl.innerText = "Please enter ID/Email and password."; errEl.innerText = "Logging in...";
             let emailToUse = idInput;
             try {
                 if (!idInput.includes('@')) {
                     const resolvedEmail = localStorage.getItem('lib_admin_' + idInput.toLowerCase());
-                    if (resolvedEmail) {
-                        emailToUse = resolvedEmail;
-                    } else {
-                        throw new Error("Admin ID not recognized on this device. Please log in with your email once to link this device.");
-                    }
+                    if (resolvedEmail) emailToUse = resolvedEmail; else throw new Error("Admin ID not recognized on this device. Please log in with your email once to link this device.");
                 }
                 await auth.signInWithEmailAndPassword(emailToUse, pass);
             } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
         
         window.signupUser = async () => {
-            const username = document.getElementById('signupUsername').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const pass = document.getElementById('signupPassword').value;
-            const errEl = document.getElementById('signupError');
-            
-            if(!username || !email || !pass) return errEl.innerText = "Please fill all fields.";
-            if(username.includes('@')) return errEl.innerText = "Admin ID cannot contain '@'.";
-            
+            const username = document.getElementById('signupUsername').value.trim(); const email = document.getElementById('signupEmail').value.trim(); const pass = document.getElementById('signupPassword').value; const errEl = document.getElementById('signupError');
+            if(!username || !email || !pass) return errEl.innerText = "Please fill all fields."; if(username.includes('@')) return errEl.innerText = "Admin ID cannot contain '@'.";
             errEl.innerText = "Creating workspace...";
             try {
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
                 localStorage.setItem('lib_admin_' + username.toLowerCase(), email);
                 
-                // Save mapping for admin to see
-                await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`).set({
-                    email: email, uid: cred.user.uid, createdAt: new Date().toISOString(), username: username
-                });
+                // Save public mapping
+                await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`).set({ email: email, uid: cred.user.uid, createdAt: new Date().toISOString(), username: username });
                 
+                // INTIALIZE 7-DAY FREE TRIAL FOR NEW SAAS SUBSCRIPTION
+                const today = new Date(); const trialEnd = new Date(today); trialEnd.setDate(trialEnd.getDate() + 7);
+                await db.doc(`artifacts/${globalAppId}/users/${cred.user.uid}/billing/subscription`).set({
+                    status: 'trial', validUntil: trialEnd.toISOString().split('T')[0],
+                    history: [{
+                        id: Date.now().toString(), date: today.toISOString().split('T')[0], amount: 0, type: '7-Day Free Trial', invoiceId: 'TRL-' + Math.floor(1000+Math.random()*9000)
+                    }]
+                });
                 window.toast("Workspace Created! Device Linked.");
             } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
 
         window.resetPassword = () => {
-            const email = document.getElementById('resetEmail').value.trim();
-            const errEl = document.getElementById('resetError');
-            if(!email) return errEl.innerText = "Please enter your recovery email.";
-            auth.sendPasswordResetEmail(email).then(() => {
-                errEl.style.color = "var(--green)";
-                errEl.innerText = "Reset link sent to your email!";
-                setTimeout(() => window.toggleAuthMode('login'), 3000);
+            const email = document.getElementById('resetEmail').value.trim(); const errEl = document.getElementById('resetError'); if(!email) return errEl.innerText = "Please enter your recovery email.";
+            auth.sendPasswordResetEmail(email).then(() => { errEl.style.color = "var(--green)"; errEl.innerText = "Reset link sent to your email!"; setTimeout(() => window.toggleAuthMode('login'), 3000);
             }).catch(e => { errEl.style.color = "var(--red)"; errEl.innerText = e.message.replace('Firebase:', '').trim(); });
         };
 
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
+
+        // --- NORMAL USER CLOUD SYNC & PAYWALL CHECK ---
+        function loadDataFromCloud() {
+            if(!currentUser || currentUser.uid === SUPER_ADMIN_UID) return;
+            
+            // Fetch App Data
+            const docRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`);
+            unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
+                window.initializeAppStructure(); 
+                if (docSnap.exists) { const d = docSnap.data(); if (d.config) appConfig = d.config; if (d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } 
+                else { DB.init(); DB.save(); }
+                document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro';
+                window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances();
+            }, (error) => { window.toast("Sync error"); });
+
+            // Fetch SaaS Billing Data & Enforce Paywall
+            const billingRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/billing/subscription`);
+            unsubscribeBilling = billingRef.onSnapshot((docSnap) => {
+                if(docSnap.exists) {
+                    const billing = docSnap.data();
+                    const today = new Date().toISOString().split('T')[0];
+                    if(billing.validUntil < today) {
+                        document.getElementById('paywallScreen').classList.remove('hidden'); // LOCK APP
+                    } else {
+                        document.getElementById('paywallScreen').classList.add('hidden'); // UNLOCK APP
+                    }
+                } else {
+                    // Legacy user fallback - assume locked until admin initializes them
+                    document.getElementById('paywallScreen').classList.remove('hidden'); 
+                }
+            });
+        }
+
 
         // --- SUPER ADMIN LOGIC ---
         let allRegisteredUsers = [];
 
         async function loadAdminData() {
             try {
-                // Because Admin has super rules, we can fetch all mappings
                 const mapRef = db.collection(`artifacts/${globalAppId}/public/data/usernameMap`);
                 const snapshot = await mapRef.get();
-                
                 allRegisteredUsers = [];
-                snapshot.forEach(doc => {
-                    allRegisteredUsers.push({ id: doc.id, ...doc.data() });
-                });
-                
+                snapshot.forEach(doc => { allRegisteredUsers.push({ id: doc.id, ...doc.data() }); });
                 document.getElementById('adminTotalWorkspaces').innerText = allRegisteredUsers.length;
                 renderAdminList(allRegisteredUsers);
-
-            } catch(e) {
-                console.error(e);
-                document.getElementById('adminUserList').innerHTML = `<div style="color:var(--red); padding:10px;">Error fetching users. Check Firestore Rules.</div>`;
-            }
+            } catch(e) { document.getElementById('adminUserList').innerHTML = `<div style="color:var(--red); padding:10px;">Error fetching users.</div>`; }
         }
 
         function renderAdminList(users) {
-            const container = document.getElementById('adminUserList');
-            container.innerHTML = '';
-            
-            if(users.length === 0) {
-                container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:12px; padding:10px;">No users found.</div>`;
-                return;
-            }
-
+            const container = document.getElementById('adminUserList'); container.innerHTML = '';
+            if(users.length === 0) { container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:12px; padding:10px;">No users found yet.</div>`; return; }
             users.forEach(u => {
                 container.innerHTML += `
-                    <div class="list-item" style="cursor:pointer;" onclick="openAdminWorkspaceView('${u.uid}', '${u.username}')">
+                    <div class="list-item" style="cursor:pointer;" onclick="openAdminWorkspaceView('${u.uid}', '${u.username}', '${u.email}')">
                         <div>
                             <strong style="display:block; font-size:14px; color:var(--primary);">${u.username || 'N/A'}</strong>
                             <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${u.email}</div>
                         </div>
-                        <span class="badge" style="background:var(--text-muted); font-size:9px;">View Data &rarr;</span>
+                        <span class="badge" style="background:var(--text-muted); font-size:9px;">Manage &rarr;</span>
                     </div>`;
             });
         }
 
         window.filterAdminList = function() {
             const q = document.getElementById('adminSearch').value.toLowerCase();
-            const filtered = allRegisteredUsers.filter(u => 
-                (u.username && u.username.toLowerCase().includes(q)) || 
-                (u.email && u.email.toLowerCase().includes(q))
-            );
+            const filtered = allRegisteredUsers.filter(u => (u.username && u.username.toLowerCase().includes(q)) || (u.email && u.email.toLowerCase().includes(q)));
             renderAdminList(filtered);
         }
 
-        window.openAdminWorkspaceView = async function(targetUid, username) {
+        window.openAdminWorkspaceView = async function(targetUid, username, email) {
             hideAllModalSections();
-            document.getElementById('detailsModal').style.display = 'flex';
-            triggerModalAnimation('modalAdminWorkspaceView');
+            adminTargetUid = targetUid;
+            adminTargetUserObj = { username, email };
+            
+            document.getElementById('detailsModal').style.display = 'flex'; triggerModalAnimation('modalAdminWorkspaceView');
+            document.getElementById('adminSaaSForm').classList.add('hidden');
             
             const dataContainer = document.getElementById('adminWorkspaceData');
-            dataContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">Fetching live data for ${username}...</div>`;
+            const subContainer = document.getElementById('adminSubscriptionData');
+            
+            dataContainer.innerHTML = `<div style="text-align:center; padding:10px; color:var(--text-muted);">Fetching live data...</div>`;
+            subContainer.innerHTML = `<div style="text-align:center; padding:10px; color:var(--text-muted);">Fetching billing...</div>`;
 
+            // 1. Fetch Library Stats
             try {
-                // Super Admin has permission to read other user's private data!
                 const docRef = db.doc(`artifacts/${globalAppId}/users/${targetUid}/libraryData/main`);
                 const snap = await docRef.get();
-                
                 if (!snap.exists) {
-                    dataContainer.innerHTML = `<div style="padding:15px; text-align:center; color:var(--orange);">This user has created an account but hasn't saved any library data yet.</div>`;
-                    return;
+                    dataContainer.innerHTML = `<div style="padding:15px; text-align:center; color:var(--orange);">User hasn't saved any library data yet.</div>`;
+                } else {
+                    const d = snap.data();
+                    let totalIncome = 0, totalEnrolled = 0;
+                    if (d.seatsData) { Object.values(d.seatsData).forEach(occupants => { occupants.forEach(student => { totalEnrolled++; if(student.payments) { student.payments.forEach(p => totalIncome += parseFloat(p.amount || 0)); } }); }); }
+                    dataContainer.innerHTML = `
+                        <div style="margin-top:15px;">
+                            <div class="info-row"><span class="info-label">Library Name</span> <span class="info-value">${d.config ? d.config.libraryName : 'Unnamed'}</span></div>
+                            <div class="info-row"><span class="info-label">Configured Seats</span> <span class="info-value">${d.config ? d.config.totalSeats : 0}</span></div>
+                            <div class="info-row"><span class="info-label">Total Enrolled</span> <span class="info-value" style="color:var(--primary);">${totalEnrolled}</span></div>
+                            <div class="info-row" style="border:none;"><span class="info-label">Total Historic Income</span> <span class="info-value" style="color:var(--green); font-size:16px;">₹${totalIncome}</span></div>
+                        </div>`;
                 }
+            } catch(e) { dataContainer.innerHTML = `<div style="color:var(--red); padding:10px;">Permission denied/missing data.</div>`; }
 
-                const d = snap.data();
-                const totalSeats = d.config ? d.config.totalSeats : 0;
-                const libName = d.config ? d.config.libraryName : 'Unnamed';
-                
-                let totalIncome = 0;
-                let totalEnrolled = 0;
-                let activeWaitlist = d.waitlist ? d.waitlist.length : 0;
+            // 2. Fetch Subscription Info
+            try {
+                const subRef = db.doc(`artifacts/${globalAppId}/users/${targetUid}/billing/subscription`);
+                const subSnap = await subRef.get();
+                if (!subSnap.exists) {
+                    adminTargetBillingObj = { history: [] };
+                    subContainer.innerHTML = `
+                        <div class="info-row" style="border:none;">
+                            <span class="info-label">Status</span> <span class="badge" style="background:var(--red);">Missing / Uninitialized</span>
+                        </div>
+                        <button class="action-btn" style="padding:8px; font-size:12px; margin-top:10px;" onclick="document.getElementById('adminSaaSForm').classList.remove('hidden')">Initialize Subscription</button>
+                    `;
+                } else {
+                    const b = subSnap.data(); adminTargetBillingObj = b;
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const isExpired = b.validUntil < todayStr;
+                    let badgeColor = isExpired ? 'var(--red)' : (b.status === 'trial' ? 'var(--yellow)' : 'var(--green)');
+                    let statusText = isExpired ? 'Expired' : (b.status === 'trial' ? 'On Trial' : 'Active Paid');
 
-                if (d.seatsData) {
-                    Object.values(d.seatsData).forEach(occupants => {
-                        occupants.forEach(student => {
-                            totalEnrolled++;
-                            if(student.payments) {
-                                student.payments.forEach(p => totalIncome += parseFloat(p.amount || 0));
-                            }
+                    let historyHTML = '';
+                    if(b.history && b.history.length > 0) {
+                        [...b.history].reverse().forEach(h => {
+                            // Serialize the history object securely for the onclick string
+                            const safeH = JSON.stringify(h).replace(/"/g, '&quot;');
+                            historyHTML += `
+                                <div class="list-item" style="padding:8px 12px;">
+                                    <div><strong style="font-size:11px; display:block;">${h.date}</strong><span style="font-size:10px; color:var(--text-muted);">${h.type}</span></div>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span style="color:var(--green); font-weight:600; font-size:12px;">₹${h.amount}</span>
+                                        <button style="background:var(--glass-bg); border:1px solid var(--glass-border); padding:4px 6px; border-radius:4px; cursor:pointer; font-size:10px;" onclick="printSaaSInvoice(${safeH}, '${username}', '${email}')">📄 Invoice</button>
+                                    </div>
+                                </div>`;
                         });
-                    });
+                    } else { historyHTML = '<div style="font-size:10px; color:var(--text-muted); text-align:center;">No history.</div>'; }
+
+                    subContainer.innerHTML = `
+                        <div class="info-row"><span class="info-label">Current Status</span> <span class="badge" style="background:${badgeColor}; color:${b.status==='trial'?'black':'white'}">${statusText}</span></div>
+                        <div class="info-row"><span class="info-label">Valid Until</span> <span class="info-value">${b.validUntil}</span></div>
+                        <button class="action-btn" style="padding:8px; font-size:12px; margin-top:10px;" onclick="document.getElementById('adminSaaSForm').classList.remove('hidden')">Record Renewal Payment</button>
+                        <h5 style="margin:15px 0 8px 0; color:var(--text-main);">Billing Ledger</h5>
+                        <div style="max-height:120px; overflow-y:auto;">${historyHTML}</div>
+                    `;
                 }
-
-                dataContainer.innerHTML = `
-                    <div style="margin-top:15px;">
-                        <div class="info-row"><span class="info-label">Library Name</span> <span class="info-value">${libName}</span></div>
-                        <div class="info-row"><span class="info-label">Configured Seats</span> <span class="info-value">${totalSeats}</span></div>
-                        <div class="info-row"><span class="info-label">Total Enrolled</span> <span class="info-value" style="color:var(--primary);">${totalEnrolled}</span></div>
-                        <div class="info-row"><span class="info-label">In Waitlist</span> <span class="info-value">${activeWaitlist}</span></div>
-                        <div class="info-row" style="border:none;"><span class="info-label">Total Historic Income</span> <span class="info-value" style="color:var(--green); font-size:16px;">₹${totalIncome}</span></div>
-                    </div>
-                `;
-
-            } catch(e) {
-                console.error(e);
-                dataContainer.innerHTML = `<div style="color:var(--red); padding:15px;">Permission denied or data missing.</div>`;
-            }
+            } catch(e) { subContainer.innerHTML = `<div style="color:var(--red);">Error fetching billing.</div>`; }
         }
 
+        window.adminSaveSaaSPayment = async function() {
+            if(!adminTargetUid) return;
+            const amt = document.getElementById('saasAmount').value || 0;
+            const plan = document.getElementById('saasPlan').value;
+            const validDate = document.getElementById('saasValidDate').value;
+            
+            if(!validDate) return window.toast("⚠️ Validity date is required!");
 
-        // --- NORMAL USER CLOUD SYNC ---
-        function loadDataFromCloud() {
-            if(!currentUser || currentUser.uid === SUPER_ADMIN_UID) return;
-            const docRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`);
-            unsubscribeSnapshot = docRef.onSnapshot((docSnap) => {
-                window.initializeAppStructure(); 
-                if (docSnap.exists) {
-                    const d = docSnap.data();
-                    if (d.config) appConfig = d.config;
-                    if (d.seatsData) DB.seatsData = d.seatsData;
-                    DB.expenses = d.expenses || [];
-                    DB.waitlist = d.waitlist || [];
-                } else {
-                    DB.init(); DB.save();
-                }
+            const paymentObj = {
+                id: Date.now().toString(),
+                date: new Date().toISOString().split('T')[0],
+                amount: parseFloat(amt),
+                type: plan,
+                invoiceId: 'INV-' + Math.floor(10000+Math.random()*90000)
+            };
+
+            let newHistory = adminTargetBillingObj.history || [];
+            newHistory.push(paymentObj);
+
+            try {
+                await db.doc(`artifacts/${globalAppId}/users/${adminTargetUid}/billing/subscription`).set({
+                    status: 'active',
+                    validUntil: validDate,
+                    history: newHistory
+                }, { merge: true });
                 
-                document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro';
-                window.initializeAppStructure();
-                window.renderSeats();
-                window.renderWaitlist();
-                window.calculateFinances();
-            }, (error) => { window.toast("Sync error"); });
+                window.toast("✅ Subscription Updated!");
+                document.getElementById('saasAmount').value = ''; document.getElementById('saasValidDate').value = '';
+                // Reload modal view
+                openAdminWorkspaceView(adminTargetUid, adminTargetUserObj.username, adminTargetUserObj.email);
+            } catch(e) { window.toast("Error saving payment"); }
+        }
+
+        // --- INVOICE PRINTER ---
+        window.printSaaSInvoice = function(invObj, clientName, clientEmail) {
+            document.getElementById('invDate').innerText = 'Date: ' + invObj.date;
+            document.getElementById('invNumber').innerText = 'Invoice #: ' + invObj.invoiceId;
+            document.getElementById('invClientName').innerText = clientName || 'Library Workspace';
+            document.getElementById('invClientEmail').innerText = clientEmail || 'Email not provided';
+            
+            document.getElementById('invDesc').innerText = 'LibSync Pro - ' + invObj.type;
+            document.getElementById('invAmt').innerText = '₹' + parseFloat(invObj.amount).toFixed(2);
+            document.getElementById('invTotal').innerText = '₹' + parseFloat(invObj.amount).toFixed(2);
+            
+            document.getElementById('invoicePrintArea').style.display = 'block';
+            window.print();
+            // Hide it back after printing dialogue closes
+            setTimeout(() => { document.getElementById('invoicePrintArea').style.display = 'none'; }, 1000);
         }
 
         // --- INTERACTIVE APP TOUR (Driver.js) ---
         function startAppTour() {
             if (localStorage.getItem('hasSeenLibSyncTour') === 'true') return;
-
             const driverObj = window.driver.js.driver;
             const tour = driverObj({
-                showProgress: true,
-                animate: true,
+                showProgress: true, animate: true,
                 steps: [
-                    { popover: { title: 'Welcome to LibSync Pro! 👋', description: 'Let us take a quick 30-second tour to show you how to automate your library management.', align: 'center' } },
-                    { element: '#settingsTab', popover: { title: '1. Initial Setup', description: 'Start here. Enter your Library Name, total number of seats, and define your shifts.', side: "bottom", align: 'start' } },
-                    { element: '#seatMapTab', popover: { title: '2. The Seat Matrix', description: 'Your command center. Use the shift dropdown here to see exactly which seats are vacant or occupied in real-time.', side: "bottom", align: 'start' } },
-                    { element: '#tabAddBtn', popover: { title: '3. Allot Seats', description: 'When a new student joins, use this tab. Select a seat, assign a shift, and their data is saved instantly.', side: "bottom", align: 'start' } },
-                    { element: '#tabWaitBtn', popover: { title: '4. Smart Waitlist', description: 'Is a shift completely full? Add students to the waitlist here so you never lose a potential admission.', side: "bottom", align: 'start' } },
-                    { element: '#tabFinBtn', popover: { title: '5. Financial Hub', description: 'View all your financial aspects in one place. Track fee collections, monitor pending dues, and view monthly revenue.', side: "bottom", align: 'start' } }
+                    { popover: { title: 'Welcome to LibSync Pro! 👋', description: 'Let us take a quick tour to show you how to automate your library management.', align: 'center' } },
+                    { element: '#settingsTab', popover: { title: '1. Initial Setup', description: 'Start here. Enter your Library Name, total seats, and define your shifts.', side: "bottom", align: 'start' } },
+                    { element: '#seatMapTab', popover: { title: '2. The Seat Matrix', description: 'Your command center. Use the shift dropdown here to see vacant seats in real-time.', side: "bottom", align: 'start' } },
+                    { element: '#tabAddBtn', popover: { title: '3. Allot Seats', description: 'When a new student joins, use this tab. Select a seat, assign a shift, and save instantly.', side: "bottom", align: 'start' } },
+                    { element: '#tabFinBtn', popover: { title: '4. Financial Hub', description: 'View all your financial aspects in one place. Track fee collections and monthly revenue.', side: "bottom", align: 'start' } }
                 ],
-                onDestroyStarted: () => {
-                    localStorage.setItem('hasSeenLibSyncTour', 'true');
-                    tour.destroy();
-                }
+                onDestroyStarted: () => { localStorage.setItem('hasSeenLibSyncTour', 'true'); tour.destroy(); }
             });
             tour.drive();
         }
@@ -896,9 +963,7 @@
             window.seatLayout = [];
             for (let i = 1; i <= appConfig.totalSeats; i++) {
                 window.seatLayout.push(i.toString());
-                window.seatLayout.push(...appConfig.customSeats.filter(seat => {
-                    const match = seat.match(/^(\d+)[A-Za-z]+$/); return match && parseInt(match[1]) === i;
-                }));
+                window.seatLayout.push(...appConfig.customSeats.filter(seat => { const match = seat.match(/^(\d+)[A-Za-z]+$/); return match && parseInt(match[1]) === i; }));
             }
             
             const shiftSelects = ['shift', 'waitShift', 'shiftFilter'];
@@ -915,12 +980,9 @@
         // --- DASHBOARD & SEATS MATRIX ---
         function checkExpiry(validDateStr) {
             if(!validDateStr) return 'ok';
-            const today = new Date(); today.setHours(0,0,0,0);
-            const valid = new Date(validDateStr); valid.setHours(0,0,0,0);
+            const today = new Date(); today.setHours(0,0,0,0); const valid = new Date(validDateStr); valid.setHours(0,0,0,0);
             const diffDays = Math.ceil((valid - today) / (1000 * 60 * 60 * 24));
-            if(diffDays < 0) return 'expired';
-            if(diffDays <= 3) return 'warn';
-            return 'ok';
+            if(diffDays < 0) return 'expired'; if(diffDays <= 3) return 'warn'; return 'ok';
         }
 
         function updateDashboard() {
@@ -929,24 +991,18 @@
                 const occupants = DB.getOccupants(seatId);
                 if(occupants.length === 0) freeChairs++;
                 occupants.forEach(s => {
-                    totalEnrolled++;
-                    if(s.feeStatus === 'Due') dueProfiles++;
-                    const expStatus = checkExpiry(s.validDate);
-                    if(expStatus === 'warn' || expStatus === 'expired') warnProfiles++;
+                    totalEnrolled++; if(s.feeStatus === 'Due') dueProfiles++;
+                    const expStatus = checkExpiry(s.validDate); if(expStatus === 'warn' || expStatus === 'expired') warnProfiles++;
                 });
             }
-            document.getElementById('statFree').innerText = freeChairs;
-            document.getElementById('statOccupied').innerText = totalEnrolled;
-            document.getElementById('statDue').innerText = dueProfiles;
-            document.getElementById('statWarn').innerText = warnProfiles;
+            document.getElementById('statFree').innerText = freeChairs; document.getElementById('statOccupied').innerText = totalEnrolled;
+            document.getElementById('statDue').innerText = dueProfiles; document.getElementById('statWarn').innerText = warnProfiles;
             document.getElementById('waitBadge').innerText = DB.waitlist.length;
         }
 
         window.setFilter = function(type) {
-            window.currentFilter = type;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('flt' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
-            window.renderSeats();
+            window.currentFilter = type; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('flt' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active'); window.renderSeats();
         }
         window.applyFilters = function() { window.renderSeats(); }
 
@@ -963,10 +1019,8 @@
 
                 let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
                 occupants.forEach(s => {
-                    if (s.feeStatus === 'Due') hasDue = true;
-                    const expStatus = checkExpiry(s.validDate);
-                    if (expStatus === 'expired') hasExpired = true;
-                    if (expStatus === 'warn') hasWarn = true;
+                    if (s.feeStatus === 'Due') hasDue = true; const expStatus = checkExpiry(s.validDate);
+                    if (expStatus === 'expired') hasExpired = true; if (expStatus === 'warn') hasWarn = true;
                     if (!examQuery || (s.exam && s.exam.toLowerCase().includes(examQuery))) hasMatch = true;
                 });
 
@@ -979,22 +1033,14 @@
                 const div = document.createElement('div');
                 if (occupants.length > 0) {
                     let alertClass = 'allotted';
-                    if (hasExpired) alertClass = 'expired-alert';
-                    else if (hasWarn) alertClass = 'warn-alert';
-                    else if (hasDue) alertClass = 'due-alert';
-                    
-                    div.className = `seat ${alertClass}`;
-                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    if (hasExpired) alertClass = 'expired-alert'; else if (hasWarn) alertClass = 'warn-alert'; else if (hasDue) alertClass = 'due-alert';
+                    div.className = `seat ${alertClass}`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
                     occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
                     div.onclick = () => window.handleSeatClick(seatId);
                 } else {
                     if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
                     div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    div.onclick = () => { 
-                        window.switchTab('add'); 
-                        document.getElementById('seatNo').value = seatId; 
-                        if (selectedShift !== 'all') document.getElementById('shift').value = selectedShift;
-                    };
+                    div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; if (selectedShift !== 'all') document.getElementById('shift').value = selectedShift; };
                 }
                 container.appendChild(div);
             }
@@ -1002,8 +1048,7 @@
 
         window.allotSeat = function() {
             const seatNo = document.getElementById('seatNo').value.toUpperCase().trim(), name = document.getElementById('studentName').value;
-            if (!seatNo || !window.seatLayout.includes(seatNo)) return window.toast('⚠️ Invalid Seat Number.');
-            if (!name) return window.toast('⚠️ Name required');
+            if (!seatNo || !window.seatLayout.includes(seatNo)) return window.toast('⚠️ Invalid Seat Number.'); if (!name) return window.toast('⚠️ Name required');
 
             let shift = document.getElementById('shift').value === 'Custom' ? document.getElementById('customShift').value : document.getElementById('shift').value;
             const occupants = DB.getOccupants(seatNo);
@@ -1019,11 +1064,7 @@
             let initialPayments = []; const amt = document.getElementById('initialAmount').value;
             if(amt) initialPayments.push({ date: document.getElementById('admDate').value, amount: amt, mode: document.getElementById('initialMode').value });
 
-            DB.addStudent(seatNo, { 
-                id: Date.now().toString(), name, shift, phone: document.getElementById('phone').value || 'N/A', exam: document.getElementById('exam').value || 'General', 
-                admDate: document.getElementById('admDate').value, validDate: document.getElementById('validDate').value, 
-                feeStatus: document.getElementById('feeStatus').value, payments: initialPayments
-            });
+            DB.addStudent(seatNo, { id: Date.now().toString(), name, shift, phone: document.getElementById('phone').value || 'N/A', exam: document.getElementById('exam').value || 'General', admDate: document.getElementById('admDate').value, validDate: document.getElementById('validDate').value, feeStatus: document.getElementById('feeStatus').value, payments: initialPayments });
             
             ['seatNo', 'studentName', 'phone', 'exam', 'admDate', 'validDate', 'initialAmount', 'customShift'].forEach(id => document.getElementById(id).value = '');
             window.switchTab('map'); window.toast(`🎉 ${name} allocated!`);
@@ -1031,12 +1072,9 @@
 
         // --- WAITLIST LOGIC ---
         window.addWaitlist = function() {
-            const name = document.getElementById('waitName').value;
-            if(!name) return window.toast('⚠️ Name required');
-            DB.waitlist.push({ id: Date.now().toString(), name, phone: document.getElementById('waitPhone').value || 'N/A', shift: document.getElementById('waitShift').value, date: new Date().toISOString().split('T')[0] });
-            DB.save();
-            document.getElementById('waitName').value = ''; document.getElementById('waitPhone').value = '';
-            window.renderWaitlist(); window.toast("Added to waitlist");
+            const name = document.getElementById('waitName').value; if(!name) return window.toast('⚠️ Name required');
+            DB.waitlist.push({ id: Date.now().toString(), name, phone: document.getElementById('waitPhone').value || 'N/A', shift: document.getElementById('waitShift').value, date: new Date().toISOString().split('T')[0] }); DB.save();
+            document.getElementById('waitName').value = ''; document.getElementById('waitPhone').value = ''; window.renderWaitlist(); window.toast("Added to waitlist");
         }
         window.renderWaitlist = function() {
             const cont = document.getElementById('waitlistContainer'); cont.innerHTML = '';
@@ -1044,15 +1082,8 @@
             DB.waitlist.forEach(w => {
                 cont.innerHTML += `
                     <div class="list-item">
-                        <div>
-                            <strong style="font-size:14px; display:block;">${w.name}</strong>
-                            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${w.phone} • ${w.shift}</div>
-                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Listed: ${w.date}</div>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <button class="filter-btn" style="background:var(--primary); color:white; padding:6px 10px;" onclick="promoteWaitlist('${w.id}')">Allot Seat</button>
-                            <button class="filter-btn" style="background:transparent; border-color:var(--red); color:var(--red); padding:6px 10px;" onclick="removeWaitlist('${w.id}')">Remove</button>
-                        </div>
+                        <div><strong style="font-size:14px; display:block;">${w.name}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${w.phone} • ${w.shift}</div><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Listed: ${w.date}</div></div>
+                        <div style="display:flex; flex-direction:column; gap:6px;"><button class="filter-btn" style="background:var(--primary); color:white; padding:6px 10px;" onclick="promoteWaitlist('${w.id}')">Allot Seat</button><button class="filter-btn" style="background:transparent; border-color:var(--red); color:var(--red); padding:6px 10px;" onclick="removeWaitlist('${w.id}')">Remove</button></div>
                     </div>`;
             });
             document.getElementById('waitBadge').innerText = DB.waitlist.length;
@@ -1060,148 +1091,66 @@
         window.removeWaitlist = function(id) { DB.waitlist = DB.waitlist.filter(w => w.id !== id); DB.save(); window.renderWaitlist(); window.toast("Removed from waitlist"); }
         window.promoteWaitlist = function(id) {
             const student = DB.waitlist.find(w => w.id === id);
-            if(student) {
-                window.switchTab('add');
-                document.getElementById('studentName').value = student.name;
-                document.getElementById('phone').value = student.phone !== 'N/A' ? student.phone : '';
-                document.getElementById('shift').value = student.shift;
-                window.removeWaitlist(id);
-                window.toast("Fill seat number to complete.");
-            }
+            if(student) { window.switchTab('add'); document.getElementById('studentName').value = student.name; document.getElementById('phone').value = student.phone !== 'N/A' ? student.phone : ''; document.getElementById('shift').value = student.shift; window.removeWaitlist(id); window.toast("Fill seat number to complete."); }
         }
 
         // --- FINANCE LOGIC ---
-        window.switchFinView = function(view) {
-            document.getElementById('finIncomeView').classList.toggle('hidden', view !== 'income');
-            document.getElementById('finExpenseView').classList.toggle('hidden', view !== 'expense');
-            document.getElementById('btnShowIncome').classList.toggle('active', view === 'income');
-            document.getElementById('btnShowExpense').classList.toggle('active', view === 'expense');
-        }
+        window.switchFinView = function(view) { document.getElementById('finIncomeView').classList.toggle('hidden', view !== 'income'); document.getElementById('finExpenseView').classList.toggle('hidden', view !== 'expense'); document.getElementById('btnShowIncome').classList.toggle('active', view === 'income'); document.getElementById('btnShowExpense').classList.toggle('active', view === 'expense'); }
 
         window.addExpense = function() {
             const amt = document.getElementById('expAmount').value, date = document.getElementById('expDate').value, cat = document.getElementById('expCategory').value;
             if(!amt || !date || !cat) return window.toast("⚠️ Fill all expense details");
-            DB.expenses.push({ id: Date.now().toString(), date, amount: parseFloat(amt), category: cat });
-            DB.save();
-            document.getElementById('expAmount').value = ''; document.getElementById('expCategory').value = '';
-            window.calculateFinances(); window.toast("Expense saved");
+            DB.expenses.push({ id: Date.now().toString(), date, amount: parseFloat(amt), category: cat }); DB.save();
+            document.getElementById('expAmount').value = ''; document.getElementById('expCategory').value = ''; window.calculateFinances(); window.toast("Expense saved");
         }
         
         window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
 
         window.calculateFinances = function() {
-            const monthStr = document.getElementById('finMonth').value; // YYYY-MM
-            if(!monthStr) return;
-            
-            let totalIncome = 0, totalExpense = 0;
-            const incCont = document.getElementById('incomeLedgerContainer'); incCont.innerHTML = '';
-            const expCont = document.getElementById('expenseLedgerContainer'); expCont.innerHTML = '';
+            const monthStr = document.getElementById('finMonth').value; if(!monthStr) return;
+            let totalIncome = 0, totalExpense = 0; const incCont = document.getElementById('incomeLedgerContainer'); incCont.innerHTML = ''; const expCont = document.getElementById('expenseLedgerContainer'); expCont.innerHTML = '';
 
             let incomes = [];
-            for(let seatId of window.seatLayout) {
-                const occupants = DB.getOccupants(seatId);
-                occupants.forEach(s => {
-                    if(s.payments) {
-                        s.payments.forEach(p => {
-                            if(p.date.startsWith(monthStr)) {
-                                totalIncome += parseFloat(p.amount);
-                                incomes.push({ date: p.date, name: s.name, seat: seatId, amount: p.amount, mode: p.mode });
-                            }
-                        });
-                    }
-                });
-            }
+            for(let seatId of window.seatLayout) { const occupants = DB.getOccupants(seatId); occupants.forEach(s => { if(s.payments) { s.payments.forEach(p => { if(p.date.startsWith(monthStr)) { totalIncome += parseFloat(p.amount); incomes.push({ date: p.date, name: s.name, seat: seatId, amount: p.amount, mode: p.mode }); } }); } }); }
             
             incomes.sort((a,b) => new Date(b.date) - new Date(a.date));
             if(incomes.length === 0) incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded this month.</div>';
-            incomes.forEach(i => {
-                incCont.innerHTML += `
-                    <div class="list-item">
-                        <div>
-                            <strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong>
-                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${i.date} • Mode: ${i.mode}</div>
-                        </div>
-                        <span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span>
-                    </div>`;
-            });
+            incomes.forEach(i => { incCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${i.date} • Mode: ${i.mode}</div></div><span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span></div>`; });
 
-            let monthlyExps = DB.expenses.filter(e => e.date.startsWith(monthStr));
-            monthlyExps.sort((a,b) => new Date(b.date) - new Date(a.date));
-            monthlyExps.forEach(e => {
-                totalExpense += e.amount;
-                expCont.innerHTML += `
-                    <div class="list-item">
-                        <div>
-                            <strong style="font-size:13px; display:block;">${e.category}</strong>
-                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${e.date}</div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span>
-                            <button style="background:none; border:none; color:var(--text-muted); cursor:pointer;" onclick="removeExpense('${e.id}')">×</button>
-                        </div>
-                    </div>`;
-            });
+            let monthlyExps = DB.expenses.filter(e => e.date.startsWith(monthStr)); monthlyExps.sort((a,b) => new Date(b.date) - new Date(a.date));
+            monthlyExps.forEach(e => { totalExpense += e.amount; expCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${e.category}</strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${e.date}</div></div><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span><button style="background:none; border:none; color:var(--text-muted); cursor:pointer;" onclick="removeExpense('${e.id}')">×</button></div></div>`; });
             if(monthlyExps.length === 0) expCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No expenses recorded.</div>';
 
-            document.getElementById('finIncome').innerText = `₹${totalIncome}`;
-            document.getElementById('finExpense').innerText = `₹${totalExpense}`;
-            document.getElementById('finProfit').innerText = `₹${totalIncome - totalExpense}`;
+            document.getElementById('finIncome').innerText = `₹${totalIncome}`; document.getElementById('finExpense').innerText = `₹${totalExpense}`; document.getElementById('finProfit').innerText = `₹${totalIncome - totalExpense}`;
         }
 
         // --- MODALS & SETTINGS ---
         window.openSettingsModal = function() {
-            hideAllModalSections();
-            document.getElementById('cfgLibName').value = appConfig.libraryName;
-            document.getElementById('cfgTotalSeats').value = appConfig.totalSeats;
-            document.getElementById('cfgCustomSeats').value = appConfig.customSeats.join(', ');
-            document.getElementById('cfgShifts').value = appConfig.shifts.join('\n');
-            triggerModalAnimation('modalSettingsSection'); document.getElementById('detailsModal').style.display = 'flex';
+            hideAllModalSections(); document.getElementById('cfgLibName').value = appConfig.libraryName; document.getElementById('cfgTotalSeats').value = appConfig.totalSeats; document.getElementById('cfgCustomSeats').value = appConfig.customSeats.join(', '); document.getElementById('cfgShifts').value = appConfig.shifts.join('\n'); triggerModalAnimation('modalSettingsSection'); document.getElementById('detailsModal').style.display = 'flex';
         }
         window.saveSettings = function() {
-            appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "LibSync Pro";
-            appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 86;
-            appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s);
-            appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s);
-            DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName;
-            window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!');
+            appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "LibSync Pro"; appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 86; appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s); appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s); DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!');
         }
 
         function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'modalAdminWorkspaceView'].forEach(id => { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('modal-animate'); }); }
         function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
 
-        window.handleSeatClick = function(seatNo) {
-            window.activeSeatNo = seatNo; const occupants = DB.getOccupants(seatNo);
-            if(occupants.length === 1) window.openStudentProfile(occupants[0].id); else window.showListMenu();
-            document.getElementById('detailsModal').style.display = 'flex';
-        }
+        window.handleSeatClick = function(seatNo) { window.activeSeatNo = seatNo; const occupants = DB.getOccupants(seatNo); if(occupants.length === 1) window.openStudentProfile(occupants[0].id); else window.showListMenu(); document.getElementById('detailsModal').style.display = 'flex'; }
         window.showListMenu = function() {
-            hideAllModalSections(); document.getElementById('listSeatNo').innerText = window.activeSeatNo;
-            const listCont = document.getElementById('occupantsContainer'); listCont.innerHTML = '';
-            DB.getOccupants(window.activeSeatNo).forEach(s => {
-                let badgeColor = s.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
-                listCont.innerHTML += `
-                    <div class="list-item" style="cursor:pointer;" onclick="openStudentProfile('${s.id}')">
-                        <div><strong style="display:block; font-size:14px;">${s.name}</strong>
-                        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.shift}</div></div>
-                        <span class="badge" style="background:${badgeColor};">${s.feeStatus}</span>
-                    </div>`;
-            });
+            hideAllModalSections(); document.getElementById('listSeatNo').innerText = window.activeSeatNo; const listCont = document.getElementById('occupantsContainer'); listCont.innerHTML = '';
+            DB.getOccupants(window.activeSeatNo).forEach(s => { let badgeColor = s.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)'; listCont.innerHTML += `<div class="list-item" style="cursor:pointer;" onclick="openStudentProfile('${s.id}')"><div><strong style="display:block; font-size:14px;">${s.name}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.shift}</div></div><span class="badge" style="background:${badgeColor};">${s.feeStatus}</span></div>`; });
             triggerModalAnimation('modalListSection');
         }
         window.openStudentProfile = function(studentId) {
             window.activeStudentId = studentId; hideAllModalSections(); window.isDeleteConfirmStep = false;
             const rmvBtn = document.getElementById('btnRemoveStudent'); if(rmvBtn) { rmvBtn.innerText = "Remove"; rmvBtn.style.background = "var(--red)"; }
-            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === studentId);
-            document.getElementById('modSeatTitle').innerText = window.activeSeatNo;
+            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === studentId); document.getElementById('modSeatTitle').innerText = window.activeSeatNo;
             ['Name','Phone','Shift','Exam','Date','Valid'].forEach(k => document.getElementById('mod'+k).innerText = student[k.toLowerCase() === 'date' ? 'admDate' : k.toLowerCase() === 'valid' ? 'validDate' : k.toLowerCase()] || 'N/A');
             const feeEl = document.getElementById('modFee'); feeEl.innerText = student.feeStatus; feeEl.style.background = student.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
-            
             const ledger = document.getElementById('paymentLedger'); ledger.innerHTML = '';
             if(!student.payments || student.payments.length === 0) ledger.innerHTML = '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No history.</div>';
             else { [...student.payments].reverse().forEach(p => { ledger.innerHTML += `<div class="info-row"><div style="font-size:11px;"><strong style="color:var(--text-main); display:block;">${p.date}</strong>${p.mode}</div><div style="color:var(--green); font-weight:700;">₹${p.amount}</div></div>`; }); }
-            
-            const btnBack = document.getElementById('btnViewBack');
-            if(DB.getOccupants(window.activeSeatNo).length > 1) { btnBack.innerHTML = "Back"; btnBack.onclick = window.backToListOrClose; } else { btnBack.innerHTML = "Close"; btnBack.onclick = window.closeModal; }
+            const btnBack = document.getElementById('btnViewBack'); if(DB.getOccupants(window.activeSeatNo).length > 1) { btnBack.innerHTML = "Back"; btnBack.onclick = window.backToListOrClose; } else { btnBack.innerHTML = "Close"; btnBack.onclick = window.closeModal; }
             triggerModalAnimation('modalViewSection');
         }
 
@@ -1211,8 +1160,7 @@
 
         window.showEditForm = function() {
             hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId);
-            ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => document.getElementById('edit'+k).value = student[k.charAt(0).toLowerCase() + k.slice(1)] || '');
-            triggerModalAnimation('modalEditSection');
+            ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => document.getElementById('edit'+k).value = student[k.charAt(0).toLowerCase() + k.slice(1)] || ''); triggerModalAnimation('modalEditSection');
         }
         window.saveEdit = function() {
             const d = {}; ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value);
@@ -1222,9 +1170,7 @@
 
         window.showPaymentForm = function() {
             hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId);
-            document.getElementById('payStudentName').innerText = student.name; document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('payAmount').value = ''; document.getElementById('payValidDate').value = student.validDate || ''; document.getElementById('payFeeStatus').value = 'Paid';
-            triggerModalAnimation('modalPaySection');
+            document.getElementById('payStudentName').innerText = student.name; document.getElementById('payDate').value = new Date().toISOString().split('T')[0]; document.getElementById('payAmount').value = ''; document.getElementById('payValidDate').value = student.validDate || ''; document.getElementById('payFeeStatus').value = 'Paid'; triggerModalAnimation('modalPaySection');
         }
         window.hidePaymentForm = function() { window.openStudentProfile(window.activeStudentId); }
         window.savePayment = function() {
@@ -1235,32 +1181,20 @@
 
         window.freeStudentSlot = function() {
             const btn = document.getElementById('btnRemoveStudent');
-            if (!window.isDeleteConfirmStep) {
-                window.isDeleteConfirmStep = true; btn.innerText = "Tap Again to Delete"; btn.style.background = "#991b1b"; 
-                setTimeout(() => { if (window.isDeleteConfirmStep) { window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)"; } }, 4000); return;
-            }
-            DB.removeStudent(window.activeSeatNo, window.activeStudentId); window.renderSeats(); window.calculateFinances(); window.toast(`🗑️ Removed.`);
-            window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)";
+            if (!window.isDeleteConfirmStep) { window.isDeleteConfirmStep = true; btn.innerText = "Tap Again to Delete"; btn.style.background = "#991b1b"; setTimeout(() => { if (window.isDeleteConfirmStep) { window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)"; } }, 4000); return; }
+            DB.removeStudent(window.activeSeatNo, window.activeStudentId); window.renderSeats(); window.calculateFinances(); window.toast(`🗑️ Removed.`); window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)";
             if(DB.getOccupants(window.activeSeatNo).length > 0) window.showListMenu(); else window.closeModal();
         }
 
         window.exportData = function() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ config: appConfig, seatsData: DB.seatsData, expenses: DB.expenses, waitlist: DB.waitlist }));
-            const a = document.createElement('a'); a.href = dataStr; a.download = `LibSync_Backup_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!");
+            const a = document.createElement('a'); a.href = dataStr; a.download = `LibSync_Backup_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!");
         }
         window.importData = function(input) {
             const reader = new FileReader();
             reader.onload = function(){
-                try {
-                    const obj = JSON.parse(reader.result);
-                    if(obj.config) { appConfig = obj.config; DB.seatsData = obj.seatsData || {}; DB.expenses = obj.expenses || []; DB.waitlist = obj.waitlist || []; } 
-                    else { DB.seatsData = obj; }
-                    DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName;
-                    window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); window.closeModal(); window.toast("📤 Data Restored to Cloud!"); 
-                } catch(e) { window.toast("⚠️ Error reading backup"); }
-            };
-            if(input.files[0]) reader.readAsText(input.files[0]);
+                try { const obj = JSON.parse(reader.result); if(obj.config) { appConfig = obj.config; DB.seatsData = obj.seatsData || {}; DB.expenses = obj.expenses || []; DB.waitlist = obj.waitlist || []; } else { DB.seatsData = obj; } DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); window.closeModal(); window.toast("📤 Data Restored to Cloud!"); } catch(e) { window.toast("⚠️ Error reading backup"); }
+            }; if(input.files[0]) reader.readAsText(input.files[0]);
         }
         window.toggleCustomShift = function(selectId, inputId) { document.getElementById(inputId).classList.toggle('hidden', document.getElementById(selectId).value !== 'Custom'); }
     </script>
