@@ -838,8 +838,8 @@
 
         // --- REAL-TIME BROADCAST LISTENER (SYSTEM NOTIFICATIONS) ---
         function listenForBroadcasts() {
-            // FIX: Pointing to exact document mapping
-            const docRef = db.doc(`artifacts/${globalAppId}/public/data/broadcast`);
+            // FIX: Pointing to exact document mapping (added /latest to make it 6 segments)
+            const docRef = db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`);
             unsubscribeBroadcast = docRef.onSnapshot((docSnap) => {
                 const banner = document.getElementById('broadcastBanner');
                 const bannerText = document.getElementById('broadcastText');
@@ -868,7 +868,8 @@
         window.saveBroadcast = async function() {
             const msg = document.getElementById('adminBroadcastMsg').value.trim();
             if (!msg) return window.toast("⚠️ Enter message to broadcast!");
-            await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).set({
+            // FIX: Added /latest
+            await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({
                 message: msg,
                 active: true,
                 updatedAt: new Date().toISOString()
@@ -877,7 +878,8 @@
         };
 
         window.clearBroadcast = async function() {
-            await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).set({ active: false });
+            // FIX: Added /latest
+            await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ active: false });
             document.getElementById('adminBroadcastMsg').value = '';
             window.toast("📢 Announcement deactivated.");
         };
@@ -888,7 +890,8 @@
             
             try {
                 try {
-                    const bSnap = await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).get();
+                    // FIX: Added /latest
+                    const bSnap = await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).get();
                     if (bSnap.exists && bSnap.data().active) {
                         document.getElementById('adminBroadcastMsg').value = bSnap.data().message || '';
                     }
