@@ -1,6 +1,6 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LibSync Pro - Library SaaS</title>
@@ -473,7 +473,7 @@
         </div>
     </div>
 
-    <!-- DETAILS MODAL (View/Edit Student & Admin Functions) -->
+    <!-- DETAILS MODAL -->
     <div id="detailsModal" class="modal">
         <div class="modal-content hidden" id="modalViewSection">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); padding-bottom:10px; margin-bottom:10px;">
@@ -565,7 +565,7 @@
             </div>
         </div>
 
-        <!-- ADMIN USER MANAGE MODAL (ONLY FOR ADMIN) -->
+        <!-- ADMIN USER MANAGE MODAL -->
         <div class="modal-content hidden" id="adminUserSection">
             <h3 style="margin-top:0; color:var(--primary);">Manage Workspace</h3>
             <p style="font-size:14px; font-weight:600; margin-bottom:2px;" id="adminModUsername"></p>
@@ -597,7 +597,7 @@
             <button class="action-btn" style="background:var(--text-muted); margin-top:15px;" onclick="closeModal()">Close Panel</button>
         </div>
 
-        <!-- READ-ONLY VISUAL MATRIX INSPECTOR (FOR ADMIN TROUBLESHOOTING) -->
+        <!-- READ-ONLY VISUAL MATRIX INSPECTOR -->
         <div class="modal-content hidden" id="adminInspectSection" style="max-width: 650px;">
             <h3 style="margin-top:0; color:var(--primary);">Inspecting: <span id="inspectLibName"></span></h3>
             <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">Real-time read-only inspection matrix loaded securely from Firestore paths.</p>
@@ -623,7 +623,10 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const globalAppId = typeof __app_id !== 'undefined' ? __app_id : 'library-saas';
+        
+        // Clean and Sanitize Injected App ID to guarantee perfect Firestore compatibility
+        const rawAppId = (typeof __app_id !== 'undefined' && __app_id) ? __app_id : 'library-saas';
+        const globalAppId = rawAppId.replace(/[^a-zA-Z0-9_]/g, '_');
         const ADMIN_UID = 'cwBkWqFBuHeqpLyNBKdQSeF1iu83';
         
         let currentUser = null;
@@ -717,7 +720,7 @@
                     window.toast(`Welcome to the Admin Hub!`);
                 } else {
                     try {
-                        // Check subscription status BEFORE letting them in, catching permission errors gracefully
+                        // Check subscription status BEFORE letting standard users in, catching permissions cleanly
                         const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
                         let isInactive = false;
                         
@@ -729,25 +732,23 @@
                                     isInactive = true;
                                 }
                             } else {
-                                // Dynamically generate active/trial status if document doesn't exist
+                                // Default document initiation for newly logged standard accounts
                                 await subRef.set({
                                     status: 'trialing',
-                                    validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 7 Days Free Trial
+                                    validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                                     history: []
                                 }, { merge: true });
                             }
                         } catch(dbErr) {
-                            // If security rules or collections fail to evaluate, fail-open to let standard users continue
-                            console.warn("Evaluating Subscription Status asynchronously failed. Defaulting to Active:", dbErr);
+                            console.warn("Evaluating Subscription asynchronously bypassed. Defaulting to Active:", dbErr);
                         }
                         
                         if (isInactive) {
                             window.toast("⚠️ Your workspace subscription has expired or is inactive.");
-                            auth.signOut(); // Kick them out
+                            auth.signOut();
                             return;
                         }
                         
-                        // Proceed to launch workspace normally
                         document.getElementById('authScreen').style.display = 'none';
                         document.getElementById('adminApp').style.display = 'none';
                         document.getElementById('mainApp').style.display = 'block';
@@ -759,7 +760,7 @@
                         
                     } catch(err) {
                         console.error("Auth routing error:", err);
-                        window.toast("Error verifying workspace status.");
+                        window.toast("Error verifying workspace: " + (err.message || "Unknown"));
                         auth.signOut();
                     }
                 }
@@ -810,7 +811,6 @@
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
                 localStorage.setItem('lib_admin_' + username.toLowerCase(), email);
                 
-                // Map username for Admin visibility
                 await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username.toLowerCase()}`).set({
                     email: email, uid: cred.user.uid
                 });
@@ -838,6 +838,7 @@
 
         // --- REAL-TIME BROADCAST LISTENER (SYSTEM NOTIFICATIONS) ---
         function listenForBroadcasts() {
+            // FIX: Pointing to exact document mapping
             const docRef = db.doc(`artifacts/${globalAppId}/public/data/broadcast`);
             unsubscribeBroadcast = docRef.onSnapshot((docSnap) => {
                 const banner = document.getElementById('broadcastBanner');
@@ -854,7 +855,7 @@
                     banner.classList.add('hidden');
                 }
             }, (error) => {
-                console.warn("Broadcast channel initialization skipped (Check Security Rules):", error);
+                console.warn("Broadcast channels read-only exception catch:", error);
             });
         }
 
@@ -886,22 +887,20 @@
             cont.innerHTML = '<div style="text-align:center; padding:20px; font-size:13px;">Fetching SaaS workspaces...</div>';
             
             try {
-                // Fetch broadcast info safely
                 try {
                     const bSnap = await db.doc(`artifacts/${globalAppId}/public/data/broadcast`).get();
                     if (bSnap.exists && bSnap.data().active) {
                         document.getElementById('adminBroadcastMsg').value = bSnap.data().message || '';
                     }
-                } catch(e) { console.warn("Broadcast config unreachable."); }
+                } catch(e) { console.warn("Broadcast configs unreachable."); }
 
-                // Fetch registered users mapping
                 const mapRef = db.collection(`artifacts/${globalAppId}/public/data/usernameMap`);
                 const snap = await mapRef.get();
                 
                 let workspacesCount = 0;
                 let activePremiumCount = 0;
                 let monthRevenue = 0;
-                const currentMonth = new Date().toISOString().substring(0, 7); // YYYY-MM
+                const currentMonth = new Date().toISOString().substring(0, 7); 
                 
                 let html = '';
                 const promises = [];
@@ -915,7 +914,7 @@
                         let libMainSnap;
                         try {
                             libMainSnap = await db.doc(`artifacts/${globalAppId}/users/${data.uid}/libraryData/main`).get();
-                        } catch(e) { console.warn("User workspace main file unreachable:", data.uid); }
+                        } catch(e) { console.warn("User main file inaccessible synchronously:", data.uid); }
                         
                         const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: 'No End Date', history: [] };
                         const libData = (libMainSnap && libMainSnap.exists) ? libMainSnap.data() : { config: {} };
@@ -938,25 +937,21 @@
                 const workspaceProfiles = await Promise.all(promises);
 
                 workspaceProfiles.forEach(prof => {
-                    // Update dynamic SaaS revenue (this month)
                     prof.history.forEach(tx => {
                         if (tx.date && tx.date.startsWith(currentMonth)) {
                             monthRevenue += parseFloat(tx.amount || 0);
                         }
                     });
 
-                    // Update Sub Counts
                     if (prof.status === 'active' || prof.status === 'trialing') {
                         activePremiumCount++;
                     }
 
-                    // Format Badge Theme
                     let badgeBg = 'var(--yellow)';
                     let statusLabel = 'Trialing';
                     if (prof.status === 'active') { badgeBg = 'var(--green)'; statusLabel = 'Active Premium'; }
                     else if (prof.status === 'inactive') { badgeBg = 'var(--red)'; statusLabel = 'Expired'; }
 
-                    // Package details into temporary string to inspect workspace
                     const safeConfigStr = encodeURIComponent(JSON.stringify(prof.libConfig || {}));
                     const safeSeatsStr = encodeURIComponent(JSON.stringify(prof.seatsData || {}));
 
@@ -988,7 +983,7 @@
                 cont.innerHTML = html || '<div style="text-align:center; font-size:13px; color:var(--text-muted);">No workspaces configured.</div>';
 
             } catch(e) {
-                // RENDER EXTREMELY HELPFUL STEP-BY-STEP COPYABLE FIRESTORE RULES FOR THE ADMIN USER
+                // EXTREMELY HELPFUL CUSTOM STEP-BY-STEP RULES INJECTOR
                 cont.innerHTML = `
                     <div style="padding: 20px; text-align: left; background: rgba(239, 68, 68, 0.08); border: 1px solid var(--red); border-radius: 16px; color: var(--text-main); margin-top: 5px;" class="animate-in">
                         <h4 style="margin-top:0; color: var(--red); font-size: 15px; font-weight: 700; display:flex; align-items:center; gap:6px;">
@@ -1013,7 +1008,7 @@ service cloud.firestore {
         allow read: if request.auth != null;
         allow write: if request.auth != null;
       }
-      match /public/data/broadcast {
+      match /public/data/broadcast/{docId} {
         allow read: if request.auth != null;
         allow write: if isAdmin();
       }
@@ -1028,6 +1023,7 @@ service cloud.firestore {
                     </div>
                 `;
                 console.error("Admin workspace dashboard access blocked:", e);
+                window.toast("Admin load error: " + (e.message || "Unknown"));
             }
         };
 
@@ -1175,7 +1171,6 @@ service cloud.firestore {
             const total = parseInt(config.totalSeats) || 20;
             const customs = config.customSeats || [];
             
-            // Build temporary inspected layout
             const inspectLayout = [];
             for (let i = 1; i <= total; i++) {
                 inspectLayout.push(i.toString());
@@ -1652,4 +1647,4 @@ service cloud.firestore {
         window.toggleCustomShift = function(selectId, inputId) { document.getElementById(inputId).classList.toggle('hidden', document.getElementById(selectId).value !== 'Custom'); }
     </script>
 </body>
-</html> 
+</html>
