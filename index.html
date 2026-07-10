@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LibSync Pro - Library SaaS</title>
@@ -25,11 +25,6 @@
             
             --text-main: #1e293b; --text-muted: #64748b;
             --primary: #2563eb; --green: #10b981; --orange: #f59e0b; --red: #ef4444; --yellow: #eab308;
-            
-            /* Cohesive Auth Colors */
-            --auth-btn-bg: #2d4c3b;
-            --auth-btn-hover: #1e3628;
-            --auth-text: #1a1a1a;
         }
 
         .dark-theme {
@@ -44,9 +39,6 @@
 
             --text-main: #f8fafc; --text-muted: #94a3b8;
             --primary: #3b82f6; --green: #10b981; --orange: #f59e0b; --red: #ef4444; --yellow: #eab308;
-            --auth-btn-bg: #3b82f6;
-            --auth-btn-hover: #2563eb;
-            --auth-text: #f8fafc;
         }
 
         body { font-family: 'Poppins', sans-serif; background: var(--bg-grad); background-attachment: fixed; color: var(--text-main); margin: 0; padding: 10px 10px 60px 10px; transition: background 0.4s ease, color 0.4s ease; min-height: 100vh; }
@@ -56,64 +48,99 @@
             #addSeatTab, #waitlistTab, #financeTab, #adminApp { max-width: 750px; margin: 0 auto; }
         }
 
-        /* --- AUTHENTICATION UI STYLES --- */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
+        /* --- MODERN AUTHENTICATION UI STYLES (MATCHING DESIGN) --- */
         #authScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
-            background: var(--bg-grad);
-            background-size: 200% 200%;
-            animation: gradientBG 15s ease infinite;
-            display: flex; justify-content: center; align-items: center;
+            /* Beautiful Mesh Gradient mimicking the image */
+            background-color: #6366f1;
+            background-image:
+                radial-gradient(at 0% 100%, #4f46e5 0px, transparent 60%),
+                radial-gradient(at 80% 0%, #7dd3fc 0px, transparent 60%),
+                radial-gradient(at 0% 0%, #818cf8 0px, transparent 60%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .auth-container { width: 100%; height: 100%; display: flex; position: relative; overflow: hidden; }
-        .auth-left {
-            width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
-            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            position: relative; z-index: 10;
+        .auth-header-bar {
+            position: absolute; top: 30px; left: 30px;
+            display: flex; align-items: center; gap: 5px;
+            color: white; font-size: 14px; font-weight: 500; cursor: pointer;
         }
-        .paper-cut-svg { display: none; }
+        .auth-header-bar svg { width: 16px; height: 16px; }
 
-        .auth-card { width: 100%; max-width: 400px; padding: 40px; box-sizing: border-box; text-align: center; }
-        .auth-card h2 { color: var(--auth-text); font-weight: 700; font-size: 28px; margin-bottom: 30px; letter-spacing: -0.5px; }
+        .auth-brand-logo {
+            display: flex; align-items: center; gap: 8px;
+            color: white; font-size: 20px; font-weight: 700;
+            margin-bottom: 25px; z-index: 10; letter-spacing: 1px;
+        }
+        .auth-brand-logo svg { width: 24px; height: 24px; color: white; }
+
+        .auth-card-modern {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+        .auth-card-modern h2 {
+            color: #1e293b; font-size: 24px; font-weight: 700;
+            margin-top: 0; margin-bottom: 8px;
+        }
+        .auth-card-modern p {
+            color: #94a3b8; font-size: 12px;
+            margin-top: 0; margin-bottom: 30px; font-weight: 500;
+        }
         
-        .auth-input-group { text-align: left; margin-bottom: 20px; }
-        .auth-input-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
-        .auth-input { 
-            width: 100%; padding: 12px 18px; border: 1px solid var(--glass-border); background: var(--glass-input-bg);
-            border-radius: 12px; outline: none; font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--auth-text);
-            box-sizing: border-box; transition: all 0.3s;
+        .auth-input-group { text-align: left; margin-bottom: 16px; }
+        .auth-input-group label {
+            display: block; font-size: 12px; color: #1e293b;
+            font-weight: 600; margin-bottom: 8px;
         }
-        .auth-input:focus { border-color: var(--auth-btn-bg); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
-        
-        .auth-main-btn {
-            width: 100%; padding: 14px; background: var(--auth-btn-bg); color: white; border: none;
-            border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2); transition: all 0.3s ease; margin-top: 10px; font-family: 'Poppins', sans-serif;
+        .auth-input-modern {
+            width: 100%; padding: 12px 14px; border: 1px solid #e2e8f0;
+            border-radius: 8px; font-size: 13px; color: #1e293b;
+            background: #ffffff; outline: none; transition: all 0.2s;
+            font-family: inherit; box-sizing: border-box;
         }
-        .auth-main-btn:hover { background: var(--auth-btn-hover); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); }
-        .auth-main-btn:active { transform: translateY(0); }
+        .auth-input-modern::placeholder { color: #cbd5e1; }
+        .auth-input-modern:focus { border-color: #6366f1; }
 
-        .auth-divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: var(--text-muted); font-size: 11px; }
-        .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--glass-border); }
-        .auth-divider span { padding: 0 10px; }
-
-        .auth-footer-link { font-size: 12px; color: var(--text-muted); margin-top: 20px; display: block; cursor: pointer; font-weight:500; transition: color 0.2s; }
-        .auth-footer-link:hover { color: var(--auth-btn-bg); }
-
-        @media (max-width: 767px) {
-            .auth-left { border: 1px solid var(--glass-border); border-radius: 30px; width: 90%; height: auto; padding: 20px 0; margin: auto; box-shadow: var(--glass-shadow); }
+        .password-wrapper { position: relative; display: flex; align-items: center; }
+        .password-wrapper input { padding-right: 40px; }
+        .password-toggle {
+            position: absolute; right: 12px; color: #94a3b8; cursor: pointer;
+            width: 18px; height: 18px; transition: color 0.2s;
         }
-        @media (min-width: 768px) {
-            .auth-left { width: 45%; max-width: 600px; border-radius: 0; align-items: center; z-index: 10; box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
-            .paper-cut-svg { display: block; position: absolute; right: -99px; top: 0; width: 100px; height: 100%; z-index: 9; }
-            .auth-card { padding: 0 60px; max-width: 500px;}
+        .password-toggle:hover { color: #6366f1; }
+
+        .btn-primary {
+            width: 100%; background: #5b68df; color: #fff;
+            padding: 14px; border-radius: 8px; border: none;
+            font-weight: 600; font-size: 14px; cursor: pointer;
+            transition: background 0.2s; font-family: inherit; margin-top: 5px;
         }
+        .btn-primary:hover { background: #4a56c4; }
+
+        .btn-google {
+            width: 100%; background: #fff; color: #475569;
+            padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0;
+            font-weight: 600; font-size: 14px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; margin-top: 15px; transition: background 0.2s; font-family: inherit;
+        }
+        .btn-google:hover { background: #f8fafc; }
+
+        .auth-bottom-text {
+            margin-top: 25px; font-size: 12px; color: #64748b; font-weight: 500;
+        }
+        .auth-bottom-text span {
+            color: #5b68df; font-weight: 600; cursor: pointer; transition: color 0.2s;
+        }
+        .auth-bottom-text span:hover { color: #4a56c4; }
 
         /* --- EXISTING MAIN APP STYLES --- */
         @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -145,8 +172,8 @@
         .filter-btn { border: 1px solid var(--glass-border); padding: 6px 12px; font-size: 11px; font-weight: 600; background: var(--glass-bg); color: var(--text-main); border-radius: 20px; cursor: pointer; }
         .filter-btn.active { background: var(--primary); color: white; border-color: transparent; }
 
-        label { font-size: 13px; font-weight: 600; display: block; margin-top: 12px; margin-bottom: 4px; color: var(--text-main); }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 10px; font-size: 13px; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        label.app-label { font-size: 13px; font-weight: 600; display: block; margin-top: 12px; margin-bottom: 4px; color: var(--text-main); }
+        .app-input { width: 100%; padding: 12px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 10px; font-size: 13px; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         .action-btn { width: 100%; padding: 14px; margin-top: 15px; border: none; border-radius: 10px; background: var(--primary); color: white; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-family: 'Poppins', sans-serif; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 6px; }
         .action-btn:active { transform: scale(0.96); }
 
@@ -195,17 +222,17 @@
         }
         .driver-popover-title {
             font-size: 18px !important;
-            color: #38bdf8 !important; /* Tailwind Light Blue */
+            color: #38bdf8 !important; 
             font-weight: 700 !important;
             margin-bottom: 8px !important;
         }
         .driver-popover-description {
-            color: #cbd5e1 !important; /* Tailwind Slate 300 */
+            color: #cbd5e1 !important; 
             font-size: 14px !important;
             line-height: 1.5 !important;
         }
         .driver-popover-navigation-btns button {
-            background: #3b82f6 !important; /* Tailwind Blue */
+            background: #3b82f6 !important; 
             color: white !important;
             border: none !important;
             text-shadow: none !important;
@@ -224,81 +251,101 @@
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen">
-        <div class="auth-container">
-            <div class="auth-left">
-                <!-- Desktop Layered Paper Cut SVG -->
-                <svg class="paper-cut-svg" viewBox="0 0 100 1000" preserveAspectRatio="none">
-                    <defs>
-                        <filter id="shadow-dark" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="8" dy="0" stdDeviation="10" flood-color="#000" flood-opacity="0.15"/>
-                        </filter>
-                        <filter id="shadow-light" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="5" dy="0" stdDeviation="5" flood-color="#000" flood-opacity="0.05"/>
-                        </filter>
-                    </defs>
-                    <path d="M0,0 L40,0 C90,200 -10,400 40,650 C90,900 40,1000 40,1000 L0,1000 Z" fill="var(--glass-border)" filter="url(#shadow-dark)"/>
-                    <path d="M0,0 L20,0 C70,200 -30,400 20,650 C70,900 20,1000 20,1000 L0,1000 Z" fill="var(--glass-bg)" filter="url(#shadow-light)"/>
-                </svg>
+        
+        <div class="auth-header-bar" onclick="alert('Navigating to homepage...')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            Home page
+        </div>
 
-                <div class="auth-card">
-                    <h2 id="authTitle">Log in</h2>
-                    
-                    <!-- LOGIN FORM -->
-                    <div id="loginForm" class="animate-in">
-                        <div class="auth-input-group">
-                            <label>Admin ID or Email</label>
-                            <input type="text" id="loginId" class="auth-input" placeholder="Enter ID or Email">
-                        </div>
-                        <div class="auth-input-group">
-                            <label>Password</label>
-                            <input type="password" id="loginPassword" class="auth-input" placeholder="Enter your password">
-                        </div>
-                        
-                        <div style="display:flex; justify-content:flex-end; margin-bottom: 15px;">
-                            <span class="auth-footer-link" style="margin-top:0;" onclick="toggleAuthMode('reset')">Forgot password?</span>
-                        </div>
+        <div class="auth-brand-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+            </svg>
+            LIBSYNC
+        </div>
 
-                        <button class="auth-main-btn" onclick="loginUser()">Log in</button>
-                        <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
-                        
-                        <div class="auth-divider"><span>or create new workspace</span></div>
-                        <span class="auth-footer-link" onclick="toggleAuthMode('signup')">Don't have an account? Sign up</span>
+        <div class="auth-card-modern">
+            <h2 id="authTitle">Welcome Back!</h2>
+            <p id="authSubtitle">We missed you! Please enter your details.</p>
+            
+            <!-- LOGIN FORM -->
+            <div id="loginForm" class="animate-in">
+                <div class="auth-input-group">
+                    <label>Email</label>
+                    <input type="text" id="loginId" class="auth-input-modern" placeholder="Enter your Email">
+                </div>
+                <div class="auth-input-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" class="auth-input-modern" placeholder="Enter Password">
+                        <svg id="eyeIconLogin" class="password-toggle" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
                     </div>
+                </div>
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:#64748b; font-weight:normal; margin:0; cursor:pointer;">
+                        <input type="checkbox" style="width:auto; margin:0; cursor:pointer;"> Remember me
+                    </label>
+                    <span style="font-size:12px; color:#5b68df; font-weight:600; cursor:pointer; transition:color 0.2s;" onclick="toggleAuthMode('reset')" onmouseover="this.style.color='#4a56c4'" onmouseout="this.style.color='#5b68df'">Forgot password?</span>
+                </div>
 
-                    <!-- SIGNUP FORM -->
-                    <div id="signupForm" class="hidden animate-in">
-                        <div class="auth-input-group">
-                            <label>Admin ID (Username)</label>
-                            <input type="text" id="signupUsername" class="auth-input" placeholder="e.g. manager123">
-                        </div>
-                        <div class="auth-input-group">
-                            <label>Email address</label>
-                            <input type="email" id="signupEmail" class="auth-input" placeholder="Enter your email">
-                        </div>
-                        <div class="auth-input-group">
-                            <label>Create Password</label>
-                            <input type="password" id="signupPassword" class="auth-input" placeholder="Create a password">
-                        </div>
-                        <button class="auth-main-btn" onclick="signupUser()">Create Account</button>
-                        <p id="signupError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
-                        
-                        <div class="auth-divider"><span>already registered?</span></div>
-                        <span class="auth-footer-link" onclick="toggleAuthMode('login')">Log in instead</span>
-                    </div>
+                <button class="btn-primary" onclick="loginUser()">Sign in</button>
+                <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 5px; min-height:15px; font-weight:500;"></p>
+                
+                <button class="btn-google" onclick="alert('Google Auth is conceptually shown for UI purposes.')">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Sign in with google
+                </button>
 
-                    <!-- RESET PASSWORD FORM -->
-                    <div id="resetForm" class="hidden animate-in">
-                        <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px; line-height:1.5;">Enter the recovery email address associated with your account to receive a secure password reset link.</p>
-                        <div class="auth-input-group">
-                            <label>Recovery Email address</label>
-                            <input type="email" id="resetEmail" class="auth-input" placeholder="Enter recovery email">
-                        </div>
-                        <button class="auth-main-btn" onclick="resetPassword()">Send Reset Link</button>
-                        <p id="resetError" style="color:var(--red); font-size: 12px; margin-top: 15px; min-height:15px; font-weight:500;"></p>
-                        
-                        <div class="auth-divider"><span>back to safety</span></div>
-                        <span class="auth-footer-link" onclick="toggleAuthMode('login')">Return to Log in</span>
+                <div class="auth-bottom-text">
+                    Don't have an account? <span onclick="toggleAuthMode('signup')">Sign up</span>
+                </div>
+            </div>
+
+            <!-- SIGNUP FORM -->
+            <div id="signupForm" class="hidden animate-in">
+                <div class="auth-input-group">
+                    <label>Admin ID (Username)</label>
+                    <input type="text" id="signupUsername" class="auth-input-modern" placeholder="e.g. manager123">
+                </div>
+                <div class="auth-input-group">
+                    <label>Email address</label>
+                    <input type="email" id="signupEmail" class="auth-input-modern" placeholder="Enter your email">
+                </div>
+                <div class="auth-input-group">
+                    <label>Create Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="signupPassword" class="auth-input-modern" placeholder="Create a password">
+                        <svg id="eyeIconSignup" class="password-toggle" onclick="togglePasswordVisibility('signupPassword', 'eyeIconSignup')" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
                     </div>
+                </div>
+                
+                <button class="btn-primary" style="margin-top: 15px;" onclick="signupUser()">Sign up</button>
+                <p id="signupError" style="color:var(--red); font-size: 12px; margin-top: 5px; min-height:15px; font-weight:500;"></p>
+                
+                <div class="auth-bottom-text">
+                    Already registered? <span onclick="toggleAuthMode('login')">Log in instead</span>
+                </div>
+            </div>
+
+            <!-- RESET PASSWORD FORM -->
+            <div id="resetForm" class="hidden animate-in">
+                <div class="auth-input-group">
+                    <label>Recovery Email</label>
+                    <input type="email" id="resetEmail" class="auth-input-modern" placeholder="Enter recovery email">
+                </div>
+                
+                <button class="btn-primary" style="margin-top: 15px;" onclick="resetPassword()">Send Reset Link</button>
+                <p id="resetError" style="color:var(--red); font-size: 12px; margin-top: 5px; min-height:15px; font-weight:500;"></p>
+                
+                <div class="auth-bottom-text">
+                    Remembered it? <span onclick="toggleAuthMode('login')">Return to Log in</span>
                 </div>
             </div>
         </div>
@@ -338,9 +385,9 @@
         <div id="seatMapTab" class="animate-in">
             <div class="glass-panel" style="padding:12px;">
                 <div class="flex-row" style="margin-bottom:8px;">
-                    <input type="text" id="searchExam" class="search-box" style="margin-bottom:0; padding:10px; flex: 1;" placeholder="Search Exam..." oninput="applyFilters()">
+                    <input type="text" id="searchExam" class="app-input search-box" style="margin-bottom:0; padding:10px; flex: 1;" placeholder="Search Exam..." oninput="applyFilters()">
                     <!-- Shift Wise Seat Allotment Filter -->
-                    <select id="shiftFilter" class="search-box" style="margin-bottom:0; padding:10px; flex: 1;" onchange="applyFilters()">
+                    <select id="shiftFilter" class="app-input search-box" style="margin-bottom:0; padding:10px; flex: 1;" onchange="applyFilters()">
                         <option value="all">All Shifts</option>
                     </select>
                 </div>
@@ -359,22 +406,22 @@
         <div id="addSeatTab" class="hidden animate-in">
             <div class="glass-panel" style="padding: 15px;">
                 <h3 style="color:var(--primary); margin-top:0; margin-bottom:10px;">New Registration</h3>
-                <label>Seat Number</label> <input type="text" id="seatNo" placeholder="e.g. 15, 6A" style="text-transform: uppercase;">
-                <label>Student Name</label> <input type="text" id="studentName">
-                <label>Phone</label> <input type="tel" id="phone">
-                <label>Preparing For (Exam)</label> <input type="text" id="exam">
+                <label class="app-label">Seat Number</label> <input type="text" class="app-input" id="seatNo" placeholder="e.g. 15, 6A" style="text-transform: uppercase;">
+                <label class="app-label">Student Name</label> <input type="text" class="app-input" id="studentName">
+                <label class="app-label">Phone</label> <input type="tel" class="app-input" id="phone">
+                <label class="app-label">Preparing For (Exam)</label> <input type="text" class="app-input" id="exam">
                 <div class="flex-row">
-                    <div style="flex:1"><label>Admission</label><input type="date" id="admDate"></div>
-                    <div style="flex:1"><label>Valid Up To</label><input type="date" id="validDate"></div>
+                    <div style="flex:1"><label class="app-label">Admission</label><input type="date" class="app-input" id="admDate"></div>
+                    <div style="flex:1"><label class="app-label">Valid Up To</label><input type="date" class="app-input" id="validDate"></div>
                 </div>
                 <div class="flex-row">
-                    <div style="flex:1"><label>Paid (₹)</label><input type="number" id="initialAmount" placeholder="1500"></div>
-                    <div style="flex:1"><label>Mode</label><select id="initialMode"><option>Cash</option><option>UPI</option></select></div>
+                    <div style="flex:1"><label class="app-label">Paid (₹)</label><input type="number" class="app-input" id="initialAmount" placeholder="1500"></div>
+                    <div style="flex:1"><label class="app-label">Mode</label><select class="app-input" id="initialMode"><option>Cash</option><option>UPI</option></select></div>
                 </div>
-                <label>Fee Status</label> <select id="feeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-                <label>Shift Timing</label>
-                <select id="shift" onchange="toggleCustomShift('shift', 'customShift')"></select>
-                <input type="text" id="customShift" class="hidden" placeholder="Custom timings" style="margin-top:10px;">
+                <label class="app-label">Fee Status</label> <select class="app-input" id="feeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+                <label class="app-label">Shift Timing</label>
+                <select class="app-input" id="shift" onchange="toggleCustomShift('shift', 'customShift')"></select>
+                <input type="text" id="customShift" class="app-input hidden" placeholder="Custom timings" style="margin-top:10px;">
                 <button class="action-btn" onclick="allotSeat()">Complete Admission</button>
             </div>
         </div>
@@ -384,12 +431,12 @@
             <div class="glass-panel" style="padding: 15px; margin-bottom: 15px;">
                 <h3 style="color:var(--primary); margin-top:0; margin-bottom:10px;">Add to Waitlist</h3>
                 <div class="flex-row">
-                    <div style="flex:2"><input type="text" id="waitName" placeholder="Student Name"></div>
-                    <div style="flex:2"><input type="tel" id="waitPhone" placeholder="Phone"></div>
+                    <div style="flex:2"><input type="text" class="app-input" id="waitName" placeholder="Student Name"></div>
+                    <div style="flex:2"><input type="tel" class="app-input" id="waitPhone" placeholder="Phone"></div>
                 </div>
                 <div class="flex-row" style="margin-top:10px;">
                     <div style="flex:2">
-                        <select id="waitShift">
+                        <select class="app-input" id="waitShift">
                             <!-- Populated from config -->
                         </select>
                     </div>
@@ -405,7 +452,7 @@
             <div class="glass-panel" style="padding: 15px; margin-bottom:15px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <h3 style="margin:0; color:var(--primary);">Financial Overview</h3>
-                    <input type="month" id="finMonth" onchange="calculateFinances()" style="width:auto; padding:6px 10px;">
+                    <input type="month" class="app-input" id="finMonth" onchange="calculateFinances()" style="width:auto; padding:6px 10px;">
                 </div>
                 <div class="fin-grid">
                     <div class="fin-box" style="background:rgba(16,185,129,0.1); border-color:var(--green);"><span style="font-size:11px; color:var(--text-muted);">Total Income</span><span class="fin-val" style="color:var(--green);" id="finIncome">₹0</span></div>
@@ -427,10 +474,10 @@
                 <div class="glass-panel" style="padding: 12px; margin-bottom:10px;">
                     <h4 style="margin-top:0; margin-bottom:8px; font-size:13px;">Add New Expense</h4>
                     <div class="flex-row">
-                        <div style="flex:1"><input type="date" id="expDate"></div>
-                        <div style="flex:1"><input type="number" id="expAmount" placeholder="Amount (₹)"></div>
+                        <div style="flex:1"><input type="date" class="app-input" id="expDate"></div>
+                        <div style="flex:1"><input type="number" class="app-input" id="expAmount" placeholder="Amount (₹)"></div>
                     </div>
-                    <input type="text" id="expCategory" placeholder="Category (e.g. Rent, Electricity, Cleaning)" style="margin-top:10px;">
+                    <input type="text" class="app-input" id="expCategory" placeholder="Category (e.g. Rent, Electricity, Cleaning)" style="margin-top:10px;">
                     <button class="action-btn" style="padding:10px; margin-top:10px;" onclick="addExpense()">Save Expense</button>
                 </div>
                 <div id="expenseLedgerContainer"></div>
@@ -459,7 +506,7 @@
         <div class="glass-panel animate-in" style="padding: 15px; margin-bottom:15px;">
             <h4 style="margin-top:0; margin-bottom:8px; font-size:13px; color:var(--primary);">📢 System Broadcast Banner</h4>
             <div class="flex-row">
-                <input type="text" id="adminBroadcastMsg" placeholder="Type global system notification message..." style="flex:1;">
+                <input type="text" class="app-input" id="adminBroadcastMsg" placeholder="Type global system notification message..." style="flex:1;">
             </div>
             <div class="flex-row" style="margin-top:8px;">
                 <button class="action-btn" style="margin:0; flex:1; background:var(--primary);" onclick="saveBroadcast()">Activate Announcement</button>
@@ -510,15 +557,15 @@
 
         <div class="modal-content hidden" id="modalEditSection">
             <h3 style="margin-top:0; color:var(--primary);">Edit Profile</h3>
-            <input type="text" id="editName" placeholder="Name" style="margin-bottom:8px;">
-            <input type="tel" id="editPhone" placeholder="Phone" style="margin-bottom:8px;">
-            <input type="text" id="editExam" placeholder="Exam" style="margin-bottom:8px;">
+            <input type="text" class="app-input" id="editName" placeholder="Name" style="margin-bottom:8px;">
+            <input type="tel" class="app-input" id="editPhone" placeholder="Phone" style="margin-bottom:8px;">
+            <input type="text" class="app-input" id="editExam" placeholder="Exam" style="margin-bottom:8px;">
             <div class="flex-row" style="margin-bottom:8px;">
-                <input type="date" id="editAdmDate" title="Admission Date">
-                <input type="date" id="editValidDate" title="Valid Until">
+                <input type="date" class="app-input" id="editAdmDate" title="Admission Date">
+                <input type="date" class="app-input" id="editValidDate" title="Valid Until">
             </div>
-            <select id="editFeeStatus" style="margin-bottom:8px;"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-            <input type="text" id="editShift" placeholder="Shift Details">
+            <select class="app-input" id="editFeeStatus" style="margin-bottom:8px;"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+            <input type="text" class="app-input" id="editShift" placeholder="Shift Details">
             <div class="flex-row" style="margin-top:15px;">
                 <button class="action-btn" style="margin:0; flex:1;" onclick="saveEdit()">Save</button>
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="cancelEdit()">Cancel</button>
@@ -528,14 +575,14 @@
         <div class="modal-content hidden" id="modalPaySection">
             <h3 style="margin-top:0; color:var(--primary);">Record Payment</h3>
             <p style="font-size: 12px; margin-bottom: 15px; color:var(--text-muted);">For: <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
-            <input type="date" id="payDate" style="margin-bottom:8px;">
+            <input type="date" class="app-input" id="payDate" style="margin-bottom:8px;">
             <div class="flex-row" style="margin-bottom:8px;">
-                <input type="number" id="payAmount" placeholder="Amount (₹)">
-                <select id="payMode"><option>Cash</option><option>UPI</option></select>
+                <input type="number" class="app-input" id="payAmount" placeholder="Amount (₹)">
+                <select class="app-input" id="payMode"><option>Cash</option><option>UPI</option></select>
             </div>
-            <label style="margin-top:5px;">Extend Validity To (Renewal)</label>
-            <input type="date" id="payValidDate" style="margin-bottom:8px;">
-            <select id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+            <label class="app-label" style="margin-top:5px;">Extend Validity To (Renewal)</label>
+            <input type="date" class="app-input" id="payValidDate" style="margin-bottom:8px;">
+            <select class="app-input" id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
             <div class="flex-row" style="margin-top:15px;">
                 <button class="action-btn" style="margin:0; background:var(--green); flex:1;" onclick="savePayment()">Save</button>
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="hidePaymentForm()">Cancel</button>
@@ -544,10 +591,10 @@
 
         <div class="modal-content hidden" id="modalSettingsSection">
             <h3 style="margin-top:0; color:var(--primary);">⚙️ Library Settings</h3>
-            <label>Library Name</label> <input type="text" id="cfgLibName">
-            <label>Total Seats</label> <input type="number" id="cfgTotalSeats" min="1">
-            <label>Custom Seats (comma separated)</label> <input type="text" id="cfgCustomSeats" style="text-transform: uppercase;">
-            <label>Available Shifts (one per line)</label> <textarea id="cfgShifts" rows="3"></textarea>
+            <label class="app-label">Library Name</label> <input type="text" class="app-input" id="cfgLibName">
+            <label class="app-label">Total Seats</label> <input type="number" class="app-input" id="cfgTotalSeats" min="1">
+            <label class="app-label">Custom Seats (comma separated)</label> <input type="text" class="app-input" id="cfgCustomSeats" style="text-transform: uppercase;">
+            <label class="app-label">Available Shifts (one per line)</label> <textarea class="app-input" id="cfgShifts" rows="3"></textarea>
             
             <div style="border-top:1px solid var(--glass-border); margin-top:20px; padding-top:15px;">
                 <h4 style="margin:0 0 10px 0; font-size:13px;">Advanced Data Options</h4>
@@ -571,14 +618,14 @@
             <p style="font-size:14px; font-weight:600; margin-bottom:2px;" id="adminModUsername"></p>
             <p style="font-size:11px; color:var(--text-muted); margin-top:0; margin-bottom:15px;" id="adminModEmail"></p>
             
-            <label>Subscription Status</label>
-            <select id="adminSubStatus" style="margin-bottom:8px;">
+            <label class="app-label">Subscription Status</label>
+            <select class="app-input" id="adminSubStatus" style="margin-bottom:8px;">
                 <option value="trialing">Trialing (Active)</option>
                 <option value="active">Premium (Active)</option>
                 <option value="inactive">Expired / Inactive</option>
             </select>
-            <label>Subscription Valid Until</label>
-            <input type="date" id="adminSubValid" style="margin-bottom:15px;">
+            <label class="app-label">Subscription Valid Until</label>
+            <input type="date" class="app-input" id="adminSubValid" style="margin-bottom:15px;">
             
             <div class="flex-row">
                 <button class="action-btn" style="margin:0; background:var(--primary); flex:1;" onclick="saveAdminSub()">Update Sub Status</button>
@@ -586,8 +633,8 @@
 
             <h4 style="margin: 20px 0 10px 0; font-size: 13px; color:var(--primary); border-top:1px solid var(--glass-border); padding-top:15px;">Record Payment & Invoice</h4>
             <div class="flex-row" style="margin-bottom:8px;">
-                <input type="number" id="adminTxAmount" placeholder="Amount (₹)" style="flex:1;">
-                <input type="date" id="adminTxDate" style="flex:1;">
+                <input type="number" class="app-input" id="adminTxAmount" placeholder="Amount (₹)" style="flex:1;">
+                <input type="date" class="app-input" id="adminTxDate" style="flex:1;">
             </div>
             <button class="action-btn" style="margin:0 0 15px 0; background:var(--green); padding:10px; font-size:12px;" onclick="addAdminTransaction()">Add Transaction & Generate Invoice</button>
 
@@ -694,13 +741,31 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
+        // --- NEW PASSWORD TOGGLE JS ---
+        window.togglePasswordVisibility = function(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === "password") {
+                input.type = "text";
+                // Eye open icon
+                icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+            } else {
+                input.type = "password";
+                // Eye off icon
+                icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            }
+        };
+
         // --- AUTHENTICATION LOGIC ---
         window.toggleAuthMode = function(mode) {
             ['loginForm', 'signupForm', 'resetForm'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(mode + 'Form').classList.remove('hidden');
             
-            const titles = { 'login': 'Log in', 'signup': 'Create Account', 'reset': 'Reset Password' };
+            const titles = { 'login': 'Welcome Back!', 'signup': 'Create Account', 'reset': 'Reset Password' };
+            const subtitles = { 'login': 'We missed you! Please enter your details.', 'signup': 'Sign up to create your library workspace.', 'reset': 'Enter your recovery email to reset password.' };
+            
             document.getElementById('authTitle').innerText = titles[mode];
+            document.getElementById('authSubtitle').innerText = subtitles[mode];
             
             document.getElementById('authError').innerText = ''; 
             document.getElementById('signupError').innerText = ''; 
@@ -779,7 +844,7 @@
             const pass = document.getElementById('loginPassword').value;
             const errEl = document.getElementById('authError');
             
-            if(!idInput || !pass) return errEl.innerText = "Please enter ID/Email and password.";
+            if(!idInput || !pass) return errEl.innerText = "Please enter Email and password.";
             errEl.innerText = "Logging in...";
             
             let emailToUse = idInput;
@@ -824,11 +889,11 @@
             const errEl = document.getElementById('resetError');
             if(!email) return errEl.innerText = "Please enter your recovery email.";
             auth.sendPasswordResetEmail(email).then(() => {
-                errEl.style.color = "var(--green)";
+                errEl.style.color = "#10b981"; // modern green
                 errEl.innerText = "Reset link sent to your email!";
                 setTimeout(() => window.toggleAuthMode('login'), 3000);
             }).catch(e => {
-                errEl.style.color = "var(--red)";
+                errEl.style.color = "#ef4444"; // modern red
                 errEl.innerText = e.message.replace('Firebase:', '').trim();
             });
         };
