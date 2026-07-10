@@ -51,7 +51,6 @@
         /* --- MODERN AUTHENTICATION UI STYLES (MATCHING DESIGN) --- */
         #authScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
-            /* Beautiful Mesh Gradient mimicking the image */
             background-color: #6366f1;
             background-image:
                 radial-gradient(at 0% 100%, #4f46e5 0px, transparent 60%),
@@ -169,7 +168,8 @@
 
         .search-box { width: 100%; padding: 12px 15px; border: 1px solid var(--glass-border); outline: none; background: var(--glass-input-bg); color: var(--text-main); border-radius: 12px; margin-bottom: 12px; font-family: 'Poppins', sans-serif; box-sizing: border-box; }
         .filter-btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
-        .filter-btn { border: 1px solid var(--glass-border); padding: 6px 12px; font-size: 11px; font-weight: 600; background: var(--glass-bg); color: var(--text-main); border-radius: 20px; cursor: pointer; }
+        .filter-btn { border: 1px solid var(--glass-border); padding: 6px 12px; font-size: 11px; font-weight: 600; background: var(--glass-bg); color: var(--text-main); border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+        .filter-btn:hover { background: var(--glass-input-bg); }
         .filter-btn.active { background: var(--primary); color: white; border-color: transparent; }
 
         label.app-label { font-size: 13px; font-weight: 600; display: block; margin-top: 12px; margin-bottom: 4px; color: var(--text-main); }
@@ -614,7 +614,10 @@
 
         <!-- ADMIN USER MANAGE MODAL -->
         <div class="modal-content hidden" id="adminUserSection">
-            <h3 style="margin-top:0; color:var(--primary);">Manage Workspace</h3>
+            <h3 style="margin-top:0; color:var(--primary); display:flex; justify-content:space-between; align-items:center;">
+                Manage Workspace
+                <button class="action-btn" style="background:var(--orange); font-size: 10px; padding: 5px 10px; width:auto; margin:0;" onclick="sendAdminPasswordReset()" title="Send Password Reset Email">📧 Reset Pwd</button>
+            </h3>
             <p style="font-size:14px; font-weight:600; margin-bottom:2px;" id="adminModUsername"></p>
             <p style="font-size:11px; color:var(--text-muted); margin-top:0; margin-bottom:15px;" id="adminModEmail"></p>
             
@@ -624,11 +627,22 @@
                 <option value="active">Premium (Active)</option>
                 <option value="inactive">Expired / Inactive</option>
             </select>
-            <label class="app-label">Subscription Valid Until</label>
-            <input type="date" class="app-input" id="adminSubValid" style="margin-bottom:15px;">
+            
+            <label class="app-label">Validity Until (Auto-expires if past due)</label>
+            <input type="date" class="app-input" id="adminSubValid" style="margin-bottom:8px;">
+            
+            <!-- Quick Extensions -->
+            <div class="flex-row" style="margin-bottom: 15px; flex-wrap: wrap; gap: 6px;">
+                <button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(30)">+1 Month</button>
+                <button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(90)">+3 Months</button>
+                <button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(365)">+1 Year</button>
+            </div>
+
+            <label class="app-label">Admin Notes & Remarks</label>
+            <textarea class="app-input" id="adminModNotes" rows="2" placeholder="Internal notes about this workspace (e.g. Late payer, Custom needs)..." style="margin-bottom:15px; resize:vertical;"></textarea>
             
             <div class="flex-row">
-                <button class="action-btn" style="margin:0; background:var(--primary); flex:1;" onclick="saveAdminSub()">Update Sub Status</button>
+                <button class="action-btn" style="margin:0; background:var(--primary); flex:1;" onclick="saveAdminSub()">💾 Save Profile & Notes</button>
             </div>
 
             <h4 style="margin: 20px 0 10px 0; font-size: 13px; color:var(--primary); border-top:1px solid var(--glass-border); padding-top:15px;">Record Payment & Invoice</h4>
@@ -644,15 +658,6 @@
             <button class="action-btn" style="background:var(--text-muted); margin-top:15px;" onclick="closeModal()">Close Panel</button>
         </div>
 
-        <!-- READ-ONLY VISUAL MATRIX INSPECTOR -->
-        <div class="modal-content hidden" id="adminInspectSection" style="max-width: 650px;">
-            <h3 style="margin-top:0; color:var(--primary);">Inspecting: <span id="inspectLibName"></span></h3>
-            <p style="font-size:11px; color:var(--text-muted); margin-bottom:15px;">Real-time read-only inspection matrix loaded securely from Firestore paths.</p>
-            
-            <div id="inspectSeatsContainer" class="seat-grid" style="max-height: 350px; overflow-y: auto; padding:5px;"></div>
-            
-            <button class="action-btn" style="background:var(--text-muted); margin-top:20px;" onclick="closeModal()">Close Inspector</button>
-        </div>
     </div>
 
     <div id="toast-container"></div>
@@ -741,17 +746,14 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        // --- NEW PASSWORD TOGGLE JS ---
         window.togglePasswordVisibility = function(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
             if (input.type === "password") {
                 input.type = "text";
-                // Eye open icon
                 icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
             } else {
                 input.type = "password";
-                // Eye off icon
                 icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
             }
         };
@@ -776,7 +778,6 @@
             if (user) {
                 currentUser = user;
                 
-                // Admin Routing Logic
                 if (user.uid === ADMIN_UID) {
                     document.getElementById('authScreen').style.display = 'none';
                     document.getElementById('mainApp').style.display = 'none';
@@ -785,7 +786,6 @@
                     window.toast(`Welcome to the Admin Hub!`);
                 } else {
                     try {
-                        // Check subscription status BEFORE letting standard users in, catching permissions cleanly
                         const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
                         let isInactive = false;
                         
@@ -793,19 +793,29 @@
                             const subSnap = await subRef.get();
                             if (subSnap.exists) {
                                 const subData = subSnap.data();
-                                if (subData.status === 'inactive') {
+                                let currentStatus = subData.status;
+                                const validUntil = subData.validUntil;
+                                const today = new Date().toISOString().split('T')[0];
+                                
+                                // Automatic Expiration Logic Check during Login
+                                if (validUntil && validUntil !== 'No End Date' && validUntil < today && currentStatus !== 'inactive') {
+                                    currentStatus = 'inactive';
+                                    try { await subRef.set({ status: 'inactive' }, { merge: true }); } catch(err){}
+                                }
+                                
+                                if (currentStatus === 'inactive') {
                                     isInactive = true;
                                 }
                             } else {
-                                // Default document initiation for newly logged standard accounts
                                 await subRef.set({
                                     status: 'trialing',
                                     validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                                    history: []
+                                    history: [],
+                                    adminNotes: ""
                                 }, { merge: true });
                             }
                         } catch(dbErr) {
-                            console.warn("Evaluating Subscription asynchronously bypassed. Defaulting to Active:", dbErr);
+                            console.warn("Evaluating Subscription bypassed. Defaulting to Active:", dbErr);
                         }
                         
                         if (isInactive) {
@@ -903,7 +913,6 @@
 
         // --- REAL-TIME BROADCAST LISTENER (SYSTEM NOTIFICATIONS) ---
         function listenForBroadcasts() {
-            // FIX: Pointing to exact document mapping (added /latest to make it 6 segments)
             const docRef = db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`);
             unsubscribeBroadcast = docRef.onSnapshot((docSnap) => {
                 const banner = document.getElementById('broadcastBanner');
@@ -925,7 +934,7 @@
         }
 
 
-        // --- ADMIN DASHBOARD, BROADCAST, MATRIX INSPECTOR & INVOICE LOGIC ---
+        // --- ADMIN DASHBOARD, BROADCAST, AND NEW WORKSPACE MANAGEMENT ---
         window.activeAdminUserId = null;
         window.activeAdminUsername = null;
         window.activeAdminUserEmail = null;
@@ -933,7 +942,6 @@
         window.saveBroadcast = async function() {
             const msg = document.getElementById('adminBroadcastMsg').value.trim();
             if (!msg) return window.toast("⚠️ Enter message to broadcast!");
-            // FIX: Added /latest
             await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({
                 message: msg,
                 active: true,
@@ -943,7 +951,6 @@
         };
 
         window.clearBroadcast = async function() {
-            // FIX: Added /latest
             await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ active: false });
             document.getElementById('adminBroadcastMsg').value = '';
             window.toast("📢 Announcement deactivated.");
@@ -955,7 +962,6 @@
             
             try {
                 try {
-                    // FIX: Added /latest
                     const bSnap = await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).get();
                     if (bSnap.exists && bSnap.data().active) {
                         document.getElementById('adminBroadcastMsg').value = bSnap.data().message || '';
@@ -969,6 +975,7 @@
                 let activePremiumCount = 0;
                 let monthRevenue = 0;
                 const currentMonth = new Date().toISOString().substring(0, 7); 
+                const today = new Date().toISOString().split('T')[0];
                 
                 let html = '';
                 const promises = [];
@@ -981,22 +988,31 @@
                     const subPromise = db.doc(`artifacts/${globalAppId}/users/${data.uid}/subscription/info`).get().then(async (subSnap) => {
                         let libMainSnap;
                         try {
+                            // We fetch this just to grab the config libraryName
                             libMainSnap = await db.doc(`artifacts/${globalAppId}/users/${data.uid}/libraryData/main`).get();
-                        } catch(e) { console.warn("User main file inaccessible synchronously:", data.uid); }
+                        } catch(e) {}
                         
-                        const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: 'No End Date', history: [] };
+                        const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: 'No End Date', history: [], adminNotes: '' };
                         const libData = (libMainSnap && libMainSnap.exists) ? libMainSnap.data() : { config: {} };
+                        
+                        let status = subData.status || 'trialing';
+                        const validUntil = subData.validUntil || 'No End Date';
+                        
+                        // Administrator Dashboard Auto-Expiration Check
+                        if (validUntil !== 'No End Date' && validUntil < today && status !== 'inactive') {
+                            status = 'inactive';
+                            // Push correction to backend in background
+                            db.doc(`artifacts/${globalAppId}/users/${data.uid}/subscription/info`).set({ status: 'inactive' }, { merge: true }).catch(()=>{});
+                        }
                         
                         return {
                             username: doc.id,
                             email: data.email,
                             uid: data.uid,
-                            status: subData.status || 'trialing',
-                            validUntil: subData.validUntil || 'No End Date',
+                            status: status,
+                            validUntil: validUntil,
                             history: subData.history || [],
-                            libraryName: (libData.config && libData.config.libraryName) ? libData.config.libraryName : "Not Configured Yet",
-                            libConfig: libData.config || null,
-                            seatsData: libData.seatsData || null
+                            libraryName: (libData.config && libData.config.libraryName) ? libData.config.libraryName : "Not Configured",
                         };
                     });
                     promises.push(subPromise);
@@ -1020,9 +1036,6 @@
                     if (prof.status === 'active') { badgeBg = 'var(--green)'; statusLabel = 'Active Premium'; }
                     else if (prof.status === 'inactive') { badgeBg = 'var(--red)'; statusLabel = 'Expired'; }
 
-                    const safeConfigStr = encodeURIComponent(JSON.stringify(prof.libConfig || {}));
-                    const safeSeatsStr = encodeURIComponent(JSON.stringify(prof.seatsData || {}));
-
                     html += `
                         <div class="list-item" style="flex-direction:column; align-items:flex-start; gap:8px; padding:15px;">
                             <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
@@ -1034,11 +1047,10 @@
                             </div>
                             <div style="font-size:11px; color:var(--text-muted); line-height:1.5;">
                                 ✉️ Email: ${prof.email}<br>
-                                📅 Expiration: <strong style="color:var(--text-main);">${prof.validUntil}</strong>
+                                📅 Expiration: <strong style="color:${prof.status === 'inactive' ? 'var(--red)' : 'var(--text-main)'};">${prof.validUntil}</strong>
                             </div>
                             <div style="display:flex; gap:8px; width:100%; margin-top:5px;">
-                                <button class="action-btn" style="margin:0; padding:8px 12px; font-size:11px; border-radius:8px; flex:1;" onclick="openAdminUser('${prof.uid}', '${prof.username}', '${prof.email}')">Manage Sub & Tx</button>
-                                <button class="action-btn" style="margin:0; padding:8px 12px; font-size:11px; border-radius:8px; flex:1; background:var(--orange);" onclick="inspectUserMatrix('${prof.username}', '${safeConfigStr}', '${safeSeatsStr}')">Inspect Seats</button>
+                                <button class="action-btn" style="margin:0; padding:8px 12px; font-size:11px; border-radius:8px; flex:1;" onclick="openAdminUser('${prof.uid}', '${prof.username}', '${prof.email}')">Manage Subscriber</button>
                             </div>
                         </div>
                     `;
@@ -1051,7 +1063,7 @@
                 cont.innerHTML = html || '<div style="text-align:center; font-size:13px; color:var(--text-muted);">No workspaces configured.</div>';
 
             } catch(e) {
-                // EXTREMELY HELPFUL CUSTOM STEP-BY-STEP RULES INJECTOR
+                // Keep the security rules injector for setup
                 cont.innerHTML = `
                     <div style="padding: 20px; text-align: left; background: rgba(239, 68, 68, 0.08); border: 1px solid var(--red); border-radius: 16px; color: var(--text-main); margin-top: 5px;" class="animate-in">
                         <h4 style="margin-top:0; color: var(--red); font-size: 15px; font-weight: 700; display:flex; align-items:center; gap:6px;">
@@ -1086,7 +1098,6 @@ service cloud.firestore {
     }
   }
 }</textarea>
-                        <p style="font-size:10px; color:var(--text-muted); margin-top:8px;">💡 Clicking the code box will select everything for easy copying. Publish the rules in Firebase and try again!</p>
                         <button class="action-btn" style="margin-top:15px; background:var(--primary);" onclick="loadAdminDashboard()">🔄 Check Rules & Reload</button>
                     </div>
                 `;
@@ -1107,10 +1118,19 @@ service cloud.firestore {
             
             const subRef = db.doc(`artifacts/${globalAppId}/users/${uid}/subscription/info`);
             const subSnap = await subRef.get();
-            const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: '', history: [] };
+            const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: '', history: [], adminNotes: '' };
             
-            document.getElementById('adminSubStatus').value = subData.status || 'trialing';
-            document.getElementById('adminSubValid').value = subData.validUntil || '';
+            let currentStatus = subData.status || 'trialing';
+            let validUntil = subData.validUntil || '';
+            const today = new Date().toISOString().split('T')[0];
+
+            if (validUntil && validUntil !== 'No End Date' && validUntil < today && currentStatus !== 'inactive') {
+                currentStatus = 'inactive';
+            }
+
+            document.getElementById('adminSubStatus').value = currentStatus;
+            document.getElementById('adminSubValid').value = validUntil;
+            document.getElementById('adminModNotes').value = subData.adminNotes || '';
             
             renderAdminTxHistory(subData.history || []);
             
@@ -1118,16 +1138,32 @@ service cloud.firestore {
             document.getElementById('detailsModal').style.display = 'flex';
         };
 
+        window.extendAdminSub = function(days) {
+            let currentVal = document.getElementById('adminSubValid').value;
+            let dateObj = currentVal ? new Date(currentVal) : new Date();
+            dateObj.setDate(dateObj.getDate() + days);
+            document.getElementById('adminSubValid').value = dateObj.toISOString().split('T')[0];
+            document.getElementById('adminSubStatus').value = 'active'; 
+        }
+
+        window.sendAdminPasswordReset = function() {
+            if(!window.activeAdminUserEmail) return;
+            auth.sendPasswordResetEmail(window.activeAdminUserEmail).then(() => {
+                window.toast("Password reset email sent to " + window.activeAdminUserEmail);
+            }).catch(e => window.toast("Error: " + e.message));
+        }
+
         window.saveAdminSub = async function() {
             const status = document.getElementById('adminSubStatus').value;
             const validUntil = document.getElementById('adminSubValid').value;
+            const notes = document.getElementById('adminModNotes').value;
             const uid = window.activeAdminUserId;
             
             await db.doc(`artifacts/${globalAppId}/users/${uid}/subscription/info`).set({
-                status: status, validUntil: validUntil
+                status: status, validUntil: validUntil, adminNotes: notes
             }, { merge: true });
             
-            window.toast('User Subscription Updated!');
+            window.toast('Workspace Updated!');
             window.loadAdminDashboard();
         };
 
@@ -1225,49 +1261,6 @@ service cloud.firestore {
             `);
             w.document.close();
         }
-
-        // --- READ-ONLY WORKSPACE INSPECTOR LOGIC ---
-        window.inspectUserMatrix = function(username, configStr, seatsDataStr) {
-            hideAllModalSections();
-            document.getElementById('inspectLibName').innerText = username;
-            
-            const config = JSON.parse(decodeURIComponent(configStr));
-            const seatsData = JSON.parse(decodeURIComponent(seatsDataStr)) || {};
-            const container = document.getElementById('inspectSeatsContainer');
-            container.innerHTML = '';
-
-            const total = parseInt(config.totalSeats) || 20;
-            const customs = config.customSeats || [];
-            
-            const inspectLayout = [];
-            for (let i = 1; i <= total; i++) {
-                inspectLayout.push(i.toString());
-                inspectLayout.push(...customs.filter(seat => {
-                    const match = seat.match(/^(\d+)[A-Za-z]+$/); return match && parseInt(match[1]) === i;
-                }));
-            }
-
-            inspectLayout.forEach(seatId => {
-                const occupants = seatsData[seatId] || [];
-                const div = document.createElement('div');
-                
-                if (occupants.length > 0) {
-                    let alertClass = 'allotted';
-                    div.className = `seat ${alertClass}`;
-                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    occupants.forEach(s => { 
-                        div.innerHTML += `<div class="seat-name" style="font-size:8px;">${s.name.split(' ')[0]}</div>`; 
-                    });
-                } else {
-                    div.className = `seat free`;
-                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                }
-                container.appendChild(div);
-            });
-
-            triggerModalAnimation('adminInspectSection');
-            document.getElementById('detailsModal').style.display = 'flex';
-        };
 
         // --- CLOUD SYNC & APP LOAD ---
         function loadDataFromCloud() {
@@ -1612,7 +1605,7 @@ service cloud.firestore {
         }
 
         function hideAllModalSections() { 
-            ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection', 'adminInspectSection'].forEach(id => { 
+            ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection'].forEach(id => { 
                 const el = document.getElementById(id);
                 if(el) { el.classList.add('hidden'); el.classList.remove('modal-animate'); }
             }); 
