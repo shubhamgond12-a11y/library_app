@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LibSync Pro - Library SaaS</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="[https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
+    
+    <!-- Driver.js CSS & Script for App Tour -->
+    <link rel="stylesheet" href="[https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css](https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css)"/>
+    <script src="[https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js](https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js)"></script>
+
+    <!-- YOUR MODULAR CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Firebase SDKs -->
+    <script src="[https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js)"></script>
+    <script src="[https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js)"></script>
+    <script src="[https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js](https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js)"></script>
+</head>
+<body>
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="authScreen">
+        <div class="auth-header-bar" onclick="alert('Navigating to homepage...')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            Home page
+        </div>
+
+        <div class="auth-brand-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+            </svg>
+            LIBSYNC
+        </div>
+
+        <div class="auth-card-modern">
+            <h2 id="authTitle">Welcome Back!</h2>
+            <p id="authSubtitle">We missed you! Please enter your details.</p>
+            
+            <!-- LOGIN FORM -->
+            <div id="loginForm" class="animate-in">
+                <div class="auth-input-group">
+                    <label>Email</label>
+                    <input type="text" id="loginId" class="auth-input-modern" placeholder="Enter your Email">
+                </div>
+                <div class="auth-input-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" class="auth-input-modern" placeholder="Enter Password">
+                        <svg id="eyeIconLogin" class="password-toggle" onclick="togglePasswordVisibility('loginPassword', 'eyeIconLogin')" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                    <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:#64748b; font-weight:normal; margin:0; cursor:pointer;">
+                        <input type="checkbox" style="width:auto; margin:0; cursor:pointer;"> Remember me
+                    </label>
+                    <span style="font-size:12px; color:#5b68df; font-weight:600; cursor:pointer; transition:color 0.2s;" onclick="toggleAuthMode('reset')" onmouseover="this.style.color='#4a56c4'" onmouseout="this.style.color='#5b68df'">Forgot password?</span>
+                </div>
+
+                <button class="btn-primary" onclick="loginUser()">Sign in</button>
+                <p id="authError" style="color:var(--red); font-size: 12px; margin-top: 5px; min-height:15px; font-weight:500;"></p>
+                
+                <button class="btn-google" onclick="alert('Google Auth is conceptually shown for UI purposes.')">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Sign in with google
+                </button>
+
+                <div class="auth-bottom-text">
+                    Don't have an account? <span onclick="toggleAuthMode('signup')">Sign up</span>
+                </div>
+            </div>
+
+            <!-- SIGNUP FORM -->
+            <div id="signupForm" class="hidden animate-in">
+                <div class="auth-input-group">
+                    <label>Admin ID (Username)</label>
+                    <input type="text" id="signupUsername" class="auth-input-modern" placeholder="e.g. manager123">
+                </div>
+                <div class="auth-input-group">
+                    <label>Email address</label>
+                    <input type="email" id="signupEmail" class="auth-input-modern" placeholder="Enter your email">
+                </div>
+                <div class="auth-input-group">
+                    <label>Create Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="signupPassword" class="auth-input-modern" placeholder="Create a password">
+                        <svg id="eyeIconSignup" class="password-toggle" onclick="togglePasswordVisibility('signupPassword', 'eyeIconSignup')" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" style="margin-top: 15px;" onclick="signupUser()">Sign up</button>
+                <p id="signupError" style="color:var(--red); font-size: 12px; margin-top: 5px; min-height:15px; font-weight:500;"></p>
+                
+                <div class="auth-bottom-text">
+                    Already registered? <span onclick="toggleAuthMode('login')">Log in instead</span>
+                </div>
+            </div>
+
+            <!-- RESET PASSWORD FORM -->
+            <div id="resetForm" class="hidden animate-in">
+                <div class="auth-input-group">
+                    <label>Recovery Email</label>
+                    <input type="email" id="resetEmail" class="auth-input-modern" placeholder="Enter recovery email">
+                </div>
+                
+                <button class="btn-primary" style="margin-top: 15px;" onclick="resetPassword()">Send Reset Link</button>
+                <p id="resetError" style="color:var(--red); font-size: 12px; margin-top: 5px; min-height:15px; font-weight:500;"></p>
+                
+                <div class="auth-bottom-text">
+                    Remembered it? <span onclick="toggleAuthMode('login')">Return to Log in</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN USER APP -->
+    <div id="mainApp" style="display:none;">
+        <!-- Broadcast Announcements Banner -->
+        <div id="broadcastBanner" class="hidden animate-in" style="background: linear-gradient(90deg, #2563eb, #3b82f6); color: white; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(37,99,235,0.2);">
+            <span>📢 Update:</span> <span id="broadcastText" style="font-weight:400;"></span>
+        </div>
+
+        <header class="animate-in">
+            <h2 id="appTitle">LibSync Pro</h2>
+            <div class="utility-bar">
+                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
+                <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
+            </div>
+        </header>
+
+        <div class="dashboard glass-panel animate-in">
+            <div class="stat-card">Free <span class="num" id="statFree" style="color:var(--green)">0</span></div>
+            <div class="stat-card">Enrolled <span class="num" id="statOccupied" style="color:var(--primary)">0</span></div>
+            <div class="stat-card">Fee Due <span class="num" id="statDue" style="color:var(--orange)">0</span></div>
+            <div class="stat-card">Exp. <3d <span class="num" id="statWarn" style="color:var(--yellow)">0</span></div>
+        </div>
+
+        <div class="tab-container animate-in">
+            <button class="tab-btn active" id="tabMapBtn" onclick="switchTab('map')">🪑 Matrix</button>
+            <button class="tab-btn" id="tabAddBtn" onclick="switchTab('add')">📝 Admission</button>
+            <button class="tab-btn" id="tabWaitBtn" onclick="switchTab('wait')">⏳ Waitlist <span id="waitBadge" class="badge" style="background:var(--primary); margin-left:4px;">0</span></button>
+            <button class="tab-btn" id="tabFinBtn" onclick="switchTab('fin')">💰 Finance</button>
+        </div>
+
+        <!-- TAB 1: SEATS MATRIX -->
+        <div id="seatMapTab" class="animate-in">
+            <div class="glass-panel" style="padding:12px;">
+                <div class="flex-row" style="margin-bottom:8px;">
+                    <input type="text" id="searchExam" class="app-input search-box" style="margin-bottom:0; padding:10px; flex: 1;" placeholder="Search Exam..." oninput="applyFilters()">
+                    <!-- Shift Wise Seat Allotment Filter -->
+                    <select id="shiftFilter" class="app-input search-box" style="margin-bottom:0; padding:10px; flex: 1;" onchange="applyFilters()">
+                        <option value="all">All Shifts</option>
+                    </select>
+                </div>
+                <div class="filter-btn-group">
+                    <button class="filter-btn active" id="fltAll" onclick="setFilter('all')">All</button>
+                    <button class="filter-btn" id="fltFree" onclick="setFilter('free')">Empty</button>
+                    <button class="filter-btn" id="fltDue" onclick="setFilter('due')">Fee Due</button>
+                    <button class="filter-btn" id="fltWarn" onclick="setFilter('warn')">Exp. <3d</button>
+                    <button class="filter-btn" id="fltExpired" onclick="setFilter('expired')">Expired</button>
+                </div>
+            </div>
+            <div class="seat-grid" id="seatsContainer"></div>
+        </div>
+
+        <!-- TAB 2: ADMISSION FORM -->
+        <div id="addSeatTab" class="hidden animate-in">
+            <div class="glass-panel" style="padding: 15px;">
+                <h3 style="color:var(--primary); margin-top:0; margin-bottom:10px;">New Registration</h3>
+                <label class="app-label">Seat Number</label> <input type="text" class="app-input" id="seatNo" placeholder="e.g. 15, 6A" style="text-transform: uppercase;">
+                <label class="app-label">Student Name</label> <input type="text" class="app-input" id="studentName">
+                <label class="app-label">Phone</label> <input type="tel" class="app-input" id="phone">
+                <label class="app-label">Preparing For (Exam)</label> <input type="text" class="app-input" id="exam">
+                <div class="flex-row">
+                    <div style="flex:1"><label class="app-label">Admission</label><input type="date" class="app-input" id="admDate"></div>
+                    <div style="flex:1"><label class="app-label">Valid Up To</label><input type="date" class="app-input" id="validDate"></div>
+                </div>
+                <div class="flex-row">
+                    <div style="flex:1"><label class="app-label">Paid (₹)</label><input type="number" class="app-input" id="initialAmount" placeholder="1500"></div>
+                    <div style="flex:1"><label class="app-label">Mode</label><select class="app-input" id="initialMode"><option>Cash</option><option>UPI</option></select></div>
+                </div>
+                <label class="app-label">Fee Status</label> <select class="app-input" id="feeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+                <label class="app-label">Shift Timing</label>
+                <select class="app-input" id="shift" onchange="toggleCustomShift('shift', 'customShift')"></select>
+                <input type="text" id="customShift" class="app-input hidden" placeholder="Custom timings" style="margin-top:10px;">
+                <button class="action-btn" onclick="allotSeat()">Complete Admission</button>
+            </div>
+        </div>
+
+        <!-- TAB 3: WAITLIST -->
+        <div id="waitlistTab" class="hidden animate-in">
+            <div class="glass-panel" style="padding: 15px; margin-bottom: 15px;">
+                <h3 style="color:var(--primary); margin-top:0; margin-bottom:10px;">Add to Waitlist</h3>
+                <div class="flex-row">
+                    <div style="flex:2"><input type="text" class="app-input" id="waitName" placeholder="Student Name"></div>
+                    <div style="flex:2"><input type="tel" class="app-input" id="waitPhone" placeholder="Phone"></div>
+                </div>
+                <div class="flex-row" style="margin-top:10px;">
+                    <div style="flex:2">
+                        <select class="app-input" id="waitShift">
+                            <!-- Populated from config -->
+                        </select>
+                    </div>
+                    <button class="action-btn" style="margin-top:0; flex:1;" onclick="addWaitlist()">Add</button>
+                </div>
+            </div>
+            <h4 style="margin-bottom:8px;">Current Waiting List</h4>
+            <div id="waitlistContainer"></div>
+        </div>
+
+        <!-- TAB 4: FINANCE & LEDGER -->
+        <div id="financeTab" class="hidden animate-in">
+            <div class="glass-panel" style="padding: 15px; margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="margin:0; color:var(--primary);">Financial Overview</h3>
+                    <input type="month" class="app-input" id="finMonth" onchange="calculateFinances()" style="width:auto; padding:6px 10px;">
+                </div>
+                <div class="fin-grid">
+                    <div class="fin-box" style="background:rgba(16,185,129,0.1); border-color:var(--green);"><span style="font-size:11px; color:var(--text-muted);">Total Income</span><span class="fin-val" style="color:var(--green);" id="finIncome">₹0</span></div>
+                    <div class="fin-box" style="background:rgba(239,68,68,0.1); border-color:var(--red);"><span style="font-size:11px; color:var(--text-muted);">Total Expenses</span><span class="fin-val" style="color:var(--red);" id="finExpense">₹0</span></div>
+                </div>
+                <div class="fin-box" style="margin-top:10px; background:var(--glass-bg);"><span style="font-size:11px; color:var(--text-muted);">Net Profit</span><span class="fin-val" style="color:var(--primary);" id="finProfit">₹0</span></div>
+            </div>
+
+            <div class="tab-container" style="margin-bottom:10px;">
+                <button class="tab-btn active" id="btnShowIncome" onclick="switchFinView('income')" style="padding:8px; font-size:12px;">Daily Income Ledger</button>
+                <button class="tab-btn" id="btnShowExpense" onclick="switchFinView('expense')" style="padding:8px; font-size:12px;">Manage Expenses</button>
+            </div>
+
+            <div id="finIncomeView">
+                <div id="incomeLedgerContainer"></div>
+            </div>
+
+            <div id="finExpenseView" class="hidden">
+                <div class="glass-panel" style="padding: 12px; margin-bottom:10px;">
+                    <h4 style="margin-top:0; margin-bottom:8px; font-size:13px;">Add New Expense</h4>
+                    <div class="flex-row">
+                        <div style="flex:1"><input type="date" class="app-input" id="expDate"></div>
+                        <div style="flex:1"><input type="number" class="app-input" id="expAmount" placeholder="Amount (₹)"></div>
+                    </div>
+                    <input type="text" class="app-input" id="expCategory" placeholder="Category (e.g. Rent, Electricity, Cleaning)" style="margin-top:10px;">
+                    <button class="action-btn" style="padding:10px; margin-top:10px;" onclick="addExpense()">Save Expense</button>
+                </div>
+                <div id="expenseLedgerContainer"></div>
+            </div>
+        </div>
+    </div> <!-- End Main App -->
+
+    <!-- ADMIN APP (ONLY SHOWN TO cwBkWqFBuHeqpLyNBKdQSeF1iu83) -->
+    <div id="adminApp" style="display:none;">
+        <header class="animate-in">
+            <h2>Admin Dashboard Hub</h2>
+            <div class="utility-bar">
+                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
+                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
+            </div>
+        </header>
+
+        <!-- Dynamic Admin Analytics Cards -->
+        <div class="dashboard glass-panel animate-in" style="grid-template-columns: repeat(3, 1fr); margin-bottom:15px; padding: 12px;">
+            <div class="stat-card">Workspaces <span class="num" id="adminStatWorkspaces" style="color:var(--primary)">0</span></div>
+            <div class="stat-card">Active Premium <span class="num" id="adminStatPremium" style="color:var(--green)">0</span></div>
+            <div class="stat-card">Monthly SaaS Rev. <span class="num" id="adminStatRevenue" style="color:var(--orange)">₹0</span></div>
+        </div>
+
+        <!-- Global Announcement Broadcaster -->
+        <div class="glass-panel animate-in" style="padding: 15px; margin-bottom:15px;">
+            <h4 style="margin-top:0; margin-bottom:8px; font-size:13px; color:var(--primary);">📢 System Broadcast Banner</h4>
+            <div class="flex-row">
+                <input type="text" class="app-input" id="adminBroadcastMsg" placeholder="Type global system notification message..." style="flex:1;">
+            </div>
+            <div class="flex-row" style="margin-top:8px;">
+                <button class="action-btn" style="margin:0; flex:1; background:var(--primary);" onclick="saveBroadcast()">Activate Announcement</button>
+                <button class="action-btn" style="margin:0; flex:1; background:var(--red);" onclick="clearBroadcast()">Deactivate / Clear</button>
+            </div>
+        </div>
+
+        <div class="glass-panel animate-in" style="padding: 15px;">
+            <h3 style="margin-top:0; margin-bottom: 15px; color:var(--primary);">Registered Client Workspaces</h3>
+            <div id="adminUsersContainer">Loading registered SaaS users...</div>
+        </div>
+    </div>
+
+    <!-- DETAILS MODAL -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content hidden" id="modalViewSection">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); padding-bottom:10px; margin-bottom:10px;">
+                <h3 style="margin:0; color:var(--primary); font-weight:700;">Seat <span id="modSeatTitle"></span> Profile</h3>
+                <button class="icon-btn" onclick="showEditForm()" style="width:30px; height:30px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
+            </div>
+            
+            <div class="info-row"><span class="info-label">Name</span> <span class="info-value" id="modName"></span></div>
+            <div class="info-row"><span class="info-label">Phone</span> <span class="info-value" id="modPhone"></span></div>
+            <div class="info-row"><span class="info-label">Shift</span> <span class="info-value" id="modShift"></span></div>
+            <div class="info-row"><span class="info-label">Exam</span> <span class="info-value" id="modExam"></span></div>
+            <div class="info-row"><span class="info-label">Admission</span> <span class="info-value" id="modDate"></span></div>
+            <div class="info-row"><span class="info-label">Valid Up To</span> <span class="info-value" id="modValid"></span></div>
+            <div class="info-row" style="border:none;"><span class="info-label">Status</span> <span class="badge" id="modFee"></span></div>
+
+            <h4 style="margin: 15px 0 5px 0; font-size: 13px; color:var(--primary);">Payment Ledger</h4>
+            <div class="payment-ledger" id="paymentLedger" style="max-height: 120px; overflow-y:auto;"></div>
+            
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:15px;">
+                <button class="action-btn" style="margin:0; background:var(--green); padding:10px;" onclick="showPaymentForm()">Record Payment / Renew</button>
+                <div style="display:flex; gap:8px;">
+                    <button class="action-btn" style="background:var(--red); margin:0; flex:1; padding:10px;" id="btnRemoveStudent" onclick="freeStudentSlot()">Remove</button>
+                    <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1; padding:10px;" id="btnViewBack" onclick="backToListOrClose()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-content hidden" id="modalListSection">
+            <h3 style="margin-top:0; color:var(--primary);">Seat <span id="listSeatNo"></span> Occupants</h3>
+            <div id="occupantsContainer" style="margin-bottom:15px;"></div>
+            <button class="action-btn" style="margin-bottom:8px; padding:10px;" onclick="addAnotherToSeat()">+ Add Another Shift Here</button>
+            <button class="action-btn" style="background:var(--text-muted); padding:10px; margin:0;" onclick="closeModal()">Close</button>
+        </div>
+
+        <div class="modal-content hidden" id="modalEditSection">
+            <h3 style="margin-top:0; color:var(--primary);">Edit Profile</h3>
+            <input type="text" class="app-input" id="editName" placeholder="Name" style="margin-bottom:8px;">
+            <input type="tel" class="app-input" id="editPhone" placeholder="Phone" style="margin-bottom:8px;">
+            <input type="text" class="app-input" id="editExam" placeholder="Exam" style="margin-bottom:8px;">
+            <div class="flex-row" style="margin-bottom:8px;">
+                <input type="date" class="app-input" id="editAdmDate" title="Admission Date">
+                <input type="date" class="app-input" id="editValidDate" title="Valid Until">
+            </div>
+            <select class="app-input" id="editFeeStatus" style="margin-bottom:8px;"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+            <input type="text" class="app-input" id="editShift" placeholder="Shift Details">
+            <div class="flex-row" style="margin-top:15px;">
+                <button class="action-btn" style="margin:0; flex:1;" onclick="saveEdit()">Save</button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="cancelEdit()">Cancel</button>
+            </div>
+        </div>
+
+        <div class="modal-content hidden" id="modalPaySection">
+            <h3 style="margin-top:0; color:var(--primary);">Record Payment</h3>
+            <p style="font-size: 12px; margin-bottom: 15px; color:var(--text-muted);">For: <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
+            <input type="date" class="app-input" id="payDate" style="margin-bottom:8px;">
+            <div class="flex-row" style="margin-bottom:8px;">
+                <input type="number" class="app-input" id="payAmount" placeholder="Amount (₹)">
+                <select class="app-input" id="payMode"><option>Cash</option><option>UPI</option></select>
+            </div>
+            <label class="app-label" style="margin-top:5px;">Extend Validity To (Renewal)</label>
+            <input type="date" class="app-input" id="payValidDate" style="margin-bottom:8px;">
+            <select class="app-input" id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+            <div class="flex-row" style="margin-top:15px;">
+                <button class="action-btn" style="margin:0; background:var(--green); flex:1;" onclick="savePayment()">Save</button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="hidePaymentForm()">Cancel</button>
+            </div>
+        </div>
+
+        <div class="modal-content hidden" id="modalSettingsSection">
+            <h3 style="margin-top:0; color:var(--primary);">⚙️ Library Settings</h3>
+            <label class="app-label">Library Name</label> <input type="text" class="app-input" id="cfgLibName">
+            <label class="app-label">Total Seats</label> <input type="number" class="app-input" id="cfgTotalSeats" min="1">
+            <label class="app-label">Custom Seats (comma separated)</label> <input type="text" class="app-input" id="cfgCustomSeats" style="text-transform: uppercase;">
+            <label class="app-label">Available Shifts (one per line)</label> <textarea class="app-input" id="cfgShifts" rows="3"></textarea>
+            
+            <div style="border-top:1px solid var(--glass-border); margin-top:20px; padding-top:15px;">
+                <h4 style="margin:0 0 10px 0; font-size:13px;">Advanced Data Options</h4>
+                <div class="flex-row">
+                    <button class="action-btn" style="margin:0; background:var(--green); font-size:12px; padding:8px;" onclick="exportData()">Export Backup</button>
+                    <button class="action-btn" style="margin:0; background:var(--orange); font-size:12px; padding:8px;" onclick="document.getElementById('importFileSettings').click()">Import Backup</button>
+                    <input type="file" id="importFileSettings" class="hidden" onchange="importData(this)">
+                </div>
+                <p style="font-size:10px; color:var(--text-muted); margin-top:5px;">Note: Your data syncs to the cloud automatically. Importing will overwrite the cloud data.</p>
+            </div>
+
+            <div class="flex-row" style="margin-top:20px;">
+                <button class="action-btn" style="margin:0; flex:2;" onclick="saveSettings()">Save Configuration</button>
+                <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+
+        <!-- ADMIN USER MANAGE MODAL -->
+        <div class="modal-content hidden" id="adminUserSection">
+            <h3 style="margin-top:0; color:var(--primary); display:flex; justify-content:space-between; align-items:center;">
+                Manage Workspace
+                <button class="action-btn" style="background:var(--orange); font-size: 10px; padding: 5px 10px; width:auto; margin:0;" onclick="sendAdminPasswordReset()" title="Send Password Reset Email">📧 Reset Pwd</button>
+            </h3>
+            <p style="font-size:14px; font-weight:600; margin-bottom:2px;" id="adminModUsername"></p>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:0; margin-bottom:15px;" id="adminModEmail"></p>
+            
+            <label class="app-label">Subscription Status</label>
+            <select class="app-input" id="adminSubStatus" style="margin-bottom:8px;">
+                <option value="trialing">Trialing (Active)</option>
+                <option value="active">Premium (Active)</option>
+                <option value="inactive">Expired / Inactive</option>
+            </select>
+            
+            <label class="app-label">Validity Until (Auto-expires if past due)</label>
+            <input type="date" class="app-input" id="adminSubValid" style="margin-bottom:8px;">
+            
+            <!-- Quick Extensions -->
+            <div class="flex-row" style="margin-bottom: 15px; flex-wrap: wrap; gap: 6px;">
+                <button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(30)">+1 Month</button>
+                <button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(90)">+3 Months</button>
+                <button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(365)">+1 Year</button>
+            </div>
+
+            <label class="app-label">Admin Notes & Remarks</label>
+            <textarea class="app-input" id="adminModNotes" rows="2" placeholder="Internal notes about this workspace (e.g. Late payer, Custom needs)..." style="margin-bottom:15px; resize:vertical;"></textarea>
+            
+            <div class="flex-row">
+                <button class="action-btn" style="margin:0; background:var(--primary); flex:1;" onclick="saveAdminSub()">💾 Save Profile & Notes</button>
+            </div>
+
+            <h4 style="margin: 20px 0 10px 0; font-size:13px; color:var(--primary); border-top:1px solid var(--glass-border); padding-top:15px;">Record Payment & Invoice</h4>
+            <div class="flex-row" style="margin-bottom:8px;">
+                <input type="number" class="app-input" id="adminTxAmount" placeholder="Amount (₹)" style="flex:1;">
+                <input type="date" class="app-input" id="adminTxDate" style="flex:1;">
+            </div>
+            <button class="action-btn" style="margin:0 0 15px 0; background:var(--green); padding:10px; font-size:12px;" onclick="addAdminTransaction()">Add Transaction & Generate Invoice</button>
+
+            <h4 style="margin: 15px 0 5px 0; font-size:13px; color:var(--text-muted);">Transaction History</h4>
+            <div id="adminTxHistory" style="max-height: 120px; overflow-y:auto; border:1px solid var(--glass-border); border-radius:10px; padding:5px;"></div>
+
+            <button class="action-btn" style="background:var(--text-muted); margin-top:15px;" onclick="closeModal()">Close Panel</button>
+        </div>
+
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- YOUR MODULAR JAVASCRIPT FILES -->
+    <!-- Important: Load them in this exact order -->
+    <script src="js/firebase-init.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
