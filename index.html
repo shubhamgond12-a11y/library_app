@@ -197,7 +197,7 @@
 
         /* Finance & Lists UI */
         .finance-card { background: var(--glass-input-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-        .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:10px; }
+        .fin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top:10px; }
         .fin-box { padding: 12px; border-radius: 10px; text-align: center; border: 1px solid rgba(0,0,0,0.05); }
         .fin-val { font-size: 20px; font-weight: 700; display: block; margin-top: 4px; }
         .list-item { background: var(--modal-card-bg); border-radius: 10px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); }
@@ -252,10 +252,7 @@
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen">
-        <div class="auth-header-bar" onclick="alert('Navigating to homepage...')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-            Home page
-        </div>
+        
 
         <div class="auth-brand-logo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -414,14 +411,21 @@
                     <div style="flex:1"><label class="app-label">Admission</label><input type="date" class="app-input" id="admDate"></div>
                     <div style="flex:1"><label class="app-label">Valid Up To</label><input type="date" class="app-input" id="validDate"></div>
                 </div>
+                
+                <label class="app-label">Shift Timing</label>
+                <select class="app-input" id="shift" onchange="handleShiftChange()"></select>
+                <input type="text" id="customShift" class="app-input hidden" placeholder="Custom timings" style="margin-top:10px;">
+
                 <div class="flex-row">
-                    <div style="flex:1"><label class="app-label">Paid (₹)</label><input type="number" class="app-input" id="initialAmount" placeholder="1500"></div>
+                    <div style="flex:1"><label class="app-label">Total Fee (₹)</label><input type="number" class="app-input" id="totalFee" placeholder="Total" oninput="calcDue()"></div>
+                    <div style="flex:1"><label class="app-label">Paid Amount (₹)</label><input type="number" class="app-input" id="initialAmount" placeholder="Paid" oninput="calcDue()"></div>
+                </div>
+                <div class="flex-row">
+                    <div style="flex:1"><label class="app-label">Due Amount (₹)</label><input type="number" class="app-input" id="dueAmount" placeholder="0" oninput="manualDue()"></div>
                     <div style="flex:1"><label class="app-label">Mode</label><select class="app-input" id="initialMode"><option>Cash</option><option>UPI</option></select></div>
                 </div>
                 <label class="app-label">Fee Status</label> <select class="app-input" id="feeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-                <label class="app-label">Shift Timing</label>
-                <select class="app-input" id="shift" onchange="toggleCustomShift('shift', 'customShift')"></select>
-                <input type="text" id="customShift" class="app-input hidden" placeholder="Custom timings" style="margin-top:10px;">
+                
                 <button class="action-btn" onclick="allotSeat()">Complete Admission</button>
             </div>
         </div>
@@ -457,8 +461,12 @@
                 <div class="fin-grid">
                     <div class="fin-box" style="background:rgba(16,185,129,0.1); border-color:var(--green);"><span style="font-size:11px; color:var(--text-muted);">Total Income</span><span class="fin-val" style="color:var(--green);" id="finIncome">₹0</span></div>
                     <div class="fin-box" style="background:rgba(239,68,68,0.1); border-color:var(--red);"><span style="font-size:11px; color:var(--text-muted);">Total Expenses</span><span class="fin-val" style="color:var(--red);" id="finExpense">₹0</span></div>
+                    <div class="fin-box" style="background:var(--glass-bg);"><span style="font-size:11px; color:var(--text-muted);">Net Profit</span><span class="fin-val" style="color:var(--primary);" id="finProfit">₹0</span></div>
                 </div>
-                <div class="fin-box" style="margin-top:10px; background:var(--glass-bg);"><span style="font-size:11px; color:var(--text-muted);">Net Profit</span><span class="fin-val" style="color:var(--primary);" id="finProfit">₹0</span></div>
+                <div class="fin-box" style="margin-top:10px; background:rgba(245,158,11,0.1); border-color:var(--orange);">
+                    <span style="font-size:11px; color:var(--text-muted);">Total Outstanding Due (All Active Students)</span>
+                    <span class="fin-val" style="color:var(--orange);" id="finTotalDue">₹0</span>
+                </div>
             </div>
 
             <div class="tab-container" style="margin-bottom:10px;">
@@ -534,7 +542,7 @@
             <div class="info-row"><span class="info-label">Exam</span> <span class="info-value" id="modExam"></span></div>
             <div class="info-row"><span class="info-label">Admission</span> <span class="info-value" id="modDate"></span></div>
             <div class="info-row"><span class="info-label">Valid Up To</span> <span class="info-value" id="modValid"></span></div>
-            <div class="info-row" style="border:none;"><span class="info-label">Status</span> <span class="badge" id="modFee"></span></div>
+            <div class="info-row" style="border:none;"><span class="info-label">Status</span> <div><span class="badge" id="modFee"></span> <span id="modDueAmt" style="font-size:11px; font-weight:bold; color:var(--orange); margin-left:5px;"></span></div></div>
 
             <h4 style="margin: 15px 0 5px 0; font-size: 13px; color:var(--primary);">Payment Ledger</h4>
             <div class="payment-ledger" id="paymentLedger" style="max-height: 120px; overflow-y:auto;"></div>
@@ -560,12 +568,18 @@
             <input type="text" class="app-input" id="editName" placeholder="Name" style="margin-bottom:8px;">
             <input type="tel" class="app-input" id="editPhone" placeholder="Phone" style="margin-bottom:8px;">
             <input type="text" class="app-input" id="editExam" placeholder="Exam" style="margin-bottom:8px;">
+            <input type="text" class="app-input" id="editShift" placeholder="Shift Details" style="margin-bottom:8px;">
             <div class="flex-row" style="margin-bottom:8px;">
-                <input type="date" class="app-input" id="editAdmDate" title="Admission Date">
-                <input type="date" class="app-input" id="editValidDate" title="Valid Until">
+                <div style="flex:1"><label class="app-label" style="margin-top:0; font-size:10px;">Admission Date</label><input type="date" class="app-input" id="editAdmDate" title="Admission Date"></div>
+                <div style="flex:1"><label class="app-label" style="margin-top:0; font-size:10px;">Valid Until</label><input type="date" class="app-input" id="editValidDate" title="Valid Until"></div>
+            </div>
+            
+            <div class="flex-row" style="margin-bottom:8px;">
+                <div style="flex:1"><label class="app-label" style="margin-top:0; font-size:10px;">Total Fee</label><input type="number" class="app-input" id="editTotalFee" placeholder="Total Fee" title="Total Fee"></div>
+                <div style="flex:1"><label class="app-label" style="margin-top:0; font-size:10px;">Due Amount</label><input type="number" class="app-input" id="editDueAmount" placeholder="Due Amount" title="Due Amount"></div>
             </div>
             <select class="app-input" id="editFeeStatus" style="margin-bottom:8px;"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-            <input type="text" class="app-input" id="editShift" placeholder="Shift Details">
+            
             <div class="flex-row" style="margin-top:15px;">
                 <button class="action-btn" style="margin:0; flex:1;" onclick="saveEdit()">Save</button>
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="cancelEdit()">Cancel</button>
@@ -573,18 +587,31 @@
         </div>
 
         <div class="modal-content hidden" id="modalPaySection">
-            <h3 style="margin-top:0; color:var(--primary);">Record Payment</h3>
-            <p style="font-size: 12px; margin-bottom: 15px; color:var(--text-muted);">For: <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
+            <h3 style="margin-top:0; color:var(--primary);">Record Payment / Renew</h3>
+            <p style="font-size: 12px; margin-bottom: 5px; color:var(--text-muted);">For: <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
+            <p style="font-size: 11px; margin-top:0; margin-bottom: 15px;">Previous Due Amount: <span id="payCurrentDueDisplay" style="color:var(--orange); font-weight:bold;">₹0</span></p>
+            <input type="hidden" id="payCurrentDueHidden">
+            
+            <label class="app-label" style="margin-top:5px;">Renewal Option (If continuing next month)</label>
+            <div class="flex-row" style="margin-bottom:8px;">
+                <div style="flex:1"><input type="date" class="app-input" id="payValidDate" title="Extend Validity To"></div>
+                <div style="flex:1"><input type="number" class="app-input" id="payNewTotalFee" placeholder="New Fee Amount" oninput="calcPayDue()" title="Add New Fee Amount"></div>
+            </div>
+
+            <label class="app-label" style="margin-top:5px;">Payment Details</label>
             <input type="date" class="app-input" id="payDate" style="margin-bottom:8px;">
             <div class="flex-row" style="margin-bottom:8px;">
-                <input type="number" class="app-input" id="payAmount" placeholder="Amount (₹)">
+                <input type="number" class="app-input" id="payAmount" placeholder="Amount Paid Now (₹)" oninput="calcPayDue()">
                 <select class="app-input" id="payMode"><option>Cash</option><option>UPI</option></select>
             </div>
-            <label class="app-label" style="margin-top:5px;">Extend Validity To (Renewal)</label>
-            <input type="date" class="app-input" id="payValidDate" style="margin-bottom:8px;">
-            <select class="app-input" id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
+            
+            <div class="flex-row" style="margin-bottom:8px; align-items:center;">
+                <div style="flex:1"><label class="app-label" style="margin-top:0;">Remaining Due (₹)</label><input type="number" class="app-input" id="payDueAmount" oninput="manualPayDue()"></div>
+                <div style="flex:1"><label class="app-label" style="margin-top:0;">Fee Status</label><select class="app-input" id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select></div>
+            </div>
+            
             <div class="flex-row" style="margin-top:15px;">
-                <button class="action-btn" style="margin:0; background:var(--green); flex:1;" onclick="savePayment()">Save</button>
+                <button class="action-btn" style="margin:0; background:var(--green); flex:1;" onclick="savePayment()">Save Transaction</button>
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="hidePaymentForm()">Cancel</button>
             </div>
         </div>
@@ -594,7 +621,7 @@
             <label class="app-label">Library Name</label> <input type="text" class="app-input" id="cfgLibName">
             <label class="app-label">Total Seats</label> <input type="number" class="app-input" id="cfgTotalSeats" min="1">
             <label class="app-label">Custom Seats (comma separated)</label> <input type="text" class="app-input" id="cfgCustomSeats" style="text-transform: uppercase;">
-            <label class="app-label">Available Shifts (one per line)</label> <textarea class="app-input" id="cfgShifts" rows="3"></textarea>
+            <label class="app-label">Available Shifts (Format -> Shift Name : Fee Amount)</label> <textarea class="app-input" id="cfgShifts" rows="3" placeholder="Morning : 1000&#10;Evening : 1000"></textarea>
             
             <div style="border-top:1px solid var(--glass-border); margin-top:20px; padding-top:15px;">
                 <h4 style="margin:0 0 10px 0; font-size:13px;">Advanced Data Options</h4>
@@ -690,7 +717,7 @@
         let appConfig = {
             libraryName: "LibSync Pro", totalSeats: 20,
             customSeats: ["1A", "1B", "2A", "2B"],
-            shifts: ["first (8 AM - 2 PM)", "second (2 PM - 8 PM)", "Full Day (8 AM - 8 PM)"]
+            shifts: ["Morning (8 AM - 2 PM) : 1000", "Evening (2 PM - 8 PM) : 1000", "Full Day (8 AM - 8 PM) : 1800"]
         };
 
         const DB = {
@@ -1149,8 +1176,13 @@
                 const el = document.getElementById(id);
                 if (el) {
                     el.innerHTML = id === 'shiftFilter' ? '<option value="all">All Shifts</option>' : '';
-                    (appConfig.shifts || []).forEach(s => { el.innerHTML += `<option value="${s}">${s}</option>`; });
-                    if(id === 'shift') el.innerHTML += `<option value="Custom">Custom Shift...</option>`;
+                    (appConfig.shifts || []).forEach(s => { 
+                        let parts = s.split(':');
+                        let shiftName = parts[0] ? parts[0].trim() : '';
+                        let shiftFee = parts[1] ? parts[1].trim() : '';
+                        el.innerHTML += `<option value="${shiftName}" data-fee="${shiftFee}">${shiftName}</option>`; 
+                    });
+                    if(id === 'shift') el.innerHTML += `<option value="Custom" data-fee="">Custom Shift...</option>`;
                 }
             });
         }
@@ -1235,6 +1267,43 @@
             }
         }
 
+        // --- NEW ADMISSION FEE CALCULATION ---
+        window.calcDue = function() {
+            let total = parseFloat(document.getElementById('totalFee').value) || 0;
+            let paid = parseFloat(document.getElementById('initialAmount').value) || 0;
+            let due = total - paid;
+            if(due < 0) due = 0;
+            document.getElementById('dueAmount').value = due;
+            document.getElementById('feeStatus').value = due > 0 ? 'Due' : 'Paid';
+        }
+        
+        window.manualDue = function() {
+            let due = parseFloat(document.getElementById('dueAmount').value) || 0;
+            document.getElementById('feeStatus').value = due > 0 ? 'Due' : 'Paid';
+        }
+
+        window.handleShiftChange = function() {
+            const shiftEl = document.getElementById('shift');
+            if(!shiftEl || shiftEl.selectedIndex < 0) return;
+            const selectedOpt = shiftEl.options[shiftEl.selectedIndex];
+            const fee = selectedOpt.getAttribute('data-fee');
+            
+            if (shiftEl.value === 'Custom') {
+                document.getElementById('customShift').classList.remove('hidden');
+                document.getElementById('totalFee').value = '';
+                document.getElementById('initialAmount').value = '';
+                document.getElementById('dueAmount').value = '';
+            } else {
+                document.getElementById('customShift').classList.add('hidden');
+                if(fee) {
+                    document.getElementById('totalFee').value = fee;
+                    document.getElementById('initialAmount').value = fee; 
+                    document.getElementById('dueAmount').value = 0;
+                    document.getElementById('feeStatus').value = 'Paid';
+                }
+            }
+        }
+
         window.allotSeat = function() {
             const seatNo = document.getElementById('seatNo').value.toUpperCase().trim(), name = document.getElementById('studentName').value;
             if (!seatNo || !window.seatLayout.includes(seatNo)) return window.toast('⚠️ Invalid Seat Number.');
@@ -1255,9 +1324,14 @@
             DB.addStudent(seatNo, { 
                 id: Date.now().toString(), name, shift, phone: document.getElementById('phone').value || 'N/A', exam: document.getElementById('exam').value || 'General', 
                 admDate: document.getElementById('admDate').value, validDate: document.getElementById('validDate').value, 
-                feeStatus: document.getElementById('feeStatus').value, payments: initialPayments
+                feeStatus: document.getElementById('feeStatus').value, 
+                totalFee: document.getElementById('totalFee').value || 0,
+                dueAmount: document.getElementById('dueAmount').value || 0,
+                payments: initialPayments
             });
-            ['seatNo', 'studentName', 'phone', 'exam', 'admDate', 'validDate', 'initialAmount', 'customShift'].forEach(id => document.getElementById(id).value = '');
+            ['seatNo', 'studentName', 'phone', 'exam', 'admDate', 'validDate', 'initialAmount', 'totalFee', 'dueAmount', 'customShift'].forEach(id => {
+                if(document.getElementById(id)) document.getElementById(id).value = '';
+            });
             window.switchTab('map'); window.toast(`🎉 ${name} allocated!`);
         }
 
@@ -1298,27 +1372,62 @@
             window.calculateFinances(); window.toast("Expense saved");
         }
         window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
+        
+        // --- UPDATED SORTING WITH DATE HEADERS AND OVERALL DUE CALCULATION ---
         window.calculateFinances = function() {
             const monthStr = document.getElementById('finMonth').value; if(!monthStr) return;
-            let totalIncome = 0, totalExpense = 0;
+            let totalIncome = 0, totalExpense = 0, totalDueAmt = 0;
             const incCont = document.getElementById('incomeLedgerContainer'); incCont.innerHTML = '';
             const expCont = document.getElementById('expenseLedgerContainer'); expCont.innerHTML = '';
             let incomes = [];
+            
             for(let seatId of window.seatLayout) {
                 const occupants = DB.getOccupants(seatId);
-                occupants.forEach(s => { if(s.payments) s.payments.forEach(p => { if(p.date.startsWith(monthStr)) { totalIncome += parseFloat(p.amount); incomes.push({ date: p.date, name: s.name, seat: seatId, amount: p.amount, mode: p.mode }); } }); });
+                occupants.forEach(s => { 
+                    if(s.feeStatus === 'Due') {
+                        totalDueAmt += parseFloat(s.dueAmount) || 0;
+                    }
+                    if(s.payments) {
+                        s.payments.forEach(p => { 
+                            if(p.date.startsWith(monthStr)) { 
+                                totalIncome += parseFloat(p.amount); 
+                                incomes.push({ date: p.date, name: s.name, seat: seatId, amount: p.amount, mode: p.mode }); 
+                            } 
+                        });
+                    }
+                });
             }
+            
+            // Render Income Day-wise
             incomes.sort((a,b) => new Date(b.date) - new Date(a.date));
-            if(incomes.length === 0) incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded this month.</div>';
-            incomes.forEach(i => { incCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${i.date} • Mode: ${i.mode}</div></div><span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span></div>`; });
+            if(incomes.length === 0) { incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded this month.</div>'; }
+            let currentIncDate = '';
+            incomes.forEach(i => { 
+                if (i.date !== currentIncDate) {
+                    currentIncDate = i.date;
+                    incCont.innerHTML += `<div style="font-size:11px; font-weight:700; color:var(--primary); margin: 15px 0 5px 0; border-bottom: 2px solid var(--glass-border); padding-bottom: 4px;">📅 ${currentIncDate}</div>`;
+                }
+                incCont.innerHTML += `<div class="list-item" style="margin-bottom:4px;"><div><strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Mode: ${i.mode}</div></div><span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span></div>`; 
+            });
+
+            // Render Expenses Day-wise
             let monthlyExps = (DB.expenses || []).filter(e => e.date.startsWith(monthStr));
             monthlyExps.sort((a,b) => new Date(b.date) - new Date(a.date));
+            let currentExpDate = '';
             monthlyExps.forEach(e => {
                 totalExpense += e.amount;
-                expCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${e.category}</strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${e.date}</div></div><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span><button style="background:none; border:none; color:var(--text-muted); cursor:pointer;" onclick="removeExpense('${e.id}')">×</button></div></div>`;
+                if (e.date !== currentExpDate) {
+                    currentExpDate = e.date;
+                    expCont.innerHTML += `<div style="font-size:11px; font-weight:700; color:var(--red); margin: 15px 0 5px 0; border-bottom: 2px solid var(--glass-border); padding-bottom: 4px;">📅 ${currentExpDate}</div>`;
+                }
+                expCont.innerHTML += `<div class="list-item" style="margin-bottom:4px;"><div><strong style="font-size:13px; display:block;">${e.category}</strong></div><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span><button style="background:none; border:none; color:var(--text-muted); cursor:pointer;" onclick="removeExpense('${e.id}')">×</button></div></div>`;
             });
             if(monthlyExps.length === 0) expCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No expenses recorded.</div>';
-            document.getElementById('finIncome').innerText = `₹${totalIncome}`; document.getElementById('finExpense').innerText = `₹${totalExpense}`; document.getElementById('finProfit').innerText = `₹${totalIncome - totalExpense}`;
+            
+            document.getElementById('finIncome').innerText = `₹${totalIncome}`; 
+            document.getElementById('finExpense').innerText = `₹${totalExpense}`; 
+            document.getElementById('finProfit').innerText = `₹${totalIncome - totalExpense}`;
+            document.getElementById('finTotalDue').innerText = `₹${totalDueAmt}`;
         }
 
         window.openSettingsModal = function() {
@@ -1338,7 +1447,6 @@
         function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
         window.handleSeatClick = function(seatNo) { window.activeSeatNo = seatNo; const occupants = DB.getOccupants(seatNo); if(occupants.length === 1) window.openStudentProfile(occupants[0].id); else window.showListMenu(); document.getElementById('detailsModal').style.display = 'flex'; }
         
-        // --- MULTI-STUDENT EXPIRY BADGE OVERRIDES ---
         window.showListMenu = function() {
             hideAllModalSections(); document.getElementById('listSeatNo').innerText = window.activeSeatNo;
             const listCont = document.getElementById('occupantsContainer'); listCont.innerHTML = '';
@@ -1347,17 +1455,12 @@
                 let label = s.feeStatus;
                 let badgeColor = s.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
                 
-                // Override status labels instantly if expired
-                if (expStatus === 'expired') {
-                    label = "Expired"; badgeColor = "var(--red)";
-                }
-
+                if (expStatus === 'expired') { label = "Expired"; badgeColor = "var(--red)"; }
                 listCont.innerHTML += `<div class="list-item" style="cursor:pointer;" onclick="openStudentProfile('${s.id}')"><div><strong style="display:block; font-size:14px;">${s.name}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.shift}</div></div><span class="badge" style="background:${badgeColor};">${label}</span></div>`; 
             });
             triggerModalAnimation('modalListSection');
         }
 
-        // --- AUTOMATED PROFILE STATUS DISPLAY ---
         window.openStudentProfile = function(studentId) {
             window.activeStudentId = studentId; hideAllModalSections(); window.isDeleteConfirmStep = false;
             const rmvBtn = document.getElementById('btnRemoveStudent'); if(rmvBtn) { rmvBtn.innerText = "Remove"; rmvBtn.style.background = "var(--red)"; }
@@ -1365,16 +1468,14 @@
             document.getElementById('modSeatTitle').innerText = window.activeSeatNo;
             ['Name','Phone','Shift','Exam','Date','Valid'].forEach(k => document.getElementById('mod'+k).innerText = student[k.toLowerCase() === 'date' ? 'admDate' : k.toLowerCase() === 'valid' ? 'validDate' : k.toLowerCase()] || 'N/A');
             
-            // UI Status Badges: Automatically overrides to Expired (Renewal Due) state
             const feeEl = document.getElementById('modFee'); 
             const expStatus = checkExpiry(student.validDate);
-            if (expStatus === 'expired') {
-                feeEl.innerText = "Expired (Renewal Due)";
-                feeEl.style.background = "var(--red)";
-            } else {
-                feeEl.innerText = student.feeStatus; 
-                feeEl.style.background = student.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
-            }
+            if (expStatus === 'expired') { feeEl.innerText = "Expired (Renewal Due)"; feeEl.style.background = "var(--red)"; } 
+            else { feeEl.innerText = student.feeStatus; feeEl.style.background = student.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)'; }
+
+            const dueAmtEl = document.getElementById('modDueAmt');
+            if (student.feeStatus === 'Due' && student.dueAmount > 0) { dueAmtEl.innerText = `(Due: ₹${student.dueAmount})`; } 
+            else { dueAmtEl.innerText = ''; }
 
             const ledger = document.getElementById('paymentLedger'); ledger.innerHTML = '';
             if(!student.payments || student.payments.length === 0) ledger.innerHTML = '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No history.</div>';
@@ -1386,12 +1487,76 @@
         window.backToListOrClose = function() { if(DB.getOccupants(window.activeSeatNo).length > 1) window.showListMenu(); else window.closeModal(); }
         window.closeModal = function() { document.getElementById('detailsModal').style.display = 'none'; window.activeSeatNo = null; window.activeStudentId = null; }
         window.addAnotherToSeat = function() { const seat = window.activeSeatNo; window.closeModal(); window.switchTab('add'); document.getElementById('seatNo').value = seat; }
-        window.showEditForm = function() { hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => document.getElementById('edit'+k).value = student[k.charAt(0).toLowerCase() + k.slice(1)] || ''); triggerModalAnimation('modalEditSection'); }
-        window.saveEdit = function() { const d = {}; ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value); DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast("Updated"); window.renderSeats(); window.openStudentProfile(window.activeStudentId); }
+        
+        window.showEditForm = function() { 
+            hideAllModalSections(); 
+            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); 
+            ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift','TotalFee','DueAmount'].forEach(k => {
+                let val = student[k.charAt(0).toLowerCase() + k.slice(1)];
+                document.getElementById('edit'+k).value = val || ((k==='TotalFee' || k==='DueAmount') ? 0 : '');
+            }); 
+            triggerModalAnimation('modalEditSection'); 
+        }
+        window.saveEdit = function() { 
+            const d = {}; 
+            ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift','TotalFee','DueAmount'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value); 
+            DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast("Updated"); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
+        }
         window.cancelEdit = function() { window.openStudentProfile(window.activeStudentId); }
-        window.showPaymentForm = function() { hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); document.getElementById('payStudentName').innerText = student.name; document.getElementById('payDate').value = new Date().toISOString().split('T')[0]; document.getElementById('payAmount').value = ''; document.getElementById('payValidDate').value = student.validDate || ''; document.getElementById('payFeeStatus').value = 'Paid'; triggerModalAnimation('modalPaySection'); }
+        
+        // --- NEW PAYMENT & RENEWAL CALCULATION LOGIC ---
+        window.calcPayDue = function() {
+            let prevDue = parseFloat(document.getElementById('payCurrentDueHidden').value) || 0;
+            let newTotal = parseFloat(document.getElementById('payNewTotalFee').value) || 0; 
+            let paying = parseFloat(document.getElementById('payAmount').value) || 0;
+            
+            let totalOwed = prevDue + newTotal;
+            let remainingDue = totalOwed - paying;
+            if (remainingDue < 0) remainingDue = 0;
+            
+            document.getElementById('payDueAmount').value = remainingDue;
+            document.getElementById('payFeeStatus').value = remainingDue > 0 ? 'Due' : 'Paid';
+        }
+
+        window.manualPayDue = function() {
+            let due = parseFloat(document.getElementById('payDueAmount').value) || 0;
+            document.getElementById('payFeeStatus').value = due > 0 ? 'Due' : 'Paid';
+        }
+
+        window.showPaymentForm = function() { 
+            hideAllModalSections(); 
+            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); 
+            document.getElementById('payStudentName').innerText = student.name; 
+            document.getElementById('payCurrentDueDisplay').innerText = `₹${student.dueAmount || 0}`;
+            document.getElementById('payCurrentDueHidden').value = student.dueAmount || 0;
+            
+            document.getElementById('payDate').value = new Date().toISOString().split('T')[0]; 
+            document.getElementById('payAmount').value = ''; 
+            document.getElementById('payNewTotalFee').value = ''; 
+            document.getElementById('payValidDate').value = student.validDate || ''; 
+            document.getElementById('payDueAmount').value = student.dueAmount || 0;
+            document.getElementById('payFeeStatus').value = (student.dueAmount > 0) ? 'Due' : 'Paid';
+
+            triggerModalAnimation('modalPaySection'); 
+        }
         window.hidePaymentForm = function() { window.openStudentProfile(window.activeStudentId); }
-        window.savePayment = function() { const amt = document.getElementById('payAmount').value; if(!amt) return window.toast('⚠️ Enter amount'); DB.addPayment(window.activeSeatNo, window.activeStudentId, { date: document.getElementById('payDate').value, amount: amt, mode: document.getElementById('payMode').value }, document.getElementById('payValidDate').value, document.getElementById('payFeeStatus').value); window.toast('Payment Saved'); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); }
+        window.savePayment = function() { 
+            const amt = document.getElementById('payAmount').value; 
+            if(!amt) return window.toast('⚠️ Enter amount'); 
+            
+            DB.addPayment(window.activeSeatNo, window.activeStudentId, { date: document.getElementById('payDate').value, amount: amt, mode: document.getElementById('payMode').value }, document.getElementById('payValidDate').value, document.getElementById('payFeeStatus').value); 
+            
+            let updatedData = {
+                dueAmount: document.getElementById('payDueAmount').value,
+                feeStatus: document.getElementById('payFeeStatus').value
+            };
+            let newTotal = document.getElementById('payNewTotalFee').value;
+            if(newTotal) updatedData.totalFee = newTotal;
+            DB.updateStudent(window.activeSeatNo, window.activeStudentId, updatedData);
+
+            window.toast('Payment Saved'); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
+        }
+
         window.freeStudentSlot = function() {
             const btn = document.getElementById('btnRemoveStudent');
             if (!window.isDeleteConfirmStep) { window.isDeleteConfirmStep = true; btn.innerText = "Tap Again to Delete"; btn.style.background = "#991b1b"; setTimeout(() => { if (window.isDeleteConfirmStep) { window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)"; } }, 4000); return; }
@@ -1417,7 +1582,6 @@
             };
             if(input.files[0]) reader.readAsText(input.files[0]);
         }
-        window.toggleCustomShift = function(selectId, inputId) { document.getElementById(inputId).classList.toggle('hidden', document.getElementById(selectId).value !== 'Custom'); }
     </script>
 </body>
 </html>
