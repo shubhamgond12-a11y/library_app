@@ -50,7 +50,7 @@
 
         /* --- DESKTOP CENTERING --- */
         @media (min-width: 768px) {
-            #addSeatTab, #waitlistTab, #financeTab, #adminApp { max-width: 750px; margin: 0 auto; }
+            #addSeatTab, #waitlistTab, #financeTab, #adminApp, #broadcastBanner { max-width: 750px; margin: 0 auto; }
         }
 
         /* --- MODERN AUTHENTICATION UI STYLES --- */
@@ -84,7 +84,7 @@
         .auth-bottom-text { margin-top: 25px; font-size: 12px; color: #64748b; font-weight: 500; }
         .auth-bottom-text span { color: #5b68df; font-weight: 600; cursor: pointer; transition: color 0.2s; }
 
-        /* --- EXISTING MAIN APP STYLES --- */
+        /* --- MAIN APP STYLES --- */
         @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .animate-in { animation: fadeSlideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
@@ -159,9 +159,20 @@
         .driver-popover-title { font-size: 18px !important; color: #38bdf8 !important; font-weight: 700 !important; margin-bottom: 8px !important; }
         .driver-popover-description { color: #cbd5e1 !important; font-size: 14px !important; line-height: 1.5 !important; }
         .driver-popover-navigation-btns button { background: #3b82f6 !important; color: white !important; border: none !important; border-radius: 6px !important; padding: 6px 12px !important; }
+
+        /* --- DYNAMIC SAAS ANALYTICS GAUGES --- */
+        .analytics-gauge-bar {
+            width: 100%; height: 8px; background: rgba(150,150,150,0.15); border-radius: 4px; overflow: hidden; margin-top: 10px; display: flex;
+        }
+        .gauge-part { height: 100%; transition: width 0.4s ease; }
     </style>
 </head>
 <body>
+
+    <!-- GLOBAL BROADCAST BANNER -->
+    <div id="broadcastBanner" class="hidden animate-in" style="background: linear-gradient(90deg, #2563eb, #3b82f6); color: white; padding: 12px; border-radius: 12px; margin: 10px 10px 15px 10px; text-align: center; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(37,99,235,0.2); z-index: 999;">
+        <span>📢 Update:</span> <span id="broadcastText" style="font-weight:400;"></span>
+    </div>
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen">
@@ -215,10 +226,6 @@
 
     <!-- MAIN USER APP -->
     <div id="mainApp" style="display:none;">
-        <div id="broadcastBanner" class="hidden animate-in" style="background: linear-gradient(90deg, #2563eb, #3b82f6); color: white; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(37,99,235,0.2);">
-            <span>📢 Update:</span> <span id="broadcastText" style="font-weight:400;"></span>
-        </div>
-
         <header class="animate-in">
             <h2 id="appTitle">LibSync Pro</h2>
             <div class="utility-bar">
@@ -345,27 +352,64 @@
     <!-- ADMIN APP -->
     <div id="adminApp" style="display:none;">
         <header class="animate-in">
-            <h2>Admin Dashboard Hub</h2>
+            <h2>Admin SaaS Central</h2>
             <div class="utility-bar">
                 <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
                 <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
             </div>
         </header>
+
         <div class="dashboard glass-panel animate-in" style="grid-template-columns: repeat(3, 1fr); margin-bottom:15px; padding: 12px;">
             <div class="stat-card">Workspaces <span class="num" id="adminStatWorkspaces" style="color:var(--primary)">0</span></div>
             <div class="stat-card">Active Premium <span class="num" id="adminStatPremium" style="color:var(--green)">0</span></div>
-            <div class="stat-card">Monthly SaaS Rev. <span class="num" id="adminStatRevenue" style="color:var(--orange)">₹0</span></div>
+            <div class="stat-card">SaaS Revenue <span class="num" id="adminStatRevenue" style="color:var(--orange)">₹0</span></div>
         </div>
-        <div class="glass-panel animate-in" style="padding: 15px; margin-bottom:15px;">
-            <h4 style="margin-top:0; margin-bottom:8px; font-size:13px; color:var(--primary);">📢 System Broadcast Banner</h4>
-            <div class="flex-row"><input type="text" class="app-input" id="adminBroadcastMsg" placeholder="Type global system notification message..." style="flex:1;"></div>
-            <div class="flex-row" style="margin-top:8px;">
-                <button class="action-btn" style="margin:0; flex:1; background:var(--primary);" onclick="saveBroadcast()">Activate Announcement</button>
-                <button class="action-btn" style="margin:0; flex:1; background:var(--red);" onclick="clearBroadcast()">Deactivate / Clear</button>
+
+        <!-- NEW FEATURE: Subscription Health Bar Chart -->
+        <div class="glass-panel animate-in" style="padding: 15px; margin-bottom: 15px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 style="margin:0; font-size:12px; color:var(--text-muted);">Workspace Subscription Distribution</h4>
+                <span id="adminHealthRatio" style="font-size:11px; font-weight:700; color:var(--primary);">0% Premium</span>
+            </div>
+            <div class="analytics-gauge-bar">
+                <div id="gaugePremium" class="gauge-part" style="background:var(--green); width:0%;"></div>
+                <div id="gaugeTrialing" class="gauge-part" style="background:var(--primary); width:0%;"></div>
+                <div id="gaugeExpired" class="gauge-part" style="background:var(--red); width:0%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; margin-top:8px; color:var(--text-muted);">
+                <span>🟢 Premium (<span id="gaugePremNum">0</span>)</span>
+                <span>🔵 Trialing (<span id="gaugeTrialNum">0</span>)</span>
+                <span>🔴 Expired (<span id="gaugeExpNum">0</span>)</span>
             </div>
         </div>
-        <div class="glass-panel animate-in" style="padding: 15px;">
-            <h3 style="margin-top:0; margin-bottom: 15px; color:var(--primary);">Registered Client Workspaces</h3>
+
+        <div class="glass-panel animate-in" style="padding: 15px; margin-bottom:15px;">
+            <h4 style="margin-top:0; margin-bottom:8px; font-size:13px; color:var(--primary);">📢 Global System Broadcaster</h4>
+            <div class="flex-row"><input type="text" class="app-input" id="adminBroadcastMsg" placeholder="Type global system notification message..." style="flex:1;"></div>
+            <div class="flex-row" style="margin-top:8px;">
+                <button class="action-btn" style="margin:0; flex:1; background:var(--primary);" onclick="saveBroadcast()">Publish Live</button>
+                <button class="action-btn" style="margin:0; flex:1; background:var(--red);" onclick="clearBroadcast()">Clear / Off</button>
+            </div>
+            
+            <!-- NEW FEATURE: Broadcast History Ledger -->
+            <div style="margin-top: 15px; border-top: 1px solid var(--glass-border); padding-top:10px;">
+                <h5 style="margin:0 0 5px 0; font-size:11px; color:var(--text-muted);">Recent Broadcast History</h5>
+                <div id="broadcastHistoryContainer" style="max-height: 80px; overflow-y:auto; display:flex; flex-direction:column; gap:4px;"></div>
+            </div>
+        </div>
+
+        <!-- NEW FEATURE: Advanced Workspace Filtering & Searching -->
+        <div class="glass-panel animate-in" style="padding: 15px; margin-bottom:15px;">
+            <h3 style="margin-top:0; margin-bottom: 12px; color:var(--primary); font-size:16px;">Client Workspaces</h3>
+            <div class="flex-row" style="margin-bottom:10px;">
+                <input type="text" id="adminClientSearch" class="app-input search-box" style="margin-bottom:0; flex:1;" placeholder="Search username, email..." oninput="filterAdminClients()">
+                <select id="adminClientFilter" class="app-input" style="width:130px;" onchange="filterAdminClients()">
+                    <option value="all">All Statuses</option>
+                    <option value="active">Premium Only</option>
+                    <option value="trialing">Trialing Only</option>
+                    <option value="inactive">Expired Only</option>
+                </select>
+            </div>
             <div id="adminUsersContainer">Loading registered SaaS users...</div>
         </div>
     </div>
@@ -475,11 +519,16 @@
             </h3>
             <p style="font-size:14px; font-weight:600; margin-bottom:2px;" id="adminModUsername"></p>
             <p style="font-size:11px; color:var(--text-muted); margin-top:0; margin-bottom:15px;" id="adminModEmail"></p>
+            
+            <!-- NEW FEATURE: Quick Renewal Copier -->
+            <button class="action-btn" style="margin:0 0 15px 0; background:var(--primary); padding:8px 12px; font-size:11px;" id="btnAdminCopyNotice" onclick="copyRenewalNotice()">📋 Generate WhatsApp Renewal Notice</button>
+
             <label class="app-label">Subscription Status</label><select class="app-input" id="adminSubStatus" style="margin-bottom:8px;"><option value="trialing">Trialing (Active)</option><option value="active">Premium (Active)</option><option value="inactive">Expired / Inactive</option></select>
             <label class="app-label">Validity Until</label><input type="date" class="app-input" id="adminSubValid" style="margin-bottom:8px;">
             <div class="flex-row" style="margin-bottom: 15px; flex-wrap: wrap; gap: 6px;"><button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(30)">+1 Month</button><button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(90)">+3 Months</button><button class="filter-btn" style="font-size:10px; padding:6px 10px;" onclick="extendAdminSub(365)">+1 Year</button></div>
             <label class="app-label">Admin Notes</label><textarea class="app-input" id="adminModNotes" rows="2" style="margin-bottom:15px;"></textarea>
             <div class="flex-row"><button class="action-btn" style="margin:0; background:var(--primary); flex:1;" onclick="saveAdminSub()">💾 Save Profile & Notes</button></div>
+            
             <h4 style="margin: 20px 0 10px 0; font-size:13px; color:var(--primary); border-top:1px solid var(--glass-border); padding-top:15px;">Record Payment & Invoice</h4>
             <div class="flex-row" style="margin-bottom:8px;"><input type="number" class="app-input" id="adminTxAmount" placeholder="Amount (₹)" style="flex:1;"><input type="date" class="app-input" id="adminTxDate" style="flex:1;"></div>
             <button class="action-btn" style="margin:0 0 15px 0; background:var(--green); padding:10px; font-size:12px;" onclick="addAdminTransaction()">Add Transaction & Generate Invoice</button>
@@ -492,6 +541,7 @@
     <div id="toast-container"></div>
 
     <script>
+        // --- STREAMING_CHUNK: Initializing Firebase configuration variables ---
         const firebaseConfig = { apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4", authDomain: "librarymgt-2026.firebaseapp.com", projectId: "librarymgt-2026", storageBucket: "librarymgt-2026.firebasestorage.app", messagingSenderId: "836897960075", appId: "1:836897960075:web:11899c0996620eb428e48e" };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(); const db = firebase.firestore();
@@ -501,6 +551,7 @@
         const ADMIN_UID = 'cwBkWqFBuHeqpLyNBKdQSeF1iu83';
 
         let currentUser = null; let unsubscribeSnapshot = null; let unsubscribeBroadcast = null;
+        let cachedAdminClients = []; // Local cache to store filtered clients
 
         let appConfig = {
             libraryName: "LibSync Pro", totalSeats: 20, customSeats: ["1A", "1B", "2A", "2B"],
@@ -531,14 +582,24 @@
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 currentUser = user;
-                if (user.uid === ADMIN_UID) { document.getElementById('authScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'none'; document.getElementById('adminApp').style.display = 'block'; window.loadAdminDashboard(); window.toast(`Welcome to the Admin Hub!`); }
-                else {
+                if (user.uid === ADMIN_UID) { 
+                    document.getElementById('authScreen').style.display = 'none'; 
+                    document.getElementById('mainApp').style.display = 'none'; 
+                    document.getElementById('adminApp').style.display = 'block'; 
+                    listenForBroadcasts(); // Admin also listens to broadcasts
+                    window.loadAdminDashboard(); 
+                    window.toast(`Welcome to the Admin Hub!`); 
+                } else {
                     try {
                         const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
                         const subSnap = await subRef.get();
                         if (subSnap.exists && subSnap.data().status === 'inactive') { window.toast("⚠️ Workspace Expired."); auth.signOut(); return; }
                         if (!subSnap.exists) { await subRef.set({ status: 'trialing', validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], history: [], adminNotes: "" }, { merge: true }); }
-                        document.getElementById('authScreen').style.display = 'none'; document.getElementById('adminApp').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; document.getElementById('finMonth').value = new Date().toISOString().substring(0,7); loadDataFromCloud(); listenForBroadcasts(); window.toast(`Welcome back!`); setTimeout(startAppTour, 1000);
+                        document.getElementById('authScreen').style.display = 'none'; document.getElementById('adminApp').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; document.getElementById('finMonth').value = new Date().toISOString().substring(0,7); 
+                        loadDataFromCloud(); 
+                        listenForBroadcasts(); 
+                        window.toast(`Welcome back!`); 
+                        setTimeout(startAppTour, 1000);
                     } catch(err) { window.toast("Error loading workspace."); auth.signOut(); }
                 }
             } else { currentUser = null; document.getElementById('authScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none'; document.getElementById('adminApp').style.display = 'none'; if(unsubscribeSnapshot) unsubscribeSnapshot(); if(unsubscribeBroadcast) unsubscribeBroadcast(); }
@@ -550,48 +611,195 @@
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
         window.loginWithGoogle = async () => { try { const res = await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); if (res.additionalUserInfo && res.additionalUserInfo.isNewUser) { await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${res.user.email.split('@')[0].toLowerCase() + Math.floor(Math.random() * 1000)}`).set({ email: res.user.email, uid: res.user.uid }); } } catch(e) { document.getElementById('authError').innerText = e.message.replace('Firebase:', '').trim(); } };
 
-        // Admin & Main App specific cloud logic (abbreviated for brevity, logic identical to previous code block)
-        window.saveBroadcast = async function() { await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ message: document.getElementById('adminBroadcastMsg').value.trim(), active: true, updatedAt: new Date().toISOString() }); window.toast("Broadcast Activated!"); };
-        window.clearBroadcast = async function() { await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ active: false }); document.getElementById('adminBroadcastMsg').value = ''; window.toast("Broadcast cleared."); };
-        
+        // --- STREAMING_CHUNK: Admin Broadcaster logic ---
+        window.saveBroadcast = async function() { 
+            const text = document.getElementById('adminBroadcastMsg').value.trim();
+            if (!text) return window.toast("⚠️ Broadcast text empty.");
+            
+            // Add to active live document
+            await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ message: text, active: true, updatedAt: new Date().toISOString() }); 
+            
+            // Log into a small broadcast ledger doc
+            try {
+                const histRef = db.collection(`artifacts/${globalAppId}/public/data/broadcast_history`);
+                await histRef.add({ message: text, timestamp: new Date().toISOString() });
+            } catch(e) { console.warn("Ledger logging error", e); }
+            
+            window.toast("Announcement Broadcasted!"); 
+            loadBroadcastHistory();
+        };
+
+        window.clearBroadcast = async function() { 
+            await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ active: false }); 
+            document.getElementById('adminBroadcastMsg').value = ''; 
+            window.toast("Broadcast cleared."); 
+        };
+
+        // NEW FEATURE: Load previous broadcasts
+        async function loadBroadcastHistory() {
+            const container = document.getElementById('broadcastHistoryContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            try {
+                const snap = await db.collection(`artifacts/${globalAppId}/public/data/broadcast_history`).orderBy('timestamp', 'desc').limit(4).get();
+                if(snap.empty) {
+                    container.innerHTML = '<span style="font-size:10px; color:var(--text-muted);">No history found</span>';
+                    return;
+                }
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    const d = document.createElement('div');
+                    d.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.1); padding:4px 8px; border-radius:6px; font-size:11px; margin-bottom:2px;";
+                    d.innerHTML = `
+                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:80%;" title="${data.message}">${data.message}</span>
+                        <button class="filter-btn" style="padding:2px 6px; font-size:9px;" onclick="reuseBroadcast('${data.message.replace(/'/g, "\\'")}')">Use</button>
+                    `;
+                    container.appendChild(d);
+                });
+            } catch(e) { console.warn("Failed loading broadcast history: ", e); }
+        }
+
+        window.reuseBroadcast = function(msg) {
+            document.getElementById('adminBroadcastMsg').value = msg;
+            window.toast("Message loaded to broadcaster");
+        };
+
+        // --- STREAMING_CHUNK: Admin dashboard panel render engine ---
         window.loadAdminDashboard = async function() { 
             const container = document.getElementById('adminUsersContainer');
-            container.innerHTML = '<div style="text-align:center; padding: 20px;">Loading users...</div>';
+            container.innerHTML = '<div style="text-align:center; padding: 20px;">Fetching workspace data...</div>';
             try {
                 const usersSnap = await db.collection(`artifacts/${globalAppId}/public/data/usernameMap`).get();
-                let html = '';
-                let activePrem = 0, totalRev = 0, totalWorkspaces = usersSnap.size;
                 if (usersSnap.empty) {
                     container.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text-muted);">No registered workspaces yet.</div>';
                     document.getElementById('adminStatWorkspaces').innerText = "0";
                     return;
                 }
+                
+                cachedAdminClients = [];
+                let activePrem = 0;
+                let activeTrial = 0;
+                let activeExp = 0;
+                let totalRev = 0;
+                let totalWorkspaces = usersSnap.size;
+
                 const usersData = [];
                 usersSnap.forEach(doc => { usersData.push({ username: doc.id, ...doc.data() }); });
+                
                 for (let u of usersData) {
                     if (!u.uid) continue;
-                    let subStatus = "trialing", validUntil = "N/A";
+                    let subStatus = "trialing";
+                    let validUntil = "N/A";
+                    let adminNotes = "";
+                    let history = [];
+
                     try {
                         const subSnap = await db.doc(`artifacts/${globalAppId}/users/${u.uid}/subscription/info`).get();
                         if (subSnap.exists) {
                             const sd = subSnap.data();
                             subStatus = sd.status || 'inactive';
+                            validUntil = sd.validUntil || 'N/A';
+                            adminNotes = sd.adminNotes || '';
+                            history = sd.history || [];
+                            
                             if (subStatus === 'active') activePrem++;
-                            if (sd.history) {
-                                sd.history.forEach(tx => {
-                                    if(tx.date && tx.date.startsWith(new Date().toISOString().substring(0,7))) { totalRev += parseFloat(tx.amount || 0); }
-                                });
-                            }
+                            else if (subStatus === 'trialing') activeTrial++;
+                            else if (subStatus === 'inactive') activeExp++;
+
+                            history.forEach(tx => {
+                                if(tx.date && tx.date.startsWith(new Date().toISOString().substring(0,7))) { 
+                                    totalRev += parseFloat(tx.amount || 0); 
+                                }
+                            });
+                        } else {
+                            activeTrial++;
                         }
                     } catch(e) {}
-                    let badgeColor = subStatus === 'active' ? 'var(--green)' : (subStatus === 'trialing' ? 'var(--primary)' : 'var(--red)');
-                    html += `<div class="list-item" style="cursor:pointer;" onclick="openAdminUser('${u.uid}', '${u.username}', '${u.email}')"><div><strong style="display:block; font-size:14px;">${u.username}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${u.email}</div></div><span class="badge" style="background:${badgeColor};">${subStatus.toUpperCase()}</span></div>`;
+                    
+                    cachedAdminClients.push({
+                        uid: u.uid,
+                        username: u.username || u.email.split('@')[0],
+                        email: u.email,
+                        status: subStatus,
+                        validUntil: validUntil,
+                        adminNotes: adminNotes,
+                        history: history
+                    });
                 }
-                container.innerHTML = html;
+
+                // Render metrics
                 document.getElementById('adminStatWorkspaces').innerText = totalWorkspaces;
                 document.getElementById('adminStatPremium').innerText = activePrem;
                 document.getElementById('adminStatRevenue').innerText = `₹${totalRev}`;
+
+                // Calculate ratios
+                const premiumRatio = totalWorkspaces > 0 ? Math.round((activePrem / totalWorkspaces) * 100) : 0;
+                const trialingRatio = totalWorkspaces > 0 ? Math.round((activeTrial / totalWorkspaces) * 100) : 0;
+                const expiredRatio = totalWorkspaces > 0 ? Math.round((activeExp / totalWorkspaces) * 100) : 0;
+
+                document.getElementById('adminHealthRatio').innerText = `${premiumRatio}% Premium`;
+                document.getElementById('gaugePremium').style.width = `${premiumRatio}%`;
+                document.getElementById('gaugeTrialing').style.width = `${trialingRatio}%`;
+                document.getElementById('gaugeExpired').style.width = `${expiredRatio}%`;
+
+                document.getElementById('gaugePremNum').innerText = activePrem;
+                document.getElementById('gaugeTrialNum').innerText = activeTrial;
+                document.getElementById('gaugeExpNum').innerText = activeExp;
+
+                // Render lists
+                renderAdminClientList(cachedAdminClients);
+                loadBroadcastHistory();
+
             } catch (err) { container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--red);">Error loading users. ${err.message}</div>`; }
+        };
+
+        function renderAdminClientList(list) {
+            const container = document.getElementById('adminUsersContainer');
+            let html = '';
+            list.forEach(c => {
+                let badgeColor = c.status === 'active' ? 'var(--green)' : (c.status === 'trialing' ? 'var(--primary)' : 'var(--red)');
+                html += `
+                    <div class="list-item" style="cursor:pointer;" onclick="openAdminUser('${c.uid}', '${c.username}', '${c.email}')">
+                        <div>
+                            <strong style="display:block; font-size:14px;">${c.username}</strong>
+                            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${c.email}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <span class="badge" style="background:${badgeColor};">${c.status.toUpperCase()}</span>
+                            <div style="font-size:9px; color:var(--text-muted); margin-top:4px;">Valid: ${c.validUntil}</div>
+                        </div>
+                    </div>`;
+            });
+            container.innerHTML = html || '<div style="text-align:center; font-size:12px; padding:15px;">No matching clients.</div>';
+        }
+
+        // NEW FEATURE: Client Filtering 
+        window.filterAdminClients = function() {
+            const q = document.getElementById('adminClientSearch').value.toLowerCase().trim();
+            const filterType = document.getElementById('adminClientFilter').value;
+
+            let filtered = cachedAdminClients.filter(c => {
+                const matchesSearch = c.username.toLowerCase().includes(q) || c.email.toLowerCase().includes(q);
+                const matchesFilter = filterType === 'all' || c.status === filterType;
+                return matchesSearch && matchesFilter;
+            });
+            renderAdminClientList(filtered);
+        };
+
+        // NEW FEATURE: Quick Renewal Notice Copying
+        window.copyRenewalNotice = function() {
+            const username = document.getElementById('adminModUsername').innerText;
+            const valid = document.getElementById('adminSubValid').value || 'N/A';
+            const template = `Hello ${username},\n\nThis is a friendly reminder that your LibSync Pro subscription expires/has expired on *${valid}*. To prevent any seat matrix or cloud database interruptions, please renew your plan.\n\nThank you,\nLibSync Administrator`;
+            
+            // Create a fake input to copy to clipboard (iFrame compliant)
+            const el = document.createElement('textarea');
+            el.value = template;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            window.toast("📋 Message Copied to Clipboard!");
         };
 
         window.adminActiveUid = null; window.adminActiveEmail = null;
@@ -663,7 +871,18 @@
             } catch(e) { window.toast("Error adding transaction."); }
         };
 
-        function listenForBroadcasts() { unsubscribeBroadcast = db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).onSnapshot((s) => { const b = document.getElementById('broadcastBanner'); if (s.exists && s.data().active) { document.getElementById('broadcastText').innerText = s.data().message; b.classList.remove('hidden'); } else b.classList.add('hidden'); }, ()=>{}); }
+        // --- STREAMING_CHUNK: Setting up data loading triggers ---
+        function listenForBroadcasts() { 
+            if(unsubscribeBroadcast) unsubscribeBroadcast();
+            unsubscribeBroadcast = db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).onSnapshot((s) => { 
+                const b = document.getElementById('broadcastBanner'); 
+                if (s.exists && s.data().active && s.data().message) { 
+                    document.getElementById('broadcastText').innerText = s.data().message; 
+                    b.classList.remove('hidden'); 
+                } else b.classList.add('hidden'); 
+            }, ()=>{}); 
+        }
+
         function loadDataFromCloud() { if(!currentUser || currentUser.uid === ADMIN_UID) return; unsubscribeSnapshot = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).onSnapshot((s) => { window.initializeAppStructure(); if (s.exists) { const d = s.data(); if(d.config) appConfig = d.config; if(d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } else { DB.init(); DB.save(); } document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro'; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); }, ()=>{}); }
         function startAppTour() { if (localStorage.getItem('hasSeenTour') === 'true') return; const t = window.driver.js.driver({ showProgress:true, steps:[{popover:{title:'Welcome!',description:'Quick 30s tour.'}},{element:'#settingsTab',popover:{title:'1. Setup',description:'Start here.'}},{element:'#seatMapTab',popover:{title:'2. Matrix',description:'Your seats.'}},{element:'#tabFinBtn',popover:{title:'3. Finance',description:'Track Dues.'}}], onDestroyStarted:()=>{localStorage.setItem('hasSeenTour','true');t.destroy();}}); t.drive(); }
 
@@ -675,7 +894,7 @@
             ['shift', 'waitShift', 'shiftFilter'].forEach(id => { const el = document.getElementById(id); if (el) { el.innerHTML = id === 'shiftFilter' ? '<option value="all">All Shifts</option>' : ''; (appConfig.shifts || []).forEach(s => el.innerHTML += `<option value="${s}">${s}</option>`); if(id === 'shift') el.innerHTML += `<option value="Custom">Custom Shift...</option>`; } });
         }
 
-        // New core logic: Status Derivation
+        // Status Derivation
         function checkExpiry(validDateStr) { if(!validDateStr) return 'ok'; const today = new Date(); today.setHours(0,0,0,0); const valid = new Date(validDateStr); valid.setHours(0,0,0,0); const diffDays = Math.ceil((valid - today) / (1000 * 60 * 60 * 24)); if(diffDays < 0) return 'expired'; if(diffDays <= 3) return 'warn'; return 'ok'; }
         
         window.getStudentStatus = function(s) {
@@ -780,7 +999,7 @@
         window.removeWaitlist = function(id) { DB.waitlist = DB.waitlist.filter(w => w.id !== id); DB.save(); window.renderWaitlist(); window.toast("Removed"); }
         window.promoteWaitlist = function(id) { const s = DB.waitlist.find(w => w.id === id); if(s) { window.switchTab('add'); document.getElementById('studentName').value = s.name; document.getElementById('phone').value = s.phone !== 'N/A' ? s.phone : ''; document.getElementById('shift').value = s.shift; window.toggleCustomShift('shift','customShift'); window.removeWaitlist(id); window.toast("Fill seat to complete."); } }
 
-        // Finance & Ledger
+        // --- STREAMING_CHUNK: Managing calculations for LEDGERS and incomes ---
         function formatLedgerDate(dStr) { if(!dStr) return ''; const d = new Date(dStr); return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
         window.switchFinView = function(view) { document.getElementById('finIncomeView').classList.toggle('hidden', view !== 'income'); document.getElementById('finExpenseView').classList.toggle('hidden', view !== 'expense'); document.getElementById('btnShowIncome').classList.toggle('active', view === 'income'); document.getElementById('btnShowExpense').classList.toggle('active', view === 'expense'); }
         window.addExpense = function() { const amt = document.getElementById('expAmount').value, date = document.getElementById('expDate').value, cat = document.getElementById('expCategory').value; if(!amt || !date || !cat) return window.toast("⚠️ Fill details"); DB.expenses.push({ id: Date.now().toString(), date, amount: parseFloat(amt), category: cat }); DB.save(); document.getElementById('expAmount').value = ''; document.getElementById('expCategory').value = ''; window.calculateFinances(); window.toast("Expense saved"); }
