@@ -50,10 +50,10 @@
 
         /* --- DESKTOP CENTERING --- */
         @media (min-width: 768px) {
-            #addSeatTab, #waitlistTab, #financeTab, #adminApp, #paywallScreen { max-width: 750px; margin: 0 auto; }
+            #addSeatTab, #waitlistTab, #financeTab, #adminApp { max-width: 750px; margin: 0 auto; }
         }
 
-        /* --- MODERN AUTHENTICATION UI STYLES --- */
+        /* --- MODERN AUTHENTICATION UI STYLES (MATCHING DESIGN) --- */
         #authScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
             background-color: #6366f1;
@@ -197,7 +197,7 @@
 
         /* Finance & Lists UI */
         .finance-card { background: var(--glass-input-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-        .fin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top:10px; }
+        .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top:10px; }
         .fin-box { padding: 12px; border-radius: 10px; text-align: center; border: 1px solid rgba(0,0,0,0.05); }
         .fin-val { font-size: 20px; font-weight: 700; display: block; margin-top: 4px; }
         .list-item { background: var(--modal-card-bg); border-radius: 10px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); }
@@ -246,166 +246,6 @@
         }
         .driver-popover-navigation-btns button:hover { background: #2563eb !important; }
         .driver-popover-close-btn { color: #94a3b8 !important; }
-
-        /* --- IMMERSIVE PAYWALL & CHECKOUT SCREEN STYLES (MATCHES SCREENSHOT) --- */
-        .paywall-container {
-            display: flex; flex-direction: column; min-height: 100vh;
-            padding: 20px; box-sizing: border-box; justify-content: flex-start;
-        }
-        .paywall-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
-        }
-        .paywall-title { font-size: 24px; font-weight: 700; color: var(--text-main); margin: 0; }
-        
-        /* Plan Options Grid */
-        .plan-grid-paywall {
-            display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 30px;
-        }
-        @media (min-width: 600px) {
-            .plan-grid-paywall { grid-template-columns: 1fr 1fr; }
-        }
-        .plan-card-paywall {
-            background: var(--glass-bg);
-            border: 2px solid var(--glass-border);
-            border-radius: 18px; padding: 20px; cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; box-sizing: border-box;
-            backdrop-filter: blur(10px);
-        }
-        .plan-card-paywall.active {
-            border-color: #6366f1; background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
-            transform: translateY(-2px);
-        }
-        .dark-theme .plan-card-paywall.active {
-            background: rgba(15, 23, 42, 0.8); border-color: var(--primary);
-        }
-        .plan-badge-paywall {
-            position: absolute; top: -10px; right: 15px;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            color: white; font-size: 10px; font-weight: 700;
-            padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
-        }
-        .plan-name-paywall { font-size: 18px; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
-        .plan-price-paywall { font-size: 24px; font-weight: 800; color: #6366f1; }
-        .plan-desc-paywall { font-size: 12px; color: var(--text-muted); margin-top: 5px; font-weight: 500; }
-
-        /* Razorpay Replication Container (Step 2) */
-        .razorpay-replica-card {
-            background: #ffffff; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-            padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;
-            animation: fadeSlideUp 0.3s ease-out; color: #1e293b;
-        }
-        .dark-theme .razorpay-replica-card {
-            background: #1e293b; color: #f8fafc;
-        }
-
-        /* Replica Checkout Details matching Screenshot 1000232064.jpg */
-        .buy-banner {
-            background: #fee2e2; border: 1px solid #fecaca; border-radius: 14px;
-            padding: 16px; display: flex; align-items: center; gap: 14px;
-        }
-        .dark-theme .buy-banner { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); }
-        .buy-banner-icon {
-            background: #ef4444; color: white; width: 44px; height: 44px;
-            border-radius: 10px; display: flex; align-items: center; justify-content: center;
-            font-size: 20px; flex-shrink: 0;
-        }
-        .buy-banner-content { display: flex; flex-direction: column; }
-        .buy-banner-title { font-weight: 700; font-size: 14px; color: #ef4444; }
-        .buy-banner-subtitle { font-size: 11px; color: #7f1d1d; margin-top: 2px; line-height: 1.4; }
-        .dark-theme .buy-banner-subtitle { color: #fca5a5; }
-
-        .promo-card {
-            background: #faf5ff; border: 1px dashed #d8b4fe; border-radius: 12px;
-            padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; transition: background 0.2s;
-        }
-        .dark-theme .promo-card { background: rgba(168, 85, 247, 0.08); border-color: rgba(168, 85, 247, 0.3); }
-        .promo-card:hover { background: #f3e8ff; }
-        .promo-left { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #8b5cf6; }
-
-        .checkout-details-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .checkout-details-table td { padding: 8px 0; }
-        .checkout-total-row { border-top: 1px solid #e2e8f0; font-weight: 700; font-size: 15px; }
-        .dark-theme .checkout-total-row { border-color: #334155; }
-
-        .checkout-saving-badge {
-            background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d;
-            border-radius: 8px; padding: 10px; font-size: 12px; text-align: center;
-            font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;
-        }
-        .dark-theme .checkout-saving-badge { background: rgba(22, 163, 74, 0.15); border-color: rgba(22, 163, 74, 0.3); color: #4ade80; }
-
-        .trust-badge-row {
-            display: flex; justify-content: space-around; align-items: center;
-            padding: 8px 0; font-size: 10px; font-weight: 600; color: #64748b;
-        }
-
-        .gateway-card-selector {
-            border: 1px solid #ef4444; border-radius: 12px; padding: 16px;
-            display: flex; align-items: center; gap: 14px; position: relative;
-        }
-        .gateway-selector-radio {
-            width: 20px; height: 20px; border-radius: 50%; border: 2px solid #ef4444;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        .gateway-selector-radio-inner {
-            width: 10px; height: 10px; border-radius: 50%; background: #ef4444;
-        }
-
-        /* Floating Bottom Payment Bar replicating original App Checkout */
-        .bottom-action-checkout-bar {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: #ffffff; box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
-            padding: 16px 24px; box-sizing: border-box; display: flex;
-            justify-content: space-between; align-items: center; z-index: 100;
-        }
-        .dark-theme .bottom-action-checkout-bar {
-            background: #1e293b; box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
-        }
-        .bottom-bar-price-pane { display: flex; flex-direction: column; }
-        .bottom-bar-was-price { text-decoration: line-through; color: var(--text-muted); font-size: 11px; font-weight: 500; }
-        .bottom-bar-now-price { font-size: 22px; font-weight: 800; color: var(--text-main); }
-
-        .btn-subscribe-checkout {
-            background: #ef4444; color: white; padding: 14px 28px;
-            border-radius: 12px; border: none; font-weight: 700; font-size: 15px;
-            cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);
-            transition: all 0.2s;
-        }
-        .btn-subscribe-checkout:active { transform: scale(0.96); }
-
-        /* RAZORPAY SANDBOX OVERLAY INTERFACE */
-        .razorpay-sandbox-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
-            z-index: 10000; display: flex; justify-content: center; align-items: center;
-            padding: 15px; box-sizing: border-box;
-        }
-        .razorpay-sandbox-card {
-            background: #ffffff; width: 100%; max-width: 400px;
-            border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            display: flex; flex-direction: column; animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: #1e293b;
-        }
-        .sandbox-header {
-            background: #172554; padding: 20px; color: white;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .sandbox-header-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; }
-        .sandbox-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-        .sandbox-payment-option {
-            border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px;
-            display: flex; align-items: center; gap: 12px; cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        .sandbox-payment-option:hover { background: #f8fafc; border-color: #3b82f6; }
-        .sandbox-option-icon {
-            background: #eff6ff; color: #3b82f6; width: 36px; height: 36px;
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-size: 16px; font-weight: 700;
-        }
     </style>
 </head>
 <body>
@@ -507,160 +347,6 @@
         </div>
     </div>
 
-    <!-- IMMERSIVE PREMIUM SUBSCRIBER PAYWALL AND CHECKOUT -->
-    <div id="paywallScreen" style="display:none; padding-bottom: 120px;">
-        <div class="paywall-container">
-            <div class="paywall-header">
-                <h2 class="paywall-title">Choose Your Plan</h2>
-                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red); border-radius:12px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                </button>
-            </div>
-
-            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-weight: 500;" id="trialStatusBanner">
-                Your 7-day free trial has expired. To continue using the software workspace, please select a billing plan below.
-            </p>
-
-            <!-- Plan Cards Grid -->
-            <div class="plan-grid-paywall">
-                <div class="plan-card-paywall" id="plan_monthly" onclick="selectPaywallPlan('monthly')">
-                    <div class="plan-name-paywall">Monthly</div>
-                    <div class="plan-price-paywall">₹199</div>
-                    <div class="plan-desc-paywall">Best for trying out, renews monthly.</div>
-                </div>
-
-                <div class="plan-card-paywall active" id="plan_quarterly" onclick="selectPaywallPlan('quarterly')">
-                    <div class="plan-badge-paywall">⭐ Most Popular</div>
-                    <div class="plan-name-paywall">Quarterly</div>
-                    <div class="plan-price-paywall">₹499</div>
-                    <div class="plan-desc-paywall">₹166/month. Save ₹98 on this order!</div>
-                </div>
-
-                <div class="plan-card-paywall" id="plan_6months" onclick="selectPaywallPlan('6months')">
-                    <div class="plan-badge-paywall">Best Value</div>
-                    <div class="plan-name-paywall">6 Months</div>
-                    <div class="plan-price-paywall">₹899</div>
-                    <div class="plan-desc-paywall">₹150/month. Save ₹295 overall.</div>
-                </div>
-
-                <div class="plan-card-paywall" id="plan_annual" onclick="selectPaywallPlan('annual')">
-                    <div class="plan-badge-paywall">👑 Best Value</div>
-                    <div class="plan-name-paywall">Annual</div>
-                    <div class="plan-price-paywall">₹1,499</div>
-                    <div class="plan-desc-paywall">₹125/month. Save massive ₹889!</div>
-                </div>
-            </div>
-
-            <!-- Razorpay Style Checkout Container -->
-            <div class="razorpay-replica-card">
-                <div class="buy-banner">
-                    <div class="buy-banner-icon">📚</div>
-                    <div class="buy-banner-content">
-                        <span class="buy-banner-title">Continue buying:</span>
-                        <span class="buy-banner-subtitle" id="selectedPlanBannerText">Quarterly Plan | Standard Premium Access</span>
-                    </div>
-                </div>
-
-                <!-- Functional Promo Code Card -->
-                <div class="promo-card" onclick="triggerPromoCodePrompt()">
-                    <div class="promo-left">
-                        <span>🏷️</span>
-                        <span id="promoStatusText">Apply Promo Code</span>
-                    </div>
-                    <svg style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </div>
-
-                <h3 style="margin: 5px 0 0 0; font-size:14px; font-weight:700;">Price Details</h3>
-                <table class="checkout-details-table">
-                    <tr>
-                        <td style="color:var(--text-muted);">Standard Price</td>
-                        <td style="text-align:right;" id="checkoutRawPrice">₹499</td>
-                    </tr>
-                    <tr id="checkoutDiscountRow" style="display:none; color:var(--green); font-weight:600;">
-                        <td>Promo Discount</td>
-                        <td style="text-align:right;" id="checkoutDiscountValue">-₹0</td>
-                    </tr>
-                    <tr class="checkout-total-row">
-                        <td>Total Amount</td>
-                        <td style="text-align:right;" id="checkoutTotalAmount">₹499</td>
-                    </tr>
-                </table>
-
-                <div class="checkout-saving-badge" id="savingSummaryBadge">
-                    <span>🏷️</span> You will save ₹98 on this standard order!
-                </div>
-
-                <!-- Trusted Payments row -->
-                <div class="trust-badge-row">
-                    <span>🔒 Secure payments</span>
-                    <span>🛡️ Data privacy</span>
-                    <span>✨ 100% authentic</span>
-                </div>
-
-                <!-- Payment Method Simulator Indicator -->
-                <div class="gateway-card-selector">
-                    <div class="gateway-selector-radio">
-                        <div class="gateway-selector-radio-inner"></div>
-                    </div>
-                    <div>
-                        <strong style="font-size:14px; display:block;">UPI / Cards / NetBanking</strong>
-                        <span style="font-size:10px; color:#64748b; font-weight:500;">Most secure payment gateway (Powered by Razorpay sandbox)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Floating action checkout bar matching real Razorpay App style -->
-        <div class="bottom-action-checkout-bar">
-            <div class="bottom-bar-price-pane">
-                <span class="bottom-bar-was-price" id="bottomBarWasPrice">₹597</span>
-                <span class="bottom-bar-now-price" id="bottomBarNowPrice">₹499</span>
-            </div>
-            <button class="btn-subscribe-checkout" onclick="initiateRazorpayMockPayment()">SUBSCRIBE NOW</button>
-        </div>
-    </div>
-
-    <!-- RAZORPAY MODAL SANDBOX GATEWAY -->
-    <div id="razorpaySandboxModal" class="razorpay-sandbox-modal" style="display:none;">
-        <div class="razorpay-sandbox-card">
-            <div class="sandbox-header">
-                <div class="sandbox-header-brand">
-                    <span>💳</span> Razorpay Sandbox Gateway
-                </div>
-                <button class="icon-btn" onclick="closeRazorpaySandbox()" style="background:transparent; border:none; color:white;">×</button>
-            </div>
-            <div class="sandbox-body">
-                <p style="font-size:12px; color:#64748b; margin:0; line-height:1.5;">
-                    This is the integrated billing sandbox gateway. Select a payment mechanism to instantly write a completed subscription with extended validity directly to your Firestore database records.
-                </p>
-
-                <div class="sandbox-payment-option" onclick="simulateSandboxSuccess('UPI / QR Code')">
-                    <div class="sandbox-option-icon">QR</div>
-                    <div>
-                        <strong style="font-size:13px; display:block;">Pay via UPI QR Scanner</strong>
-                        <span style="font-size:11px; color:#64748b;">Simulates scanning standard UPI details</span>
-                    </div>
-                </div>
-
-                <div class="sandbox-payment-option" onclick="simulateSandboxSuccess('Credit/Debit Cards')">
-                    <div class="sandbox-option-icon">Card</div>
-                    <div>
-                        <strong style="font-size:13px; display:block;">Pay via Cards (Visa/Mastercard)</strong>
-                        <span style="font-size:11px; color:#64748b;">Simulates Card checkout details</span>
-                    </div>
-                </div>
-
-                <div class="sandbox-payment-option" onclick="simulateSandboxSuccess('NetBanking')">
-                    <div class="sandbox-option-icon">NB</div>
-                    <div>
-                        <strong style="font-size:13px; display:block;">Instant Sandbox Activation</strong>
-                        <span style="font-size:11px; color:#64748b;">Instantly update Firestore database status</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- MAIN USER APP -->
     <div id="mainApp" style="display:none;">
         <!-- Broadcast Announcements Banner -->
@@ -681,7 +367,7 @@
             <div class="stat-card">Free <span class="num" id="statFree" style="color:var(--green)">0</span></div>
             <div class="stat-card">Enrolled <span class="num" id="statOccupied" style="color:var(--primary)">0</span></div>
             <div class="stat-card">Fee Due <span class="num" id="statDue" style="color:var(--orange)">0</span></div>
-            <div class="stat-card">Exp. &lt;3d <span class="num" id="statWarn" style="color:var(--yellow)">0</span></div>
+            <div class="stat-card">Exp. <3d <span class="num" id="statWarn" style="color:var(--yellow)">0</span></div>
         </div>
 
         <div class="tab-container animate-in">
@@ -705,7 +391,7 @@
                     <button class="filter-btn active" id="fltAll" onclick="setFilter('all')">All</button>
                     <button class="filter-btn" id="fltFree" onclick="setFilter('free')">Empty</button>
                     <button class="filter-btn" id="fltDue" onclick="setFilter('due')">Fee Due</button>
-                    <button class="filter-btn" id="fltWarn" onclick="setFilter('warn')">Exp. &lt;3d</button>
+                    <button class="filter-btn" id="fltWarn" onclick="setFilter('warn')">Exp. <3d</button>
                     <button class="filter-btn" id="fltExpired" onclick="setFilter('expired')">Expired</button>
                 </div>
             </div>
@@ -724,21 +410,14 @@
                     <div style="flex:1"><label class="app-label">Admission</label><input type="date" class="app-input" id="admDate"></div>
                     <div style="flex:1"><label class="app-label">Valid Up To</label><input type="date" class="app-input" id="validDate"></div>
                 </div>
-                
-                <label class="app-label">Shift Timing</label>
-                <select class="app-input" id="shift" onchange="handleShiftChange()"></select>
-                <input type="text" id="customShift" class="app-input hidden" placeholder="Custom timings" style="margin-top:10px;">
-
                 <div class="flex-row">
-                    <div style="flex:1"><label class="app-label">Total Fee (₹)</label><input type="number" class="app-input" id="totalFee" placeholder="Total" oninput="calcDue()"></div>
-                    <div style="flex:1"><label class="app-label">Paid Amount (₹)</label><input type="number" class="app-input" id="initialAmount" placeholder="Paid" oninput="calcDue()"></div>
-                </div>
-                <div class="flex-row">
-                    <div style="flex:1"><label class="app-label">Due Amount (₹)</label><input type="number" class="app-input" id="dueAmount" placeholder="0" oninput="manualDue()"></div>
+                    <div style="flex:1"><label class="app-label">Paid (₹)</label><input type="number" class="app-input" id="initialAmount" placeholder="1500"></div>
                     <div style="flex:1"><label class="app-label">Mode</label><select class="app-input" id="initialMode"><option>Cash</option><option>UPI</option></select></div>
                 </div>
                 <label class="app-label">Fee Status</label> <select class="app-input" id="feeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-                
+                <label class="app-label">Shift Timing</label>
+                <select class="app-input" id="shift" onchange="toggleCustomShift('shift', 'customShift')"></select>
+                <input type="text" id="customShift" class="app-input hidden" placeholder="Custom timings" style="margin-top:10px;">
                 <button class="action-btn" onclick="allotSeat()">Complete Admission</button>
             </div>
         </div>
@@ -774,12 +453,8 @@
                 <div class="fin-grid">
                     <div class="fin-box" style="background:rgba(16,185,129,0.1); border-color:var(--green);"><span style="font-size:11px; color:var(--text-muted);">Total Income</span><span class="fin-val" style="color:var(--green);" id="finIncome">₹0</span></div>
                     <div class="fin-box" style="background:rgba(239,68,68,0.1); border-color:var(--red);"><span style="font-size:11px; color:var(--text-muted);">Total Expenses</span><span class="fin-val" style="color:var(--red);" id="finExpense">₹0</span></div>
-                    <div class="fin-box" style="background:var(--glass-bg);"><span style="font-size:11px; color:var(--text-muted);">Net Profit</span><span class="fin-val" style="color:var(--primary);" id="finProfit">₹0</span></div>
                 </div>
-                <div class="fin-box" style="margin-top:10px; background:rgba(245,158,11,0.1); border-color:var(--orange);">
-                    <span style="font-size:11px; color:var(--text-muted);">Total Outstanding Due (All Active Students)</span>
-                    <span class="fin-val" style="color:var(--orange);" id="finTotalDue">₹0</span>
-                </div>
+                <div class="fin-box" style="margin-top:10px; background:var(--glass-bg);"><span style="font-size:11px; color:var(--text-muted);">Net Profit</span><span class="fin-val" style="color:var(--primary);" id="finProfit">₹0</span></div>
             </div>
 
             <div class="tab-container" style="margin-bottom:10px;">
@@ -855,7 +530,7 @@
             <div class="info-row"><span class="info-label">Exam</span> <span class="info-value" id="modExam"></span></div>
             <div class="info-row"><span class="info-label">Admission</span> <span class="info-value" id="modDate"></span></div>
             <div class="info-row"><span class="info-label">Valid Up To</span> <span class="info-value" id="modValid"></span></div>
-            <div class="info-row" style="border:none;"><span class="info-label">Status</span> <div><span class="badge" id="modFee"></span> <span id="modDueAmt" style="font-size:11px; font-weight:bold; color:var(--orange); margin-left:5px;"></span></div></div>
+            <div class="info-row" style="border:none;"><span class="info-label">Status</span> <span class="badge" id="modFee"></span></div>
 
             <h4 style="margin: 15px 0 5px 0; font-size: 13px; color:var(--primary);">Payment Ledger</h4>
             <div class="payment-ledger" id="paymentLedger" style="max-height: 120px; overflow-y:auto;"></div>
@@ -881,18 +556,12 @@
             <input type="text" class="app-input" id="editName" placeholder="Name" style="margin-bottom:8px;">
             <input type="tel" class="app-input" id="editPhone" placeholder="Phone" style="margin-bottom:8px;">
             <input type="text" class="app-input" id="editExam" placeholder="Exam" style="margin-bottom:8px;">
-            <input type="text" class="app-input" id="editShift" placeholder="Shift Details" style="margin-bottom:8px;">
             <div class="flex-row" style="margin-bottom:8px;">
-                <div style="flex:1"><label class="app-label" style="margin-top:0; font-size:10px;">Admission Date</label><input type="date" class="app-input" id="editAdmDate" title="Admission Date"></div>
-                <div style="flex:1"><label class="app-label" style="margin-top:0; font-size:10px;">Valid Until</label><input type="date" class="app-input" id="editValidDate" title="Valid Until"></div>
-            </div>
-            
-            <div class="flex-row" style="margin-bottom:8px;">
-                <div style="flex:1"><label class="app-label" style="margin-top:0; font-size:10px;">Total Fee</label><input type="number" class="app-input" id="editTotalFee" placeholder="Total Fee" title="Total Fee"></div>
-                <div style="flex:1"><label class="app-label" style="margin-top:0; font-size:10px;">Due Amount</label><input type="number" class="app-input" id="editDueAmount" placeholder="Due Amount" title="Due Amount"></div>
+                <input type="date" class="app-input" id="editAdmDate" title="Admission Date">
+                <input type="date" class="app-input" id="editValidDate" title="Valid Until">
             </div>
             <select class="app-input" id="editFeeStatus" style="margin-bottom:8px;"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
-            
+            <input type="text" class="app-input" id="editShift" placeholder="Shift Details">
             <div class="flex-row" style="margin-top:15px;">
                 <button class="action-btn" style="margin:0; flex:1;" onclick="saveEdit()">Save</button>
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="cancelEdit()">Cancel</button>
@@ -900,31 +569,18 @@
         </div>
 
         <div class="modal-content hidden" id="modalPaySection">
-            <h3 style="margin-top:0; color:var(--primary);">Record Payment / Renew</h3>
-            <p style="font-size: 12px; margin-bottom: 5px; color:var(--text-muted);">For: <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
-            <p style="font-size: 11px; margin-top:0; margin-bottom: 15px;">Previous Due Amount: <span id="payCurrentDueDisplay" style="color:var(--orange); font-weight:bold;">₹0</span></p>
-            <input type="hidden" id="payCurrentDueHidden">
-            
-            <label class="app-label" style="margin-top:5px;">Renewal Option (If continuing next month)</label>
-            <div class="flex-row" style="margin-bottom:8px;">
-                <div style="flex:1"><input type="date" class="app-input" id="payValidDate" title="Extend Validity To"></div>
-                <div style="flex:1"><input type="number" class="app-input" id="payNewTotalFee" placeholder="New Fee Amount" oninput="calcPayDue()" title="Add New Fee Amount"></div>
-            </div>
-
-            <label class="app-label" style="margin-top:5px;">Payment Details</label>
+            <h3 style="margin-top:0; color:var(--primary);">Record Payment</h3>
+            <p style="font-size: 12px; margin-bottom: 15px; color:var(--text-muted);">For: <strong id="payStudentName" style="color:var(--text-main);"></strong></p>
             <input type="date" class="app-input" id="payDate" style="margin-bottom:8px;">
             <div class="flex-row" style="margin-bottom:8px;">
-                <input type="number" class="app-input" id="payAmount" placeholder="Amount Paid Now (₹)" oninput="calcPayDue()">
+                <input type="number" class="app-input" id="payAmount" placeholder="Amount (₹)">
                 <select class="app-input" id="payMode"><option>Cash</option><option>UPI</option></select>
             </div>
-            
-            <div class="flex-row" style="margin-bottom:8px; align-items:center;">
-                <div style="flex:1"><label class="app-label" style="margin-top:0;">Remaining Due (₹)</label><input type="number" class="app-input" id="payDueAmount" oninput="manualPayDue()"></div>
-                <div style="flex:1"><label class="app-label" style="margin-top:0;">Fee Status</label><select class="app-input" id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select></div>
-            </div>
-            
+            <label class="app-label" style="margin-top:5px;">Extend Validity To (Renewal)</label>
+            <input type="date" class="app-input" id="payValidDate" style="margin-bottom:8px;">
+            <select class="app-input" id="payFeeStatus"><option value="Paid">Fully Paid</option><option value="Due">Fee Due</option></select>
             <div class="flex-row" style="margin-top:15px;">
-                <button class="action-btn" style="margin:0; background:var(--green); flex:1;" onclick="savePayment()">Save Transaction</button>
+                <button class="action-btn" style="margin:0; background:var(--green); flex:1;" onclick="savePayment()">Save</button>
                 <button class="action-btn" style="background:var(--text-muted); margin:0; flex:1;" onclick="hidePaymentForm()">Cancel</button>
             </div>
         </div>
@@ -934,7 +590,7 @@
             <label class="app-label">Library Name</label> <input type="text" class="app-input" id="cfgLibName">
             <label class="app-label">Total Seats</label> <input type="number" class="app-input" id="cfgTotalSeats" min="1">
             <label class="app-label">Custom Seats (comma separated)</label> <input type="text" class="app-input" id="cfgCustomSeats" style="text-transform: uppercase;">
-            <label class="app-label">Available Shifts (Format -> Shift Name : Fee Amount)</label> <textarea class="app-input" id="cfgShifts" rows="3" placeholder="Morning : 1000&#10;Evening : 1000"></textarea>
+            <label class="app-label">Available Shifts (one per line)</label> <textarea class="app-input" id="cfgShifts" rows="3"></textarea>
             
             <div style="border-top:1px solid var(--glass-border); margin-top:20px; padding-top:15px;">
                 <h4 style="margin:0 0 10px 0; font-size:13px;">Advanced Data Options</h4>
@@ -1002,7 +658,7 @@
 
     <div id="toast-container"></div>
 
-    <!-- CONSOLIDATED JAVASCRIPT -->
+    <!-- CONSOLIDATED JAVASCRIPT (Fixes File Loading & Scoping Errors) -->
     <script>
         // --- 1. FIREBASE INITIALIZATION ---
         const firebaseConfig = {
@@ -1025,13 +681,12 @@
         let currentUser = null;
         let unsubscribeSnapshot = null;
         let unsubscribeBroadcast = null;
-        let unsubscribeSubscription = null;
 
-        // --- 2. GLOBAL STATE ---
+        // --- 2. GLOBAL STATE (FIXED SCOPING) ---
         let appConfig = {
             libraryName: "LibSync Pro", totalSeats: 20,
             customSeats: ["1A", "1B", "2A", "2B"],
-            shifts: ["Morning (8 AM - 2 PM) : 1000", "Evening (2 PM - 8 PM) : 1000", "Full Day (8 AM - 8 PM) : 1800"]
+            shifts: ["first (8 AM - 2 PM)", "second (2 PM - 8 PM)", "Full Day (8 AM - 8 PM)"]
         };
 
         const DB = {
@@ -1090,7 +745,7 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        // --- 4. AUTHENTICATION & TRIAL LOGIC ---
+        // --- 4. AUTHENTICATION LOGIC ---
         window.togglePasswordVisibility = function(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
@@ -1121,110 +776,76 @@
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 currentUser = user;
+                
                 if (user.uid === ADMIN_UID) {
                     document.getElementById('authScreen').style.display = 'none';
                     document.getElementById('mainApp').style.display = 'none';
-                    document.getElementById('paywallScreen').style.display = 'none';
                     document.getElementById('adminApp').style.display = 'block';
                     window.loadAdminDashboard();
                     window.toast(`Welcome to the Admin Hub!`);
                 } else {
-                    setupSubscriptionListener(user);
+                    try {
+                        const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
+                        let isInactive = false;
+                        
+                        try {
+                            const subSnap = await subRef.get();
+                            if (subSnap.exists) {
+                                const subData = subSnap.data();
+                                let currentStatus = subData.status;
+                                const validUntil = subData.validUntil;
+                                const today = new Date().toISOString().split('T')[0];
+                                
+                                if (validUntil && validUntil !== 'No End Date' && validUntil < today && currentStatus !== 'inactive') {
+                                    currentStatus = 'inactive';
+                                    try { await subRef.set({ status: 'inactive' }, { merge: true }); } catch(err){}
+                                }
+                                
+                                if (currentStatus === 'inactive') {
+                                    isInactive = true;
+                                }
+                            } else {
+                                await subRef.set({
+                                    status: 'trialing',
+                                    validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                                    history: [],
+                                    adminNotes: ""
+                                }, { merge: true });
+                            }
+                        } catch(dbErr) {
+                            console.warn("Evaluating Subscription bypassed:", dbErr);
+                        }
+                        
+                        if (isInactive) {
+                            window.toast("⚠️ Your workspace subscription has expired or is inactive.");
+                            auth.signOut();
+                            return;
+                        }
+                        
+                        document.getElementById('authScreen').style.display = 'none';
+                        document.getElementById('adminApp').style.display = 'none';
+                        document.getElementById('mainApp').style.display = 'block';
+                        document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
+                        loadDataFromCloud(); 
+                        listenForBroadcasts();
+                        window.toast(`Welcome back!`);
+                        setTimeout(startAppTour, 1000);
+                        
+                    } catch(err) {
+                        console.error("Auth routing error:", err);
+                        window.toast("Error verifying workspace");
+                        auth.signOut();
+                    }
                 }
             } else {
                 currentUser = null; 
                 document.getElementById('authScreen').style.display = 'flex'; 
                 document.getElementById('mainApp').style.display = 'none';
                 document.getElementById('adminApp').style.display = 'none';
-                document.getElementById('paywallScreen').style.display = 'none';
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
                 if (unsubscribeBroadcast) unsubscribeBroadcast();
-                if (unsubscribeSubscription) unsubscribeSubscription();
             }
         });
-
-        // --- REAL-TIME TRIAL & SUBSCRIPTION LISTENER ---
-        function setupSubscriptionListener(user) {
-            const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
-            
-            unsubscribeSubscription = subRef.onSnapshot(async (docSnap) => {
-                let subData;
-                const todayStr = new Date().toISOString().split('T')[0];
-
-                if (docSnap.exists) {
-                    subData = docSnap.data();
-                } else {
-                    // Create defaults on sign-up
-                    subData = {
-                        status: 'trialing',
-                        createdAt: new Date().toISOString(),
-                        validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                        history: [],
-                        adminNotes: ""
-                    };
-                    await subRef.set(subData);
-                }
-
-                // Check Expiry State
-                let status = subData.status || 'trialing';
-                const validUntil = subData.validUntil || todayStr;
-                const createdAt = subData.createdAt || new Date().toISOString();
-                
-                // Calculate remaining trial days
-                const trialExpiry = new Date(new Date(createdAt).getTime() + 7 * 24 * 60 * 60 * 1000);
-                const trialExpiryStr = trialExpiry.toISOString().split('T')[0];
-                const trialRemainingDays = Math.ceil((trialExpiry - new Date()) / (1000 * 60 * 60 * 24));
-
-                let isExpired = false;
-                if (status === 'trialing' && trialRemainingDays <= 0) {
-                    isExpired = true;
-                } else if (status === 'active' && validUntil < todayStr) {
-                    isExpired = true;
-                }
-
-                if (isExpired && status !== 'inactive') {
-                    status = 'inactive';
-                    await subRef.set({ status: 'inactive' }, { merge: true });
-                }
-
-                // Render UI routing depending on active status
-                if (status === 'active' || (status === 'trialing' && trialRemainingDays > 0)) {
-                    document.getElementById('authScreen').style.display = 'none';
-                    document.getElementById('adminApp').style.display = 'none';
-                    document.getElementById('paywallScreen').style.display = 'none';
-                    document.getElementById('mainApp').style.display = 'block';
-
-                    // Update UI with Trial days remaining banner
-                    if (status === 'trialing') {
-                        document.getElementById('broadcastText').innerText = `Your free trial is active. ${trialRemainingDays} day(s) remaining.`;
-                        document.getElementById('broadcastBanner').classList.remove('hidden');
-                    } else {
-                        document.getElementById('broadcastBanner').classList.add('hidden');
-                    }
-
-                    document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
-                    loadDataFromCloud(); 
-                    listenForBroadcasts();
-                    setTimeout(startAppTour, 1000);
-                } else {
-                    // Lockout and take over with Immersive Paywall
-                    document.getElementById('authScreen').style.display = 'none';
-                    document.getElementById('adminApp').style.display = 'none';
-                    document.getElementById('mainApp').style.display = 'none';
-                    document.getElementById('paywallScreen').style.display = 'block';
-
-                    // Customize paywall banner
-                    const banner = document.getElementById('trialStatusBanner');
-                    if (status === 'inactive' && subData.status === 'trialing') {
-                        banner.innerHTML = `⚠️ <strong>Trial Expired:</strong> Your 7-day trial ended on ${trialExpiryStr}. Choose a standard workspace plan to continue.`;
-                    } else if (status === 'inactive') {
-                        banner.innerHTML = `⚠️ <strong>Subscription Expired:</strong> Your subscription ended on ${validUntil}. Please renew to regain access.`;
-                    }
-
-                    initiatePaywallSelection();
-                }
-            });
-        }
 
         window.loginUser = async () => {
             const idInput = document.getElementById('loginId').value.trim();
@@ -1232,33 +853,19 @@
             const errEl = document.getElementById('authError');
             if(!idInput || !pass) return errEl.innerText = "Please enter Email and password.";
             errEl.innerText = "Logging in...";
+            
             let emailToUse = idInput;
             try {
                 if (!idInput.includes('@')) {
                     const resolvedEmail = localStorage.getItem('lib_admin_' + idInput.toLowerCase());
-                    if (resolvedEmail) { emailToUse = resolvedEmail; } 
-                    else { throw new Error("Admin ID not recognized on this device. Please log in with your email once to link this device."); }
+                    if (resolvedEmail) {
+                        emailToUse = resolvedEmail;
+                    } else {
+                        throw new Error("Admin ID not recognized on this device. Please log in with your email once to link this device.");
+                    }
                 }
                 await auth.signInWithEmailAndPassword(emailToUse, pass);
             } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
-        };
-
-        window.loginWithGoogle = async () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            const errEl = document.getElementById('authError');
-            errEl.innerText = "Redirecting to Google...";
-            try {
-                const result = await auth.signInWithPopup(provider);
-                const user = result.user;
-                if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
-                    const baseUsername = user.email.split('@')[0].toLowerCase();
-                    const username = baseUsername + Math.floor(Math.random() * 1000); 
-                    await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username}`).set({
-                        email: user.email, uid: user.uid
-                    });
-                    window.toast("Workspace Created with Google!");
-                }
-            } catch (e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); }
         };
 
         window.signupUser = async () => {
@@ -1266,8 +873,10 @@
             const email = document.getElementById('signupEmail').value.trim();
             const pass = document.getElementById('signupPassword').value;
             const errEl = document.getElementById('signupError');
+            
             if(!username || !email || !pass) return errEl.innerText = "Please fill all fields.";
             if(username.includes('@')) return errEl.innerText = "Admin ID cannot contain '@'.";
+            
             errEl.innerText = "Creating workspace...";
             try {
                 const cred = await auth.createUserWithEmailAndPassword(email, pass);
@@ -1284,152 +893,47 @@
             const errEl = document.getElementById('resetError');
             if(!email) return errEl.innerText = "Please enter your recovery email.";
             auth.sendPasswordResetEmail(email).then(() => {
-                errEl.style.color = "#10b981"; errEl.innerText = "Reset link sent to your email!";
+                errEl.style.color = "#10b981"; 
+                errEl.innerText = "Reset link sent to your email!";
                 setTimeout(() => window.toggleAuthMode('login'), 3000);
             }).catch(e => {
-                errEl.style.color = "#ef4444"; errEl.innerText = e.message.replace('Firebase:', '').trim();
+                errEl.style.color = "#ef4444"; 
+                errEl.innerText = e.message.replace('Firebase:', '').trim();
             });
         };
 
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
 
-        // --- 5. DETAILED CHECKOUT AND PROMO CODES ENGINE ---
-        let selectedPlan = 'quarterly';
-        let appliedDiscount = 0;
-        let appliedPromoCode = '';
-
-        const checkoutPricing = {
-            monthly: { price: 199, wasPrice: 199, name: "Monthly Standard Plan", discountMsg: "Renewable monthly, cancel anytime." },
-            quarterly: { price: 499, wasPrice: 597, name: "Quarterly Starter Plan", discountMsg: "Save ₹98 instantly with this popular plan!" },
-            6months: { price: 899, wasPrice: 1194, name: "Half-Year Value Plan", discountMsg: "Save ₹295 instantly over standard monthly." },
-            annual: { price: 1499, wasPrice: 2388, name: "Annual Pro SaaS Plan", discountMsg: "Save ₹889! Best value for long term library owners." }
+        window.loginWithGoogle = async () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            const errEl = document.getElementById('authError');
+            errEl.innerText = "Redirecting to Google...";
+            
+            try {
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+                
+                // If this is a brand new user, register them in the usernameMap so the Admin can see them
+                if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
+                    const baseUsername = user.email.split('@')[0].toLowerCase();
+                    const username = baseUsername + Math.floor(Math.random() * 1000); 
+                    
+                    await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${username}`).set({
+                        email: user.email,
+                        uid: user.uid
+                    });
+                    window.toast("Workspace Created with Google!");
+                }
+            } catch (e) {
+                errEl.innerText = e.message.replace('Firebase:', '').trim();
+            }
         };
 
-        function initiatePaywallSelection() {
-            selectPaywallPlan('quarterly');
-        }
+        // --- 5. ADMIN DASHBOARD LOGIC ---
+        window.activeAdminUserId = null;
+        window.activeAdminUsername = null;
+        window.activeAdminUserEmail = null;
 
-        window.selectPaywallPlan = function(planId) {
-            selectedPlan = planId;
-            document.querySelectorAll('.plan-card-paywall').forEach(c => c.classList.remove('active'));
-            document.getElementById(`plan_${planId}`).classList.add('active');
-
-            appliedDiscount = 0;
-            appliedPromoCode = '';
-            document.getElementById('promoStatusText').innerText = "Apply Promo Code";
-            document.getElementById('checkoutDiscountRow').style.display = 'none';
-
-            updateCheckoutTotals();
-        }
-
-        function updateCheckoutTotals() {
-            const meta = checkoutPricing[selectedPlan];
-            let rawPrice = meta.price;
-            let finalPrice = rawPrice - appliedDiscount;
-            if (finalPrice < 0) finalPrice = 0;
-
-            document.getElementById('selectedPlanBannerText').innerText = `${meta.name} | Advanced Workspace Access`;
-            document.getElementById('checkoutRawPrice').innerText = `₹${rawPrice}`;
-            document.getElementById('checkoutTotalAmount').innerText = `₹${finalPrice}`;
-            
-            document.getElementById('bottomBarWasPrice').innerText = `₹${meta.wasPrice}`;
-            document.getElementById('bottomBarNowPrice').innerText = `₹${finalPrice}`;
-
-            const badge = document.getElementById('savingSummaryBadge');
-            let savedAmount = (meta.wasPrice - finalPrice);
-            if (savedAmount > 0) {
-                badge.style.display = 'flex';
-                badge.innerHTML = `<span>🏷️</span> You will save ₹${savedAmount} on this order!`;
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        window.triggerPromoCodePrompt = function() {
-            const code = prompt("Enter Promo Code (Try WELCOME50 or SULTANPUR100 for test discount):");
-            if (!code) return;
-            const cleanCode = code.toUpperCase().trim();
-            const meta = checkoutPricing[selectedPlan];
-
-            if (cleanCode === 'SULTANPUR100') {
-                appliedDiscount = meta.price; // 100% Free for testing
-                appliedPromoCode = cleanCode;
-                document.getElementById('promoStatusText').innerText = `Code Applied: ${cleanCode} (100% OFF)`;
-                document.getElementById('checkoutDiscountValue').innerText = `-₹${appliedDiscount}`;
-                document.getElementById('checkoutDiscountRow').style.display = 'table-row';
-                window.toast("🎟️ Testing code applied: 100% discount!");
-            } else if (cleanCode === 'WELCOME50') {
-                appliedDiscount = Math.round(meta.price * 0.5); // 50% off
-                appliedPromoCode = cleanCode;
-                document.getElementById('promoStatusText').innerText = `Code Applied: ${cleanCode} (50% OFF)`;
-                document.getElementById('checkoutDiscountValue').innerText = `-₹${appliedDiscount}`;
-                document.getElementById('checkoutDiscountRow').style.display = 'table-row';
-                window.toast("🎟️ Testing code applied: 50% discount!");
-            } else {
-                window.toast("❌ Invalid Promo Code entered.");
-                return;
-            }
-            updateCheckoutTotals();
-        }
-
-        // --- 6. MOCK GATEWAY SANDBOX CHECKOUT POPUP ---
-        window.initiateRazorpayMockPayment = function() {
-            document.getElementById('razorpaySandboxModal').style.display = 'flex';
-        }
-
-        window.closeRazorpaySandbox = function() {
-            document.getElementById('razorpaySandboxModal').style.display = 'none';
-        }
-
-        window.simulateSandboxSuccess = async function(methodName) {
-            closeRazorpaySandbox();
-            window.toast(`⚡ Processing simulated ${methodName} transaction...`);
-
-            if (!currentUser) return;
-
-            // Calculate duration to extend validity
-            let daysToExtend = 30;
-            if (selectedPlan === 'quarterly') daysToExtend = 90;
-            else if (selectedPlan === '6months') daysToExtend = 180;
-            else if (selectedPlan === 'annual') daysToExtend = 365;
-
-            const today = new Date();
-            const expiryDate = new Date(today.getTime() + daysToExtend * 24 * 60 * 60 * 1000);
-            const expiryStr = expiryDate.toISOString().split('T')[0];
-
-            const meta = checkoutPricing[selectedPlan];
-            let rawPrice = meta.price;
-            let finalPrice = rawPrice - appliedDiscount;
-            if (finalPrice < 0) finalPrice = 0;
-
-            const subRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/subscription/info`);
-            const tx = {
-                id: "MOCK_PAY_" + Date.now().toString().substring(6),
-                amount: finalPrice,
-                date: today.toISOString().split('T')[0],
-                method: methodName,
-                plan: selectedPlan
-            };
-
-            try {
-                const snap = await subRef.get();
-                let history = snap.exists && snap.data().history ? snap.data().history : [];
-                history.push(tx);
-
-                await subRef.set({
-                    status: 'active',
-                    validUntil: expiryStr,
-                    history: history
-                }, { merge: true });
-
-                window.toast("🎉 Subscription activated successfully via Sandbox!");
-            } catch(e) {
-                console.error("Payment sync failed:", e);
-                window.toast("❌ Database update failed. Try again.");
-            }
-        }
-
-        // --- 7. ADMIN DASHBOARD LOGIC ---
         window.saveBroadcast = async function() {
             const msg = document.getElementById('adminBroadcastMsg').value.trim();
             if (!msg) return window.toast("⚠️ Enter message to broadcast!");
@@ -1448,6 +952,7 @@
         window.loadAdminDashboard = async function() {
             const cont = document.getElementById('adminUsersContainer');
             cont.innerHTML = '<div style="text-align:center; padding:20px; font-size:13px;">Fetching SaaS workspaces...</div>';
+            
             try {
                 try {
                     const bSnap = await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).get();
@@ -1455,27 +960,39 @@
                         document.getElementById('adminBroadcastMsg').value = bSnap.data().message || '';
                     }
                 } catch(e) {}
+
                 const mapRef = db.collection(`artifacts/${globalAppId}/public/data/usernameMap`);
                 const snap = await mapRef.get();
-                let workspacesCount = 0; let activePremiumCount = 0; let monthRevenue = 0;
+                
+                let workspacesCount = 0;
+                let activePremiumCount = 0;
+                let monthRevenue = 0;
                 const currentMonth = new Date().toISOString().substring(0, 7); 
                 const today = new Date().toISOString().split('T')[0];
-                let html = ''; const promises = [];
+                
+                let html = '';
+                const promises = [];
 
                 snap.docs.forEach(doc => {
                     const data = doc.data();
                     if(!data.uid || data.uid === ADMIN_UID) return;
                     workspacesCount++;
+                    
                     const subPromise = db.doc(`artifacts/${globalAppId}/users/${data.uid}/subscription/info`).get().then(async (subSnap) => {
                         let libMainSnap;
                         try { libMainSnap = await db.doc(`artifacts/${globalAppId}/users/${data.uid}/libraryData/main`).get(); } catch(e) {}
+                        
                         const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: 'No End Date', history: [], adminNotes: '' };
                         const libData = (libMainSnap && libMainSnap.exists) ? libMainSnap.data() : { config: {} };
-                        let status = subData.status || 'trialing'; const validUntil = subData.validUntil || 'No End Date';
+                        
+                        let status = subData.status || 'trialing';
+                        const validUntil = subData.validUntil || 'No End Date';
+                        
                         if (validUntil !== 'No End Date' && validUntil < today && status !== 'inactive') {
                             status = 'inactive';
                             db.doc(`artifacts/${globalAppId}/users/${data.uid}/subscription/info`).set({ status: 'inactive' }, { merge: true }).catch(()=>{});
                         }
+                        
                         return {
                             username: doc.id, email: data.email, uid: data.uid, status: status, validUntil: validUntil,
                             history: subData.history || [], libraryName: (libData.config && libData.config.libraryName) ? libData.config.libraryName : "Not Configured",
@@ -1485,10 +1002,13 @@
                 });
 
                 const workspaceProfiles = await Promise.all(promises);
+
                 workspaceProfiles.forEach(prof => {
                     prof.history.forEach(tx => { if (tx.date && tx.date.startsWith(currentMonth)) monthRevenue += parseFloat(tx.amount || 0); });
                     if (prof.status === 'active' || prof.status === 'trialing') activePremiumCount++;
-                    let badgeBg = 'var(--yellow)'; let statusLabel = 'Trialing';
+
+                    let badgeBg = 'var(--yellow)';
+                    let statusLabel = 'Trialing';
                     if (prof.status === 'active') { badgeBg = 'var(--green)'; statusLabel = 'Active Premium'; }
                     else if (prof.status === 'inactive') { badgeBg = 'var(--red)'; statusLabel = 'Expired'; }
 
@@ -1508,12 +1028,15 @@
                             <div style="display:flex; gap:8px; width:100%; margin-top:5px;">
                                 <button class="action-btn" style="margin:0; padding:8px 12px; font-size:11px; border-radius:8px; flex:1;" onclick="openAdminUser('${prof.uid}', '${prof.username}', '${prof.email}')">Manage Subscriber</button>
                             </div>
-                        </div>`;
+                        </div>
+                    `;
                 });
+
                 document.getElementById('adminStatWorkspaces').innerText = workspacesCount;
                 document.getElementById('adminStatPremium').innerText = activePremiumCount;
                 document.getElementById('adminStatRevenue').innerText = `₹${monthRevenue}`;
                 cont.innerHTML = html || '<div style="text-align:center; font-size:13px; color:var(--text-muted);">No workspaces configured.</div>';
+
             } catch(e) { window.toast("Admin load error: Check console"); }
         };
 
@@ -1567,11 +1090,14 @@
             const amt = document.getElementById('adminTxAmount').value;
             const date = document.getElementById('adminTxDate').value;
             if(!amt || !date) return window.toast('⚠️ Please enter an amount and date');
+            
             const subRef = db.doc(`artifacts/${globalAppId}/users/${window.activeAdminUserId}/subscription/info`);
             const tx = { id: Date.now().toString(), amount: amt, date: date };
+            
             const snap = await subRef.get();
             let history = snap.exists && snap.data().history ? snap.data().history : [];
             history.push(tx);
+            
             await subRef.set({ history: history }, { merge: true });
             renderAdminTxHistory(history); window.toast('Transaction Saved!');
             window.printInvoice(amt, date, window.activeAdminUsername, window.activeAdminUserEmail, tx.id);
@@ -1601,14 +1127,14 @@
             w.document.write(`
                 <html><head><title>Invoice</title><style>body{font-family:sans-serif;padding:40px;color:#333;}.box{max-width:800px;margin:auto;padding:40px;border:1px solid #eee;border-radius:12px;}h2{color:#2563eb;}table{width:100%;margin-top:40px;border-collapse:collapse;}th,td{padding:15px;border-bottom:1px solid #eee;text-align:left;}th{background:#f8fafc;}</style></head>
                 <body><div class="box"><h2>LibSync Pro</h2><p>SaaS Invoice</p>
-                <div style="margin-top:40px;"><p><strong>Billed To:</strong> \${username}</p><p><strong>Email:</strong> \${email}</p><p><strong>Date:</strong> \${date}</p><p><strong>Ref:</strong> \${txId}</p></div>
-                <table><tr><th>Description</th><th style="text-align:right;">Amount</th></tr><tr><td>Premium Subscription Access</td><td style="text-align:right;">₹\${amount}</td></tr></table>
-                <div style="text-align:right;font-size:22px;font-weight:bold;margin-top:30px;">Total Paid: ₹\${amount}</div></div>\x3Cscript\x3EsetTimeout(()=>{window.print();},500);\x3C/script\x3E</body></html>
+                <div style="margin-top:40px;"><p><strong>Billed To:</strong> ${username}</p><p><strong>Email:</strong> ${email}</p><p><strong>Date:</strong> ${date}</p><p><strong>Ref:</strong> ${txId}</p></div>
+                <table><tr><th>Description</th><th style="text-align:right;">Amount</th></tr><tr><td>Premium Subscription Access</td><td style="text-align:right;">₹${amount}</td></tr></table>
+                <div style="text-align:right;font-size:22px;font-weight:bold;margin-top:30px;">Total Paid: ₹${amount}</div></div><script>setTimeout(()=>{window.print();},500);<\/script></body></html>
             `);
             w.document.close();
         }
 
-        // --- 8. MAIN APP LOGIC ---
+        // --- 6. MAIN APP LOGIC ---
         function listenForBroadcasts() {
             unsubscribeBroadcast = db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).onSnapshot((docSnap) => {
                 const banner = document.getElementById('broadcastBanner');
@@ -1672,13 +1198,8 @@
                 const el = document.getElementById(id);
                 if (el) {
                     el.innerHTML = id === 'shiftFilter' ? '<option value="all">All Shifts</option>' : '';
-                    (appConfig.shifts || []).forEach(s => { 
-                        let parts = s.split(':');
-                        let shiftName = parts[0] ? parts[0].trim() : '';
-                        let shiftFee = parts[1] ? parts[1].trim() : '';
-                        el.innerHTML += `<option value="${shiftName}" data-fee="${shiftFee}">${shiftName}</option>`; 
-                    });
-                    if(id === 'shift') el.innerHTML += `<option value="Custom" data-fee="">Custom Shift...</option>`;
+                    (appConfig.shifts || []).forEach(s => { el.innerHTML += `<option value="${s}">${s}</option>`; });
+                    if(id === 'shift') el.innerHTML += `<option value="Custom">Custom Shift...</option>`;
                 }
             });
         }
@@ -1700,8 +1221,8 @@
                 if(occupants.length === 0) freeChairs++;
                 occupants.forEach(s => {
                     totalEnrolled++;
+                    if(s.feeStatus === 'Due') dueProfiles++;
                     const expStatus = checkExpiry(s.validDate);
-                    if(s.feeStatus === 'Due' || expStatus === 'expired') dueProfiles++;
                     if(expStatus === 'warn' || expStatus === 'expired') warnProfiles++;
                 });
             }
@@ -1727,15 +1248,12 @@
                 let occupants = allOccupants;
                 if (selectedShift !== 'all') occupants = allOccupants.filter(o => o.shift === selectedShift || o.shift.toLowerCase().includes('full day'));
                 let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
-                
                 occupants.forEach(s => {
+                    if (s.feeStatus === 'Due') hasDue = true;
                     const expStatus = checkExpiry(s.validDate);
-                    if (s.feeStatus === 'Due' || expStatus === 'expired') hasDue = true;
-                    if (expStatus === 'expired') hasExpired = true; 
-                    if (expStatus === 'warn') hasWarn = true;
+                    if (expStatus === 'expired') hasExpired = true; if (expStatus === 'warn') hasWarn = true;
                     if (!examQuery || (s.exam && s.exam.toLowerCase().includes(examQuery))) hasMatch = true;
                 });
-                
                 if (window.currentFilter === 'free' && occupants.length > 0) continue;
                 if (window.currentFilter === 'due' && !hasDue) continue;
                 if (window.currentFilter === 'warn' && !hasWarn) continue;
@@ -1759,42 +1277,6 @@
             }
         }
 
-        window.calcDue = function() {
-            let total = parseFloat(document.getElementById('totalFee').value) || 0;
-            let paid = parseFloat(document.getElementById('initialAmount').value) || 0;
-            let due = total - paid;
-            if(due < 0) due = 0;
-            document.getElementById('dueAmount').value = due;
-            document.getElementById('feeStatus').value = due > 0 ? 'Due' : 'Paid';
-        }
-        
-        window.manualDue = function() {
-            let due = parseFloat(document.getElementById('dueAmount').value) || 0;
-            document.getElementById('feeStatus').value = due > 0 ? 'Due' : 'Paid';
-        }
-
-        window.handleShiftChange = function() {
-            const shiftEl = document.getElementById('shift');
-            if(!shiftEl || shiftEl.selectedIndex < 0) return;
-            const selectedOpt = shiftEl.options[shiftEl.selectedIndex];
-            const fee = selectedOpt.getAttribute('data-fee');
-            
-            if (shiftEl.value === 'Custom') {
-                document.getElementById('customShift').classList.remove('hidden');
-                document.getElementById('totalFee').value = '';
-                document.getElementById('initialAmount').value = '';
-                document.getElementById('dueAmount').value = '';
-            } else {
-                document.getElementById('customShift').classList.add('hidden');
-                if(fee) {
-                    document.getElementById('totalFee').value = fee;
-                    document.getElementById('initialAmount').value = fee; 
-                    document.getElementById('dueAmount').value = 0;
-                    document.getElementById('feeStatus').value = 'Paid';
-                }
-            }
-        }
-
         window.allotSeat = function() {
             const seatNo = document.getElementById('seatNo').value.toUpperCase().trim(), name = document.getElementById('studentName').value;
             if (!seatNo || !window.seatLayout.includes(seatNo)) return window.toast('⚠️ Invalid Seat Number.');
@@ -1815,14 +1297,9 @@
             DB.addStudent(seatNo, { 
                 id: Date.now().toString(), name, shift, phone: document.getElementById('phone').value || 'N/A', exam: document.getElementById('exam').value || 'General', 
                 admDate: document.getElementById('admDate').value, validDate: document.getElementById('validDate').value, 
-                feeStatus: document.getElementById('feeStatus').value, 
-                totalFee: document.getElementById('totalFee').value || 0,
-                dueAmount: document.getElementById('dueAmount').value || 0,
-                payments: initialPayments
+                feeStatus: document.getElementById('feeStatus').value, payments: initialPayments
             });
-            ['seatNo', 'studentName', 'phone', 'exam', 'admDate', 'validDate', 'initialAmount', 'totalFee', 'dueAmount', 'customShift'].forEach(id => {
-                if(document.getElementById(id)) document.getElementById(id).value = '';
-            });
+            ['seatNo', 'studentName', 'phone', 'exam', 'admDate', 'validDate', 'initialAmount', 'customShift'].forEach(id => document.getElementById(id).value = '');
             window.switchTab('map'); window.toast(`🎉 ${name} allocated!`);
         }
 
@@ -1863,59 +1340,27 @@
             window.calculateFinances(); window.toast("Expense saved");
         }
         window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
-        
         window.calculateFinances = function() {
             const monthStr = document.getElementById('finMonth').value; if(!monthStr) return;
-            let totalIncome = 0, totalExpense = 0, totalDueAmt = 0;
+            let totalIncome = 0, totalExpense = 0;
             const incCont = document.getElementById('incomeLedgerContainer'); incCont.innerHTML = '';
             const expCont = document.getElementById('expenseLedgerContainer'); expCont.innerHTML = '';
             let incomes = [];
-            
             for(let seatId of window.seatLayout) {
                 const occupants = DB.getOccupants(seatId);
-                occupants.forEach(s => { 
-                    if(s.feeStatus === 'Due') {
-                        totalDueAmt += parseFloat(s.dueAmount) || 0;
-                    }
-                    if(s.payments) {
-                        s.payments.forEach(p => { 
-                            if(p.date.startsWith(monthStr)) { 
-                                totalIncome += parseFloat(p.amount); 
-                                incomes.push({ date: p.date, name: s.name, seat: seatId, amount: p.amount, mode: p.mode }); 
-                            } 
-                        });
-                    }
-                });
+                occupants.forEach(s => { if(s.payments) s.payments.forEach(p => { if(p.date.startsWith(monthStr)) { totalIncome += parseFloat(p.amount); incomes.push({ date: p.date, name: s.name, seat: seatId, amount: p.amount, mode: p.mode }); } }); });
             }
-            
             incomes.sort((a,b) => new Date(b.date) - new Date(a.date));
-            if(incomes.length === 0) { incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded this month.</div>'; }
-            let currentIncDate = '';
-            incomes.forEach(i => { 
-                if (i.date !== currentIncDate) {
-                    currentIncDate = i.date;
-                    incCont.innerHTML += `<div style="font-size:11px; font-weight:700; color:var(--primary); margin: 15px 0 5px 0; border-bottom: 2px solid var(--glass-border); padding-bottom: 4px;">📅 ${currentIncDate}</div>`;
-                }
-                incCont.innerHTML += `<div class="list-item" style="margin-bottom:4px;"><div><strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Mode: ${i.mode}</div></div><span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span></div>`; 
-            });
-
+            if(incomes.length === 0) incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded this month.</div>';
+            incomes.forEach(i => { incCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${i.date} • Mode: ${i.mode}</div></div><span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span></div>`; });
             let monthlyExps = (DB.expenses || []).filter(e => e.date.startsWith(monthStr));
             monthlyExps.sort((a,b) => new Date(b.date) - new Date(a.date));
-            let currentExpDate = '';
             monthlyExps.forEach(e => {
                 totalExpense += e.amount;
-                if (e.date !== currentExpDate) {
-                    currentExpDate = e.date;
-                    expCont.innerHTML += `<div style="font-size:11px; font-weight:700; color:var(--red); margin: 15px 0 5px 0; border-bottom: 2px solid var(--glass-border); padding-bottom: 4px;">📅 ${currentExpDate}</div>`;
-                }
-                expCont.innerHTML += `<div class="list-item" style="margin-bottom:4px;"><div><strong style="font-size:13px; display:block;">${e.category}</strong></div><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span><button style="background:none; border:none; color:var(--text-muted); cursor:pointer;" onclick="removeExpense('${e.id}')">×</button></div></div>`;
+                expCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${e.category}</strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">${e.date}</div></div><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span><button style="background:none; border:none; color:var(--text-muted); cursor:pointer;" onclick="removeExpense('${e.id}')">×</button></div></div>`;
             });
             if(monthlyExps.length === 0) expCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No expenses recorded.</div>';
-            
-            document.getElementById('finIncome').innerText = `₹${totalIncome}`; 
-            document.getElementById('finExpense').innerText = `₹${totalExpense}`; 
-            document.getElementById('finProfit').innerText = `₹${totalIncome - totalExpense}`;
-            document.getElementById('finTotalDue').innerText = `₹${totalDueAmt}`;
+            document.getElementById('finIncome').innerText = `₹${totalIncome}`; document.getElementById('finExpense').innerText = `₹${totalExpense}`; document.getElementById('finProfit').innerText = `₹${totalIncome - totalExpense}`;
         }
 
         window.openSettingsModal = function() {
@@ -1934,37 +1379,19 @@
         function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection'].forEach(id => { const el = document.getElementById(id); if(el) { el.classList.add('hidden'); el.classList.remove('modal-animate'); } }); }
         function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
         window.handleSeatClick = function(seatNo) { window.activeSeatNo = seatNo; const occupants = DB.getOccupants(seatNo); if(occupants.length === 1) window.openStudentProfile(occupants[0].id); else window.showListMenu(); document.getElementById('detailsModal').style.display = 'flex'; }
-        
         window.showListMenu = function() {
             hideAllModalSections(); document.getElementById('listSeatNo').innerText = window.activeSeatNo;
             const listCont = document.getElementById('occupantsContainer'); listCont.innerHTML = '';
-            DB.getOccupants(window.activeSeatNo).forEach(s => { 
-                const expStatus = checkExpiry(s.validDate);
-                let label = s.feeStatus;
-                let badgeColor = s.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
-                
-                if (expStatus === 'expired') { label = "Expired"; badgeColor = "var(--red)"; }
-                listCont.innerHTML += `<div class="list-item" style="cursor:pointer;" onclick="openStudentProfile('${s.id}')"><div><strong style="display:block; font-size:14px;">${s.name}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.shift}</div></div><span class="badge" style="background:${badgeColor};">${label}</span></div>`; 
-            });
+            DB.getOccupants(window.activeSeatNo).forEach(s => { let badgeColor = s.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)'; listCont.innerHTML += `<div class="list-item" style="cursor:pointer;" onclick="openStudentProfile('${s.id}')"><div><strong style="display:block; font-size:14px;">${s.name}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.shift}</div></div><span class="badge" style="background:${badgeColor};">${s.feeStatus}</span></div>`; });
             triggerModalAnimation('modalListSection');
         }
-
         window.openStudentProfile = function(studentId) {
             window.activeStudentId = studentId; hideAllModalSections(); window.isDeleteConfirmStep = false;
             const rmvBtn = document.getElementById('btnRemoveStudent'); if(rmvBtn) { rmvBtn.innerText = "Remove"; rmvBtn.style.background = "var(--red)"; }
             const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === studentId);
             document.getElementById('modSeatTitle').innerText = window.activeSeatNo;
             ['Name','Phone','Shift','Exam','Date','Valid'].forEach(k => document.getElementById('mod'+k).innerText = student[k.toLowerCase() === 'date' ? 'admDate' : k.toLowerCase() === 'valid' ? 'validDate' : k.toLowerCase()] || 'N/A');
-            
-            const feeEl = document.getElementById('modFee'); 
-            const expStatus = checkExpiry(student.validDate);
-            if (expStatus === 'expired') { feeEl.innerText = "Expired (Renewal Due)"; feeEl.style.background = "var(--red)"; } 
-            else { feeEl.innerText = student.feeStatus; feeEl.style.background = student.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)'; }
-
-            const dueAmtEl = document.getElementById('modDueAmt');
-            if (student.feeStatus === 'Due' && student.dueAmount > 0) { dueAmtEl.innerText = `(Due: ₹${student.dueAmount})`; } 
-            else { dueAmtEl.innerText = ''; }
-
+            const feeEl = document.getElementById('modFee'); feeEl.innerText = student.feeStatus; feeEl.style.background = student.feeStatus === 'Due' ? 'var(--orange)' : 'var(--green)';
             const ledger = document.getElementById('paymentLedger'); ledger.innerHTML = '';
             if(!student.payments || student.payments.length === 0) ledger.innerHTML = '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No history.</div>';
             else { [...student.payments].reverse().forEach(p => { ledger.innerHTML += `<div class="info-row"><div style="font-size:11px;"><strong style="color:var(--text-main); display:block;">${p.date}</strong>${p.mode}</div><div style="color:var(--green); font-weight:700;">₹${p.amount}</div></div>`; }); }
@@ -1975,75 +1402,12 @@
         window.backToListOrClose = function() { if(DB.getOccupants(window.activeSeatNo).length > 1) window.showListMenu(); else window.closeModal(); }
         window.closeModal = function() { document.getElementById('detailsModal').style.display = 'none'; window.activeSeatNo = null; window.activeStudentId = null; }
         window.addAnotherToSeat = function() { const seat = window.activeSeatNo; window.closeModal(); window.switchTab('add'); document.getElementById('seatNo').value = seat; }
-        
-        window.showEditForm = function() { 
-            hideAllModalSections(); 
-            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); 
-            ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift','TotalFee','DueAmount'].forEach(k => {
-                let val = student[k.charAt(0).toLowerCase() + k.slice(1)];
-                document.getElementById('edit'+k).value = val || ((k==='TotalFee' || k==='DueAmount') ? 0 : '');
-            }); 
-            triggerModalAnimation('modalEditSection'); 
-        }
-        window.saveEdit = function() { 
-            const d = {}; 
-            ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift','TotalFee','DueAmount'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value); 
-            DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast("Updated"); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
-        }
+        window.showEditForm = function() { hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => document.getElementById('edit'+k).value = student[k.charAt(0).toLowerCase() + k.slice(1)] || ''); triggerModalAnimation('modalEditSection'); }
+        window.saveEdit = function() { const d = {}; ['Name','Phone','Exam','AdmDate','ValidDate','FeeStatus','Shift'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value); DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast("Updated"); window.renderSeats(); window.openStudentProfile(window.activeStudentId); }
         window.cancelEdit = function() { window.openStudentProfile(window.activeStudentId); }
-        
-        window.calcPayDue = function() {
-            let prevDue = parseFloat(document.getElementById('payCurrentDueHidden').value) || 0;
-            let newTotal = parseFloat(document.getElementById('payNewTotalFee').value) || 0; 
-            let paying = parseFloat(document.getElementById('payAmount').value) || 0;
-            
-            let totalOwed = prevDue + newTotal;
-            let remainingDue = totalOwed - paying;
-            if (remainingDue < 0) remainingDue = 0;
-            
-            document.getElementById('payDueAmount').value = remainingDue;
-            document.getElementById('payFeeStatus').value = remainingDue > 0 ? 'Due' : 'Paid';
-        }
-
-        window.manualPayDue = function() {
-            let due = parseFloat(document.getElementById('payDueAmount').value) || 0;
-            document.getElementById('payFeeStatus').value = due > 0 ? 'Due' : 'Paid';
-        }
-
-        window.showPaymentForm = function() { 
-            hideAllModalSections(); 
-            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); 
-            document.getElementById('payStudentName').innerText = student.name; 
-            document.getElementById('payCurrentDueDisplay').innerText = `₹${student.dueAmount || 0}`;
-            document.getElementById('payCurrentDueHidden').value = student.dueAmount || 0;
-            
-            document.getElementById('payDate').value = new Date().toISOString().split('T')[0]; 
-            document.getElementById('payAmount').value = ''; 
-            document.getElementById('payNewTotalFee').value = ''; 
-            document.getElementById('payValidDate').value = student.validDate || ''; 
-            document.getElementById('payDueAmount').value = student.dueAmount || 0;
-            document.getElementById('payFeeStatus').value = (student.dueAmount > 0) ? 'Due' : 'Paid';
-
-            triggerModalAnimation('modalPaySection'); 
-        }
+        window.showPaymentForm = function() { hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); document.getElementById('payStudentName').innerText = student.name; document.getElementById('payDate').value = new Date().toISOString().split('T')[0]; document.getElementById('payAmount').value = ''; document.getElementById('payValidDate').value = student.validDate || ''; document.getElementById('payFeeStatus').value = 'Paid'; triggerModalAnimation('modalPaySection'); }
         window.hidePaymentForm = function() { window.openStudentProfile(window.activeStudentId); }
-        window.savePayment = function() { 
-            const amt = document.getElementById('payAmount').value; 
-            if(!amt) return window.toast('⚠️ Enter amount'); 
-            
-            DB.addPayment(window.activeSeatNo, window.activeStudentId, { date: document.getElementById('payDate').value, amount: amt, mode: document.getElementById('payMode').value }, document.getElementById('payValidDate').value, document.getElementById('payFeeStatus').value); 
-            
-            let updatedData = {
-                dueAmount: document.getElementById('payDueAmount').value,
-                feeStatus: document.getElementById('payFeeStatus').value
-            };
-            let newTotal = document.getElementById('payNewTotalFee').value;
-            if(newTotal) updatedData.totalFee = newTotal;
-            DB.updateStudent(window.activeSeatNo, window.activeStudentId, updatedData);
-
-            window.toast('Payment Saved'); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
-        }
-
+        window.savePayment = function() { const amt = document.getElementById('payAmount').value; if(!amt) return window.toast('⚠️ Enter amount'); DB.addPayment(window.activeSeatNo, window.activeStudentId, { date: document.getElementById('payDate').value, amount: amt, mode: document.getElementById('payMode').value }, document.getElementById('payValidDate').value, document.getElementById('payFeeStatus').value); window.toast('Payment Saved'); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); }
         window.freeStudentSlot = function() {
             const btn = document.getElementById('btnRemoveStudent');
             if (!window.isDeleteConfirmStep) { window.isDeleteConfirmStep = true; btn.innerText = "Tap Again to Delete"; btn.style.background = "#991b1b"; setTimeout(() => { if (window.isDeleteConfirmStep) { window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)"; } }, 4000); return; }
@@ -2055,20 +1419,28 @@
             const a = document.createElement('a'); a.href = dataStr; a.download = `LibSync_Backup_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!");
         }
 
+        // --- THE DATA IMPORT FIX ---
         window.importData = function(input) {
             const reader = new FileReader();
             reader.onload = function() {
                 try {
                     const obj = JSON.parse(reader.result);
+                    // Now safely accesses the top-level appConfig and DB objects
                     if(obj.config) { appConfig = obj.config; DB.seatsData = obj.seatsData || {}; DB.expenses = obj.expenses || []; DB.waitlist = obj.waitlist || []; } 
                     else { DB.seatsData = obj; }
                     DB.save(); 
                     document.getElementById('appTitle').innerText = appConfig.libraryName;
-                    window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); window.closeModal(); window.toast("📤 Data Restored to Cloud!"); 
+                    window.initializeAppStructure(); 
+                    window.renderSeats(); 
+                    window.renderWaitlist(); 
+                    window.calculateFinances(); 
+                    window.closeModal(); 
+                    window.toast("📤 Data Restored to Cloud!"); 
                 } catch(e) { window.toast("⚠️ Error reading backup"); }
             };
             if(input.files[0]) reader.readAsText(input.files[0]);
         }
+        window.toggleCustomShift = function(selectId, inputId) { document.getElementById(inputId).classList.toggle('hidden', document.getElementById(selectId).value !== 'Custom'); }
     </script>
 </body>
 </html>
