@@ -553,12 +553,116 @@
         // Admin & Main App specific cloud logic (abbreviated for brevity, logic identical to previous code block)
         window.saveBroadcast = async function() { await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ message: document.getElementById('adminBroadcastMsg').value.trim(), active: true, updatedAt: new Date().toISOString() }); window.toast("Broadcast Activated!"); };
         window.clearBroadcast = async function() { await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ active: false }); document.getElementById('adminBroadcastMsg').value = ''; window.toast("Broadcast cleared."); };
-        window.loadAdminDashboard = async function() { /* Unchanged internal logic */ }
-        window.openAdminUser = async function(uid, username, email) { /* Unchanged internal logic */ }
-        window.extendAdminSub = function(days) { /* Unchanged internal logic */ }
-        window.sendAdminPasswordReset = function() { /* Unchanged internal logic */ }
-        window.saveAdminSub = async function() { /* Unchanged internal logic */ }
-        window.addAdminTransaction = async function() { /* Unchanged internal logic */ }
+        
+        window.loadAdminDashboard = async function() { 
+            const container = document.getElementById('adminUsersContainer');
+            container.innerHTML = '<div style="text-align:center; padding: 20px;">Loading users...</div>';
+            try {
+                const usersSnap = await db.collection(`artifacts/${globalAppId}/public/data/usernameMap`).get();
+                let html = '';
+                let activePrem = 0, totalRev = 0, totalWorkspaces = usersSnap.size;
+                if (usersSnap.empty) {
+                    container.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text-muted);">No registered workspaces yet.</div>';
+                    document.getElementById('adminStatWorkspaces').innerText = "0";
+                    return;
+                }
+                const usersData = [];
+                usersSnap.forEach(doc => { usersData.push({ username: doc.id, ...doc.data() }); });
+                for (let u of usersData) {
+                    if (!u.uid) continue;
+                    let subStatus = "trialing", validUntil = "N/A";
+                    try {
+                        const subSnap = await db.doc(`artifacts/${globalAppId}/users/${u.uid}/subscription/info`).get();
+                        if (subSnap.exists) {
+                            const sd = subSnap.data();
+                            subStatus = sd.status || 'inactive';
+                            if (subStatus === 'active') activePrem++;
+                            if (sd.history) {
+                                sd.history.forEach(tx => {
+                                    if(tx.date && tx.date.startsWith(new Date().toISOString().substring(0,7))) { totalRev += parseFloat(tx.amount || 0); }
+                                });
+                            }
+                        }
+                    } catch(e) {}
+                    let badgeColor = subStatus === 'active' ? 'var(--green)' : (subStatus === 'trialing' ? 'var(--primary)' : 'var(--red)');
+                    html += `<div class="list-item" style="cursor:pointer;" onclick="openAdminUser('${u.uid}', '${u.username}', '${u.email}')"><div><strong style="display:block; font-size:14px;">${u.username}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${u.email}</div></div><span class="badge" style="background:${badgeColor};">${subStatus.toUpperCase()}</span></div>`;
+                }
+                container.innerHTML = html;
+                document.getElementById('adminStatWorkspaces').innerText = totalWorkspaces;
+                document.getElementById('adminStatPremium').innerText = activePrem;
+                document.getElementById('adminStatRevenue').innerText = `₹${totalRev}`;
+            } catch (err) { container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--red);">Error loading users. ${err.message}</div>`; }
+        };
+
+        window.adminActiveUid = null; window.adminActiveEmail = null;
+        window.openAdminUser = async function(uid, username, email) { 
+            hideAllModalSections();
+            document.getElementById('adminModUsername').innerText = username;
+            document.getElementById('adminModEmail').innerText = email;
+            window.adminActiveUid = uid; window.adminActiveEmail = email;
+            try {
+                const subSnap = await db.doc(`artifacts/${globalAppId}/users/${uid}/subscription/info`).get();
+                if (subSnap.exists) {
+                    const sd = subSnap.data();
+                    document.getElementById('adminSubStatus').value = sd.status || 'trialing';
+                    document.getElementById('adminSubValid').value = sd.validUntil || '';
+                    document.getElementById('adminModNotes').value = sd.adminNotes || '';
+                    const txHtml = (sd.history || []).reverse().map(tx => `<div class="info-row" style="border-bottom: 1px solid rgba(150,150,150,0.1); padding: 5px 0;"><div><strong style="display:block; font-size:12px;">${tx.date}</strong><span style="font-size:10px; color:var(--text-muted);">Invoice: ${tx.id}</span></div><div style="color:var(--green); font-weight:600;">₹${tx.amount}</div></div>`).join('');
+                    document.getElementById('adminTxHistory').innerHTML = txHtml || '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No transactions.</div>';
+                } else {
+                    document.getElementById('adminSubStatus').value = 'trialing';
+                    document.getElementById('adminSubValid').value = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                    document.getElementById('adminModNotes').value = '';
+                    document.getElementById('adminTxHistory').innerHTML = '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No transactions.</div>';
+                }
+            } catch(e) {}
+            triggerModalAnimation('adminUserSection');
+            document.getElementById('detailsModal').style.display = 'flex';
+        };
+
+        window.extendAdminSub = function(days) { 
+            let current = document.getElementById('adminSubValid').value;
+            let d = current ? new Date(current) : new Date();
+            d.setDate(d.getDate() + days);
+            document.getElementById('adminSubValid').value = d.toISOString().split('T')[0];
+        };
+
+        window.sendAdminPasswordReset = function() { 
+            if(!window.adminActiveEmail) return;
+            auth.sendPasswordResetEmail(window.adminActiveEmail).then(() => { window.toast("Password reset email sent!"); }).catch(e => window.toast("Error: " + e.message));
+        };
+
+        window.saveAdminSub = async function() { 
+            if(!window.adminActiveUid) return;
+            const status = document.getElementById('adminSubStatus').value;
+            const validUntil = document.getElementById('adminSubValid').value;
+            const notes = document.getElementById('adminModNotes').value;
+            try {
+                await db.doc(`artifacts/${globalAppId}/users/${window.adminActiveUid}/subscription/info`).set({ status: status, validUntil: validUntil, adminNotes: notes }, { merge: true });
+                window.toast("Workspace profile saved!");
+                window.loadAdminDashboard();
+            } catch(e) { window.toast("Error saving."); }
+        };
+
+        window.addAdminTransaction = async function() { 
+            if(!window.adminActiveUid) return;
+            const amt = document.getElementById('adminTxAmount').value;
+            const date = document.getElementById('adminTxDate').value || new Date().toISOString().split('T')[0];
+            if(!amt) return window.toast("Enter amount");
+            try {
+                const ref = db.doc(`artifacts/${globalAppId}/users/${window.adminActiveUid}/subscription/info`);
+                const snap = await ref.get();
+                let history = [];
+                if(snap.exists && snap.data().history) history = snap.data().history;
+                history.push({ id: 'INV-' + Date.now(), amount: parseFloat(amt), date: date });
+                await ref.set({ history: history }, { merge: true });
+                window.toast("Transaction Added!");
+                document.getElementById('adminTxAmount').value = '';
+                window.openAdminUser(window.adminActiveUid, document.getElementById('adminModUsername').innerText, window.adminActiveEmail);
+                window.loadAdminDashboard();
+            } catch(e) { window.toast("Error adding transaction."); }
+        };
+
         function listenForBroadcasts() { unsubscribeBroadcast = db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).onSnapshot((s) => { const b = document.getElementById('broadcastBanner'); if (s.exists && s.data().active) { document.getElementById('broadcastText').innerText = s.data().message; b.classList.remove('hidden'); } else b.classList.add('hidden'); }, ()=>{}); }
         function loadDataFromCloud() { if(!currentUser || currentUser.uid === ADMIN_UID) return; unsubscribeSnapshot = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).onSnapshot((s) => { window.initializeAppStructure(); if (s.exists) { const d = s.data(); if(d.config) appConfig = d.config; if(d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } else { DB.init(); DB.save(); } document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro'; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); }, ()=>{}); }
         function startAppTour() { if (localStorage.getItem('hasSeenTour') === 'true') return; const t = window.driver.js.driver({ showProgress:true, steps:[{popover:{title:'Welcome!',description:'Quick 30s tour.'}},{element:'#settingsTab',popover:{title:'1. Setup',description:'Start here.'}},{element:'#seatMapTab',popover:{title:'2. Matrix',description:'Your seats.'}},{element:'#tabFinBtn',popover:{title:'3. Finance',description:'Track Dues.'}}], onDestroyStarted:()=>{localStorage.setItem('hasSeenTour','true');t.destroy();}}); t.drive(); }
