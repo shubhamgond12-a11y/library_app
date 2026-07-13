@@ -160,14 +160,31 @@
         .driver-popover-description { color: #cbd5e1 !important; font-size: 14px !important; line-height: 1.5 !important; }
         .driver-popover-navigation-btns button { background: #3b82f6 !important; color: white !important; border: none !important; border-radius: 6px !important; padding: 6px 12px !important; }
 
-        /* --- DYNAMIC SAAS ANALYTICS GAUGES --- */
-        .analytics-gauge-bar {
-            width: 100%; height: 8px; background: rgba(150,150,150,0.15); border-radius: 4px; overflow: hidden; margin-top: 10px; display: flex;
+        /* --- TOGGLE SWITCH FOR MAINTENANCE --- */
+        .switch input:checked + .slider { background-color: var(--red) !important; }
+        .switch .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+            background-color: white; transition: .4s; border-radius: 50%;
         }
-        .gauge-part { height: 100%; transition: width 0.4s ease; }
+        .switch input:checked + .slider:before { transform: translateX(24px); }
     </style>
 </head>
 <body>
+
+    <!-- SYSTEM MAINTENANCE LOCKOUT OVERLAY SCREEN -->
+    <div id="maintenanceLockoutScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:10005; background:rgba(15,23,42,0.9); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); align-items:center; justify-content:center; flex-direction:column; padding:20px; text-align:center; box-sizing:border-box;">
+        <div class="glass-panel animate-in" style="max-width:480px; padding:40px; border-radius:24px; border:1px solid rgba(255,255,255,0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.3); background: rgba(30,41,59,0.7);">
+            <div style="font-size:48px; margin-bottom:15px;">🚧</div>
+            <h2 style="color:var(--primary); margin:0 0 10px 0; font-weight:700;">Scheduled Maintenance</h2>
+            <p style="color:#f8fafc; font-size:14px; line-height:1.6; margin-bottom:20px;">
+                LibSync Pro is currently undergoing scheduled database optimizations to enhance read/write speeds.
+            </p>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:12px; font-size:12px; color:var(--orange); font-weight: 600; margin-bottom:25px;">
+                ⏳ Expected offline duration: Less than 15 minutes
+            </div>
+            <p style="font-size:11px; color:var(--text-muted); margin:0;">We apologize for the temporary disruption. Your data remains perfectly secure.</p>
+        </div>
+    </div>
 
     <!-- GLOBAL BROADCAST BANNER -->
     <div id="broadcastBanner" class="hidden animate-in" style="background: linear-gradient(90deg, #2563eb, #3b82f6); color: white; padding: 12px; border-radius: 12px; margin: 10px 10px 15px 10px; text-align: center; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(37,99,235,0.2); z-index: 999;">
@@ -365,21 +382,21 @@
             <div class="stat-card">SaaS Revenue <span class="num" id="adminStatRevenue" style="color:var(--orange)">₹0</span></div>
         </div>
 
-        <!-- NEW FEATURE: Subscription Health Bar Chart -->
+        <!-- NEW FEATURE: SYSTEM STATUS CONTROL & MAINTENANCE TOGGLE -->
         <div class="glass-panel animate-in" style="padding: 15px; margin-bottom: 15px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h4 style="margin:0; font-size:12px; color:var(--text-muted);">Workspace Subscription Distribution</h4>
-                <span id="adminHealthRatio" style="font-size:11px; font-weight:700; color:var(--primary);">0% Premium</span>
-            </div>
-            <div class="analytics-gauge-bar">
-                <div id="gaugePremium" class="gauge-part" style="background:var(--green); width:0%;"></div>
-                <div id="gaugeTrialing" class="gauge-part" style="background:var(--primary); width:0%;"></div>
-                <div id="gaugeExpired" class="gauge-part" style="background:var(--red); width:0%;"></div>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:10px; margin-top:8px; color:var(--text-muted);">
-                <span>🟢 Premium (<span id="gaugePremNum">0</span>)</span>
-                <span>🔵 Trialing (<span id="gaugeTrialNum">0</span>)</span>
-                <span>🔴 Expired (<span id="gaugeExpNum">0</span>)</span>
+            <h4 style="margin-top:0; margin-bottom:12px; font-size:13px; color:var(--primary); display:flex; justify-content:space-between; align-items:center;">
+                🛠️ Global Platform Status Control
+                <span id="maintenanceStatusBadge" class="badge" style="background:var(--green)">SYSTEM ONLINE</span>
+            </h4>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.05); padding:12px; border-radius:12px;">
+                <div style="flex: 1; padding-right: 15px;">
+                    <span style="font-size:13px; font-weight:600; display:block;">SaaS Maintenance Lockout</span>
+                    <span style="font-size:10px; color:var(--text-muted);">Engaging this locks out all library workspaces with a scheduled downtime message.</span>
+                </div>
+                <label class="switch" style="position:relative; display:inline-block; width:50px; height:26px;">
+                    <input type="checkbox" id="maintenanceToggle" onchange="toggleMaintenanceMode()" style="opacity:0; width:0; height:0;">
+                    <span class="slider" style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:34px;"></span>
+                </label>
             </div>
         </div>
 
@@ -390,26 +407,10 @@
                 <button class="action-btn" style="margin:0; flex:1; background:var(--primary);" onclick="saveBroadcast()">Publish Live</button>
                 <button class="action-btn" style="margin:0; flex:1; background:var(--red);" onclick="clearBroadcast()">Clear / Off</button>
             </div>
-            
-            <!-- NEW FEATURE: Broadcast History Ledger -->
-            <div style="margin-top: 15px; border-top: 1px solid var(--glass-border); padding-top:10px;">
-                <h5 style="margin:0 0 5px 0; font-size:11px; color:var(--text-muted);">Recent Broadcast History</h5>
-                <div id="broadcastHistoryContainer" style="max-height: 80px; overflow-y:auto; display:flex; flex-direction:column; gap:4px;"></div>
-            </div>
         </div>
 
-        <!-- NEW FEATURE: Advanced Workspace Filtering & Searching -->
-        <div class="glass-panel animate-in" style="padding: 15px; margin-bottom:15px;">
-            <h3 style="margin-top:0; margin-bottom: 12px; color:var(--primary); font-size:16px;">Client Workspaces</h3>
-            <div class="flex-row" style="margin-bottom:10px;">
-                <input type="text" id="adminClientSearch" class="app-input search-box" style="margin-bottom:0; flex:1;" placeholder="Search username, email..." oninput="filterAdminClients()">
-                <select id="adminClientFilter" class="app-input" style="width:130px;" onchange="filterAdminClients()">
-                    <option value="all">All Statuses</option>
-                    <option value="active">Premium Only</option>
-                    <option value="trialing">Trialing Only</option>
-                    <option value="inactive">Expired Only</option>
-                </select>
-            </div>
+        <div class="glass-panel animate-in" style="padding: 15px;">
+            <h3 style="margin-top:0; margin-bottom: 15px; color:var(--primary);">Client Workspaces</h3>
             <div id="adminUsersContainer">Loading registered SaaS users...</div>
         </div>
     </div>
@@ -520,8 +521,40 @@
             <p style="font-size:14px; font-weight:600; margin-bottom:2px;" id="adminModUsername"></p>
             <p style="font-size:11px; color:var(--text-muted); margin-top:0; margin-bottom:15px;" id="adminModEmail"></p>
             
-            <!-- NEW FEATURE: Quick Renewal Copier -->
-            <button class="action-btn" style="margin:0 0 15px 0; background:var(--primary); padding:8px 12px; font-size:11px;" id="btnAdminCopyNotice" onclick="copyRenewalNotice()">📋 Generate WhatsApp Renewal Notice</button>
+            <!-- NEW FEATURE: DATABASE QUOTA & SAAS USAGE TRACKING -->
+            <h4 style="margin: 5px 0 10px 0; font-size:13px; color:var(--primary); border-top:1px solid var(--glass-border); padding-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                📊 Database Quota & Storage Footprint
+                <span id="quotaPlanBadge" class="badge" style="background:var(--primary)">TRIAL LIMITS</span>
+            </h4>
+            <div style="background:var(--modal-card-bg); border-radius:12px; padding:15px; border:1px solid var(--glass-border); margin-bottom:15px; display: flex; flex-direction: column; gap:10px;">
+                <div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;">
+                        <span>Enrolled Student Count</span>
+                        <strong id="quotaSeatsVal">0 / 30</strong>
+                    </div>
+                    <div style="width:100%; height:6px; background:rgba(0,0,0,0.1); border-radius:3px; overflow:hidden;">
+                        <div id="quotaSeatsBar" style="height:100%; width:0%; background:var(--primary); transition:width 0.4s ease;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;">
+                        <span>Waitlist Size footprint</span>
+                        <strong id="quotaWaitVal">0 / 10</strong>
+                    </div>
+                    <div style="width:100%; height:6px; background:rgba(0,0,0,0.1); border-radius:3px; overflow:hidden;">
+                        <div id="quotaWaitBar" style="height:100%; width:0%; background:var(--orange); transition:width 0.4s ease;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;">
+                        <span>Financial Records footprint</span>
+                        <strong id="quotaFinVal">0 / 100</strong>
+                    </div>
+                    <div style="width:100%; height:6px; background:rgba(0,0,0,0.1); border-radius:3px; overflow:hidden;">
+                        <div id="quotaFinBar" style="height:100%; width:0%; background:var(--green); transition:width 0.4s ease;"></div>
+                    </div>
+                </div>
+            </div>
 
             <label class="app-label">Subscription Status</label><select class="app-input" id="adminSubStatus" style="margin-bottom:8px;"><option value="trialing">Trialing (Active)</option><option value="active">Premium (Active)</option><option value="inactive">Expired / Inactive</option></select>
             <label class="app-label">Validity Until</label><input type="date" class="app-input" id="adminSubValid" style="margin-bottom:8px;">
@@ -541,7 +574,7 @@
     <div id="toast-container"></div>
 
     <script>
-        // --- STREAMING_CHUNK: Initializing Firebase configuration variables ---
+        // --- STREAMING_CHUNK: Initializing core app settings and database triggers ---
         const firebaseConfig = { apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4", authDomain: "librarymgt-2026.firebaseapp.com", projectId: "librarymgt-2026", storageBucket: "librarymgt-2026.firebasestorage.app", messagingSenderId: "836897960075", appId: "1:836897960075:web:11899c0996620eb428e48e" };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(); const db = firebase.firestore();
@@ -550,8 +583,7 @@
         const globalAppId = rawAppId.replace(/[^a-zA-Z0-9_]/g, '_');
         const ADMIN_UID = 'cwBkWqFBuHeqpLyNBKdQSeF1iu83';
 
-        let currentUser = null; let unsubscribeSnapshot = null; let unsubscribeBroadcast = null;
-        let cachedAdminClients = []; // Local cache to store filtered clients
+        let currentUser = null; let unsubscribeSnapshot = null; let unsubscribeBroadcast = null; let unsubscribeMaintenance = null;
 
         let appConfig = {
             libraryName: "LibSync Pro", totalSeats: 20, customSeats: ["1A", "1B", "2A", "2B"],
@@ -582,11 +614,13 @@
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 currentUser = user;
+                listenForMaintenance(); // Listen to live platform maintenance mode
+                
                 if (user.uid === ADMIN_UID) { 
                     document.getElementById('authScreen').style.display = 'none'; 
                     document.getElementById('mainApp').style.display = 'none'; 
                     document.getElementById('adminApp').style.display = 'block'; 
-                    listenForBroadcasts(); // Admin also listens to broadcasts
+                    listenForBroadcasts(); 
                     window.loadAdminDashboard(); 
                     window.toast(`Welcome to the Admin Hub!`); 
                 } else {
@@ -602,7 +636,7 @@
                         setTimeout(startAppTour, 1000);
                     } catch(err) { window.toast("Error loading workspace."); auth.signOut(); }
                 }
-            } else { currentUser = null; document.getElementById('authScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none'; document.getElementById('adminApp').style.display = 'none'; if(unsubscribeSnapshot) unsubscribeSnapshot(); if(unsubscribeBroadcast) unsubscribeBroadcast(); }
+            } else { currentUser = null; document.getElementById('authScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none'; document.getElementById('adminApp').style.display = 'none'; if(unsubscribeSnapshot) unsubscribeSnapshot(); if(unsubscribeBroadcast) unsubscribeBroadcast(); if(unsubscribeMaintenance) unsubscribeMaintenance(); }
         });
 
         window.loginUser = async () => { const idInput = document.getElementById('loginId').value.trim(); const pass = document.getElementById('loginPassword').value; const errEl = document.getElementById('authError'); if(!idInput || !pass) return errEl.innerText = "Please enter details."; errEl.innerText = "Logging in..."; try { let emailToUse = idInput; if (!idInput.includes('@')) { const res = localStorage.getItem('lib_admin_' + idInput.toLowerCase()); if (res) emailToUse = res; else throw new Error("Admin ID not recognized here. Login with email once."); } await auth.signInWithEmailAndPassword(emailToUse, pass); } catch(e) { errEl.innerText = e.message.replace('Firebase:', '').trim(); } };
@@ -611,60 +645,57 @@
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
         window.loginWithGoogle = async () => { try { const res = await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); if (res.additionalUserInfo && res.additionalUserInfo.isNewUser) { await db.doc(`artifacts/${globalAppId}/public/data/usernameMap/${res.user.email.split('@')[0].toLowerCase() + Math.floor(Math.random() * 1000)}`).set({ email: res.user.email, uid: res.user.uid }); } } catch(e) { document.getElementById('authError').innerText = e.message.replace('Firebase:', '').trim(); } };
 
-        // --- STREAMING_CHUNK: Admin Broadcaster logic ---
-        window.saveBroadcast = async function() { 
-            const text = document.getElementById('adminBroadcastMsg').value.trim();
-            if (!text) return window.toast("⚠️ Broadcast text empty.");
-            
-            // Add to active live document
-            await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ message: text, active: true, updatedAt: new Date().toISOString() }); 
-            
-            // Log into a small broadcast ledger doc
-            try {
-                const histRef = db.collection(`artifacts/${globalAppId}/public/data/broadcast_history`);
-                await histRef.add({ message: text, timestamp: new Date().toISOString() });
-            } catch(e) { console.warn("Ledger logging error", e); }
-            
-            window.toast("Announcement Broadcasted!"); 
-            loadBroadcastHistory();
-        };
+        // --- STREAMING_CHUNK: System Maintenance Mode Listener & Handler ---
+        function listenForMaintenance() {
+            if (unsubscribeMaintenance) unsubscribeMaintenance();
+            unsubscribeMaintenance = db.doc(`artifacts/${globalAppId}/public/data/system_status/config`).onSnapshot((snap) => {
+                const lockScreen = document.getElementById('maintenanceLockoutScreen');
+                const badge = document.getElementById('maintenanceStatusBadge');
+                const toggle = document.getElementById('maintenanceToggle');
+                
+                if (snap.exists) {
+                    const data = snap.data();
+                    const active = !!data.maintenanceMode;
 
-        window.clearBroadcast = async function() { 
-            await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ active: false }); 
-            document.getElementById('adminBroadcastMsg').value = ''; 
-            window.toast("Broadcast cleared."); 
-        };
-
-        // NEW FEATURE: Load previous broadcasts
-        async function loadBroadcastHistory() {
-            const container = document.getElementById('broadcastHistoryContainer');
-            if(!container) return;
-            container.innerHTML = '';
-            try {
-                const snap = await db.collection(`artifacts/${globalAppId}/public/data/broadcast_history`).orderBy('timestamp', 'desc').limit(4).get();
-                if(snap.empty) {
-                    container.innerHTML = '<span style="font-size:10px; color:var(--text-muted);">No history found</span>';
-                    return;
+                    // Engage Lockout UI for Non-Admins
+                    if (active) {
+                        if (currentUser && currentUser.uid !== ADMIN_UID) {
+                            lockScreen.style.display = 'flex';
+                        }
+                        if (badge) {
+                            badge.innerText = "SYSTEM IN MAINTENANCE";
+                            badge.style.background = "var(--red)";
+                        }
+                        if (toggle) toggle.checked = true;
+                    } else {
+                        lockScreen.style.display = 'none';
+                        if (badge) {
+                            badge.innerText = "SYSTEM ONLINE";
+                            badge.style.background = "var(--green)";
+                        }
+                        if (toggle) toggle.checked = false;
+                    }
                 }
-                snap.forEach(doc => {
-                    const data = doc.data();
-                    const d = document.createElement('div');
-                    d.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.1); padding:4px 8px; border-radius:6px; font-size:11px; margin-bottom:2px;";
-                    d.innerHTML = `
-                        <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:80%;" title="${data.message}">${data.message}</span>
-                        <button class="filter-btn" style="padding:2px 6px; font-size:9px;" onclick="reuseBroadcast('${data.message.replace(/'/g, "\\'")}')">Use</button>
-                    `;
-                    container.appendChild(d);
-                });
-            } catch(e) { console.warn("Failed loading broadcast history: ", e); }
+            }, () => {});
         }
 
-        window.reuseBroadcast = function(msg) {
-            document.getElementById('adminBroadcastMsg').value = msg;
-            window.toast("Message loaded to broadcaster");
+        window.toggleMaintenanceMode = async function() {
+            if (!currentUser || currentUser.uid !== ADMIN_UID) return;
+            const checked = document.getElementById('maintenanceToggle').checked;
+            try {
+                await db.doc(`artifacts/${globalAppId}/public/data/system_status/config`).set({
+                    maintenanceMode: checked,
+                    updatedAt: new Date().toISOString(),
+                    updatedBy: currentUser.email
+                }, { merge: true });
+                window.toast(checked ? "🚧 Platform locked for maintenance!" : "✅ Platform restored online.");
+            } catch(e) { window.toast("Error saving maintenance: " + e.message); }
         };
 
-        // --- STREAMING_CHUNK: Admin dashboard panel render engine ---
+        window.saveBroadcast = async function() { await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ message: document.getElementById('adminBroadcastMsg').value.trim(), active: true, updatedAt: new Date().toISOString() }); window.toast("Broadcast Activated!"); };
+        window.clearBroadcast = async function() { await db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).set({ active: false }); document.getElementById('adminBroadcastMsg').value = ''; window.toast("Broadcast cleared."); };
+
+        // --- STREAMING_CHUNK: Admin Workspace loading & dynamic analytics calculations ---
         window.loadAdminDashboard = async function() { 
             const container = document.getElementById('adminUsersContainer');
             container.innerHTML = '<div style="text-align:center; padding: 20px;">Fetching workspace data...</div>';
@@ -676,23 +707,16 @@
                     return;
                 }
                 
-                cachedAdminClients = [];
-                let activePrem = 0;
-                let activeTrial = 0;
-                let activeExp = 0;
-                let totalRev = 0;
-                let totalWorkspaces = usersSnap.size;
+                let activePrem = 0, totalWorkspaces = usersSnap.size, totalRev = 0;
+                const currentMonth = new Date().toISOString().substring(0,7);
+                let html = '';
 
-                const usersData = [];
-                usersSnap.forEach(doc => { usersData.push({ username: doc.id, ...doc.data() }); });
-                
-                for (let u of usersData) {
-                    if (!u.uid) continue;
-                    let subStatus = "trialing";
-                    let validUntil = "N/A";
-                    let adminNotes = "";
-                    let history = [];
+                const userProfiles = [];
+                usersSnap.forEach(doc => { userProfiles.push({ username: doc.id, ...doc.data() }); });
 
+                for(let u of userProfiles) {
+                    if(!u.uid) continue;
+                    let subStatus = "trialing", validUntil = "N/A", adminNotes = "", history = [];
                     try {
                         const subSnap = await db.doc(`artifacts/${globalAppId}/users/${u.uid}/subscription/info`).get();
                         if (subSnap.exists) {
@@ -701,129 +725,119 @@
                             validUntil = sd.validUntil || 'N/A';
                             adminNotes = sd.adminNotes || '';
                             history = sd.history || [];
-                            
-                            if (subStatus === 'active') activePrem++;
-                            else if (subStatus === 'trialing') activeTrial++;
-                            else if (subStatus === 'inactive') activeExp++;
-
-                            history.forEach(tx => {
-                                if(tx.date && tx.date.startsWith(new Date().toISOString().substring(0,7))) { 
-                                    totalRev += parseFloat(tx.amount || 0); 
-                                }
-                            });
-                        } else {
-                            activeTrial++;
+                            if(subStatus === 'active') activePrem++;
+                            history.forEach(tx => { if(tx.date && tx.date.startsWith(currentMonth)) totalRev += parseFloat(tx.amount || 0); });
                         }
-                    } catch(e) {}
-                    
-                    cachedAdminClients.push({
-                        uid: u.uid,
-                        username: u.username || u.email.split('@')[0],
-                        email: u.email,
-                        status: subStatus,
-                        validUntil: validUntil,
-                        adminNotes: adminNotes,
-                        history: history
-                    });
+                    } catch(e){}
+
+                    let badgeColor = subStatus === 'active' ? 'var(--green)' : (subStatus === 'trialing' ? 'var(--primary)' : 'var(--red)');
+                    html += `
+                        <div class="list-item">
+                            <div>
+                                <strong style="display:block; font-size:14px;">${u.username}</strong>
+                                <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${u.email}</div>
+                            </div>
+                            <div style="text-align:right; display:flex; flex-direction:column; gap:4px; align-items:flex-end;">
+                                <span class="badge" style="background:${badgeColor};">${subStatus.toUpperCase()}</span>
+                                <button class="filter-btn" style="font-size:10px; padding:4px 8px; margin:0;" onclick="openAdminUser('${u.uid}', '${u.username}', '${u.email}')">Manage</button>
+                            </div>
+                        </div>`;
                 }
 
-                // Render metrics
                 document.getElementById('adminStatWorkspaces').innerText = totalWorkspaces;
                 document.getElementById('adminStatPremium').innerText = activePrem;
                 document.getElementById('adminStatRevenue').innerText = `₹${totalRev}`;
+                container.innerHTML = html;
 
-                // Calculate ratios
-                const premiumRatio = totalWorkspaces > 0 ? Math.round((activePrem / totalWorkspaces) * 100) : 0;
-                const trialingRatio = totalWorkspaces > 0 ? Math.round((activeTrial / totalWorkspaces) * 100) : 0;
-                const expiredRatio = totalWorkspaces > 0 ? Math.round((activeExp / totalWorkspaces) * 100) : 0;
-
-                document.getElementById('adminHealthRatio').innerText = `${premiumRatio}% Premium`;
-                document.getElementById('gaugePremium').style.width = `${premiumRatio}%`;
-                document.getElementById('gaugeTrialing').style.width = `${trialingRatio}%`;
-                document.getElementById('gaugeExpired').style.width = `${expiredRatio}%`;
-
-                document.getElementById('gaugePremNum').innerText = activePrem;
-                document.getElementById('gaugeTrialNum').innerText = activeTrial;
-                document.getElementById('gaugeExpNum').innerText = activeExp;
-
-                // Render lists
-                renderAdminClientList(cachedAdminClients);
-                loadBroadcastHistory();
-
-            } catch (err) { container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--red);">Error loading users. ${err.message}</div>`; }
+            } catch (err) { container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--red);">Error. ${err.message}</div>`; }
         };
 
-        function renderAdminClientList(list) {
-            const container = document.getElementById('adminUsersContainer');
-            let html = '';
-            list.forEach(c => {
-                let badgeColor = c.status === 'active' ? 'var(--green)' : (c.status === 'trialing' ? 'var(--primary)' : 'var(--red)');
-                html += `
-                    <div class="list-item" style="cursor:pointer;" onclick="openAdminUser('${c.uid}', '${c.username}', '${c.email}')">
-                        <div>
-                            <strong style="display:block; font-size:14px;">${c.username}</strong>
-                            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${c.email}</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <span class="badge" style="background:${badgeColor};">${c.status.toUpperCase()}</span>
-                            <div style="font-size:9px; color:var(--text-muted); margin-top:4px;">Valid: ${c.validUntil}</div>
-                        </div>
-                    </div>`;
-            });
-            container.innerHTML = html || '<div style="text-align:center; font-size:12px; padding:15px;">No matching clients.</div>';
-        }
-
-        // NEW FEATURE: Client Filtering 
-        window.filterAdminClients = function() {
-            const q = document.getElementById('adminClientSearch').value.toLowerCase().trim();
-            const filterType = document.getElementById('adminClientFilter').value;
-
-            let filtered = cachedAdminClients.filter(c => {
-                const matchesSearch = c.username.toLowerCase().includes(q) || c.email.toLowerCase().includes(q);
-                const matchesFilter = filterType === 'all' || c.status === filterType;
-                return matchesSearch && matchesFilter;
-            });
-            renderAdminClientList(filtered);
-        };
-
-        // NEW FEATURE: Quick Renewal Notice Copying
-        window.copyRenewalNotice = function() {
-            const username = document.getElementById('adminModUsername').innerText;
-            const valid = document.getElementById('adminSubValid').value || 'N/A';
-            const template = `Hello ${username},\n\nThis is a friendly reminder that your LibSync Pro subscription expires/has expired on *${valid}*. To prevent any seat matrix or cloud database interruptions, please renew your plan.\n\nThank you,\nLibSync Administrator`;
-            
-            // Create a fake input to copy to clipboard (iFrame compliant)
-            const el = document.createElement('textarea');
-            el.value = template;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            window.toast("📋 Message Copied to Clipboard!");
-        };
-
-        window.adminActiveUid = null; window.adminActiveEmail = null;
+        // --- STREAMING_CHUNK: Workspace quota computations (Students, Waitlist, Financial tx counts) ---
+        window.activeAdminUserId = null; window.activeAdminUserEmail = null;
         window.openAdminUser = async function(uid, username, email) { 
+            window.activeAdminUserId = uid; window.activeAdminUserEmail = email;
             hideAllModalSections();
             document.getElementById('adminModUsername').innerText = username;
             document.getElementById('adminModEmail').innerText = email;
-            window.adminActiveUid = uid; window.adminActiveEmail = email;
+            
+            // 1. Fetch Subscription details
+            const subRef = db.doc(`artifacts/${globalAppId}/users/${uid}/subscription/info`);
+            const subSnap = await subRef.get();
+            const subData = subSnap.exists ? subSnap.data() : { status: 'trialing', validUntil: '', history: [], adminNotes: '' };
+            
+            let statusVal = subData.status || 'trialing';
+            document.getElementById('adminSubStatus').value = statusVal;
+            document.getElementById('adminSubValid').value = subData.validUntil || '';
+            document.getElementById('adminModNotes').value = subData.adminNotes || '';
+            
+            // 2. Compute Footprint Footprints & Quota Limits
+            let studentCount = 0;
+            let waitlistCount = 0;
+            let ledgerCount = 0;
+            
             try {
-                const subSnap = await db.doc(`artifacts/${globalAppId}/users/${uid}/subscription/info`).get();
-                if (subSnap.exists) {
-                    const sd = subSnap.data();
-                    document.getElementById('adminSubStatus').value = sd.status || 'trialing';
-                    document.getElementById('adminSubValid').value = sd.validUntil || '';
-                    document.getElementById('adminModNotes').value = sd.adminNotes || '';
-                    const txHtml = (sd.history || []).reverse().map(tx => `<div class="info-row" style="border-bottom: 1px solid rgba(150,150,150,0.1); padding: 5px 0;"><div><strong style="display:block; font-size:12px;">${tx.date}</strong><span style="font-size:10px; color:var(--text-muted);">Invoice: ${tx.id}</span></div><div style="color:var(--green); font-weight:600;">₹${tx.amount}</div></div>`).join('');
-                    document.getElementById('adminTxHistory').innerHTML = txHtml || '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No transactions.</div>';
-                } else {
-                    document.getElementById('adminSubStatus').value = 'trialing';
-                    document.getElementById('adminSubValid').value = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
-                    document.getElementById('adminModNotes').value = '';
-                    document.getElementById('adminTxHistory').innerHTML = '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No transactions.</div>';
+                const dataSnap = await db.doc(`artifacts/${globalAppId}/users/${uid}/libraryData/main`).get();
+                if (dataSnap.exists) {
+                    const workspace = dataSnap.data();
+                    
+                    // Count enrolled students across seat lists
+                    if (workspace.seatsData) {
+                        Object.keys(workspace.seatsData).forEach(seatId => {
+                            const list = workspace.seatsData[seatId] || [];
+                            studentCount += list.length;
+                            list.forEach(student => {
+                                ledgerCount += (student.payments || []).length;
+                            });
+                        });
+                    }
+                    
+                    // Count waitlist
+                    if (workspace.waitlist) {
+                        waitlistCount = workspace.waitlist.length;
+                    }
+                    
+                    // Count expenses
+                    if (workspace.expenses) {
+                        ledgerCount += workspace.expenses.length;
+                    }
                 }
-            } catch(e) {}
+            } catch(e) { console.warn("Footprint calculation bypassed", e); }
+
+            // Define tiered quotas
+            const limitSeats = statusVal === 'active' ? 150 : 30;
+            const limitWait = statusVal === 'active' ? 50 : 10;
+            const limitLedger = statusVal === 'active' ? 1000 : 100;
+
+            document.getElementById('quotaPlanBadge').innerText = statusVal === 'active' ? "PREMIUM PLAN QUOTAS" : "TRIAL PLAN QUOTAS";
+            document.getElementById('quotaPlanBadge').style.background = statusVal === 'active' ? "var(--green)" : "var(--primary)";
+
+            // Render stats text
+            document.getElementById('quotaSeatsVal').innerText = `${studentCount} / ${limitSeats} Students`;
+            document.getElementById('quotaWaitVal').innerText = `${waitlistCount} / ${limitWait} entries`;
+            document.getElementById('quotaFinVal').innerText = `${ledgerCount} / ${limitLedger} entries`;
+
+            // Calculate ratios
+            const seatsRatio = Math.min(100, (studentCount / limitSeats) * 100);
+            const waitRatio = Math.min(100, (waitlistCount / limitWait) * 100);
+            const ledgerRatio = Math.min(100, (ledgerCount / limitLedger) * 100);
+
+            // Render and Color Bars (warn/red if usage > 85%)
+            const seatsBar = document.getElementById('quotaSeatsBar');
+            seatsBar.style.width = `${seatsRatio}%`;
+            seatsBar.style.background = seatsRatio > 85 ? 'var(--red)' : 'var(--primary)';
+
+            const waitBar = document.getElementById('quotaWaitBar');
+            waitBar.style.width = `${waitRatio}%`;
+            waitBar.style.background = waitRatio > 85 ? 'var(--red)' : 'var(--orange)';
+
+            const finBar = document.getElementById('quotaFinBar');
+            finBar.style.width = `${ledgerRatio}%`;
+            finBar.style.background = ledgerRatio > 85 ? 'var(--red)' : 'var(--green)';
+
+            // Render admin ledger receipts
+            const txHtml = (subData.history || []).reverse().map(tx => `<div class="info-row" style="border-bottom: 1px solid rgba(150,150,150,0.1); padding: 5px 0;"><div><strong style="display:block; font-size:12px;">${tx.date}</strong><span style="font-size:10px; color:var(--text-muted);">Ref: ${tx.id}</span></div><div style="color:var(--green); font-weight:600;">₹${tx.amount}</div></div>`).join('');
+            document.getElementById('adminTxHistory').innerHTML = txHtml || '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No platform payments recorded.</div>';
+            
             triggerModalAnimation('adminUserSection');
             document.getElementById('detailsModal').style.display = 'flex';
         };
@@ -836,42 +850,43 @@
         };
 
         window.sendAdminPasswordReset = function() { 
-            if(!window.adminActiveEmail) return;
-            auth.sendPasswordResetEmail(window.adminActiveEmail).then(() => { window.toast("Password reset email sent!"); }).catch(e => window.toast("Error: " + e.message));
+            if(!window.activeAdminUserEmail) return;
+            auth.sendPasswordResetEmail(window.activeAdminUserEmail).then(() => { window.toast("Password reset link sent!"); }).catch(e => window.toast("Error: " + e.message));
         };
 
         window.saveAdminSub = async function() { 
-            if(!window.adminActiveUid) return;
+            if(!window.activeAdminUserId) return;
             const status = document.getElementById('adminSubStatus').value;
             const validUntil = document.getElementById('adminSubValid').value;
             const notes = document.getElementById('adminModNotes').value;
             try {
-                await db.doc(`artifacts/${globalAppId}/users/${window.adminActiveUid}/subscription/info`).set({ status: status, validUntil: validUntil, adminNotes: notes }, { merge: true });
-                window.toast("Workspace profile saved!");
+                await db.doc(`artifacts/${globalAppId}/users/${window.activeAdminUserId}/subscription/info`).set({ status: status, validUntil: validUntil, adminNotes: notes }, { merge: true });
+                window.toast("Workspace configuration updated!");
                 window.loadAdminDashboard();
+                closeModal();
             } catch(e) { window.toast("Error saving."); }
         };
 
         window.addAdminTransaction = async function() { 
-            if(!window.adminActiveUid) return;
+            if(!window.activeAdminUserId) return;
             const amt = document.getElementById('adminTxAmount').value;
             const date = document.getElementById('adminTxDate').value || new Date().toISOString().split('T')[0];
-            if(!amt) return window.toast("Enter amount");
+            if(!amt) return window.toast("Please enter transaction receipt amount");
             try {
-                const ref = db.doc(`artifacts/${globalAppId}/users/${window.adminActiveUid}/subscription/info`);
+                const ref = db.doc(`artifacts/${globalAppId}/users/${window.activeAdminUserId}/subscription/info`);
                 const snap = await ref.get();
                 let history = [];
                 if(snap.exists && snap.data().history) history = snap.data().history;
                 history.push({ id: 'INV-' + Date.now(), amount: parseFloat(amt), date: date });
                 await ref.set({ history: history }, { merge: true });
-                window.toast("Transaction Added!");
+                window.toast("SaaS Payment Transaction Saved!");
                 document.getElementById('adminTxAmount').value = '';
-                window.openAdminUser(window.adminActiveUid, document.getElementById('adminModUsername').innerText, window.adminActiveEmail);
+                window.openAdminUser(window.activeAdminUserId, document.getElementById('adminModUsername').innerText, window.activeAdminUserEmail);
                 window.loadAdminDashboard();
-            } catch(e) { window.toast("Error adding transaction."); }
+            } catch(e) { window.toast("Error logging transaction."); }
         };
 
-        // --- STREAMING_CHUNK: Setting up data loading triggers ---
+        // --- STREAMING_CHUNK: Setting up platform listeners ---
         function listenForBroadcasts() { 
             if(unsubscribeBroadcast) unsubscribeBroadcast();
             unsubscribeBroadcast = db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).onSnapshot((s) => { 
@@ -999,9 +1014,7 @@
         window.removeWaitlist = function(id) { DB.waitlist = DB.waitlist.filter(w => w.id !== id); DB.save(); window.renderWaitlist(); window.toast("Removed"); }
         window.promoteWaitlist = function(id) { const s = DB.waitlist.find(w => w.id === id); if(s) { window.switchTab('add'); document.getElementById('studentName').value = s.name; document.getElementById('phone').value = s.phone !== 'N/A' ? s.phone : ''; document.getElementById('shift').value = s.shift; window.toggleCustomShift('shift','customShift'); window.removeWaitlist(id); window.toast("Fill seat to complete."); } }
 
-        // --- STREAMING_CHUNK: Managing calculations for LEDGERS and incomes ---
-        function formatLedgerDate(dStr) { if(!dStr) return ''; const d = new Date(dStr); return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
-        window.switchFinView = function(view) { document.getElementById('finIncomeView').classList.toggle('hidden', view !== 'income'); document.getElementById('finExpenseView').classList.toggle('hidden', view !== 'expense'); document.getElementById('btnShowIncome').classList.toggle('active', view === 'income'); document.getElementById('btnShowExpense').classList.toggle('active', view === 'expense'); }
+        // --- STREAMING_CHUNK: Calculations for Finance records and Income grouping ---
         window.addExpense = function() { const amt = document.getElementById('expAmount').value, date = document.getElementById('expDate').value, cat = document.getElementById('expCategory').value; if(!amt || !date || !cat) return window.toast("⚠️ Fill details"); DB.expenses.push({ id: Date.now().toString(), date, amount: parseFloat(amt), category: cat }); DB.save(); document.getElementById('expAmount').value = ''; document.getElementById('expCategory').value = ''; window.calculateFinances(); window.toast("Expense saved"); }
         window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
         
