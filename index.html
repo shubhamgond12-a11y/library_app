@@ -50,7 +50,7 @@
 
         /* --- DESKTOP CENTERING --- */
         @media (min-width: 768px) {
-            #addSeatTab, #waitlistTab, #financeTab, #adminApp { max-width: 750px; margin: 0 auto; }
+            #addSeatTab, #waitlistTab, #financeTab, #adminApp, #paywallScreen { max-width: 750px; margin: 0 auto; }
         }
 
         /* --- MODERN AUTHENTICATION UI STYLES --- */
@@ -146,7 +146,7 @@
         }
         .auth-bottom-text span:hover { color: #4a56c4; }
 
-        /* --- EXISTENT MAIN APP STYLES --- */
+        /* --- EXISTING MAIN APP STYLES --- */
         @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .animate-in { animation: fadeSlideUp 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
@@ -246,6 +246,166 @@
         }
         .driver-popover-navigation-btns button:hover { background: #2563eb !important; }
         .driver-popover-close-btn { color: #94a3b8 !important; }
+
+        /* --- IMMERSIVE PAYWALL & CHECKOUT SCREEN STYLES (MATCHES SCREENSHOT) --- */
+        .paywall-container {
+            display: flex; flex-direction: column; min-height: 100vh;
+            padding: 20px; box-sizing: border-box; justify-content: flex-start;
+        }
+        .paywall-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;
+        }
+        .paywall-title { font-size: 24px; font-weight: 700; color: var(--text-main); margin: 0; }
+        
+        /* Plan Options Grid */
+        .plan-grid-paywall {
+            display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 30px;
+        }
+        @media (min-width: 600px) {
+            .plan-grid-paywall { grid-template-columns: 1fr 1fr; }
+        }
+        .plan-card-paywall {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: 18px; padding: 20px; cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+        .plan-card-paywall.active {
+            border-color: #6366f1; background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+        .dark-theme .plan-card-paywall.active {
+            background: rgba(15, 23, 42, 0.8); border-color: var(--primary);
+        }
+        .plan-badge-paywall {
+            position: absolute; top: -10px; right: 15px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white; font-size: 10px; font-weight: 700;
+            padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
+        }
+        .plan-name-paywall { font-size: 18px; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
+        .plan-price-paywall { font-size: 24px; font-weight: 800; color: #6366f1; }
+        .plan-desc-paywall { font-size: 12px; color: var(--text-muted); margin-top: 5px; font-weight: 500; }
+
+        /* Razorpay Replication Container (Step 2) */
+        .razorpay-replica-card {
+            background: #ffffff; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px;
+            animation: fadeSlideUp 0.3s ease-out; color: #1e293b;
+        }
+        .dark-theme .razorpay-replica-card {
+            background: #1e293b; color: #f8fafc;
+        }
+
+        /* Replica Checkout Details matching Screenshot 1000232064.jpg */
+        .buy-banner {
+            background: #fee2e2; border: 1px solid #fecaca; border-radius: 14px;
+            padding: 16px; display: flex; align-items: center; gap: 14px;
+        }
+        .dark-theme .buy-banner { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); }
+        .buy-banner-icon {
+            background: #ef4444; color: white; width: 44px; height: 44px;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
+        }
+        .buy-banner-content { display: flex; flex-direction: column; }
+        .buy-banner-title { font-weight: 700; font-size: 14px; color: #ef4444; }
+        .buy-banner-subtitle { font-size: 11px; color: #7f1d1d; margin-top: 2px; line-height: 1.4; }
+        .dark-theme .buy-banner-subtitle { color: #fca5a5; }
+
+        .promo-card {
+            background: #faf5ff; border: 1px dashed #d8b4fe; border-radius: 12px;
+            padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .dark-theme .promo-card { background: rgba(168, 85, 247, 0.08); border-color: rgba(168, 85, 247, 0.3); }
+        .promo-card:hover { background: #f3e8ff; }
+        .promo-left { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #8b5cf6; }
+
+        .checkout-details-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .checkout-details-table td { padding: 8px 0; }
+        .checkout-total-row { border-top: 1px solid #e2e8f0; font-weight: 700; font-size: 15px; }
+        .dark-theme .checkout-total-row { border-color: #334155; }
+
+        .checkout-saving-badge {
+            background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d;
+            border-radius: 8px; padding: 10px; font-size: 12px; text-align: center;
+            font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .dark-theme .checkout-saving-badge { background: rgba(22, 163, 74, 0.15); border-color: rgba(22, 163, 74, 0.3); color: #4ade80; }
+
+        .trust-badge-row {
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 8px 0; font-size: 10px; font-weight: 600; color: #64748b;
+        }
+
+        .gateway-card-selector {
+            border: 1px solid #ef4444; border-radius: 12px; padding: 16px;
+            display: flex; align-items: center; gap: 14px; position: relative;
+        }
+        .gateway-selector-radio {
+            width: 20px; height: 20px; border-radius: 50%; border: 2px solid #ef4444;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .gateway-selector-radio-inner {
+            width: 10px; height: 10px; border-radius: 50%; background: #ef4444;
+        }
+
+        /* Floating Bottom Payment Bar replicating original App Checkout */
+        .bottom-action-checkout-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: #ffffff; box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
+            padding: 16px 24px; box-sizing: border-box; display: flex;
+            justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .dark-theme .bottom-action-checkout-bar {
+            background: #1e293b; box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
+        }
+        .bottom-bar-price-pane { display: flex; flex-direction: column; }
+        .bottom-bar-was-price { text-decoration: line-through; color: var(--text-muted); font-size: 11px; font-weight: 500; }
+        .bottom-bar-now-price { font-size: 22px; font-weight: 800; color: var(--text-main); }
+
+        .btn-subscribe-checkout {
+            background: #ef4444; color: white; padding: 14px 28px;
+            border-radius: 12px; border: none; font-weight: 700; font-size: 15px;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);
+            transition: all 0.2s;
+        }
+        .btn-subscribe-checkout:active { transform: scale(0.96); }
+
+        /* RAZORPAY SANDBOX OVERLAY INTERFACE */
+        .razorpay-sandbox-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
+            z-index: 10000; display: flex; justify-content: center; align-items: center;
+            padding: 15px; box-sizing: border-box;
+        }
+        .razorpay-sandbox-card {
+            background: #ffffff; width: 100%; max-width: 400px;
+            border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex; flex-direction: column; animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #1e293b;
+        }
+        .sandbox-header {
+            background: #172554; padding: 20px; color: white;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .sandbox-header-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; }
+        .sandbox-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+        .sandbox-payment-option {
+            border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px;
+            display: flex; align-items: center; gap: 12px; cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .sandbox-payment-option:hover { background: #f8fafc; border-color: #3b82f6; }
+        .sandbox-option-icon {
+            background: #eff6ff; color: #3b82f6; width: 36px; height: 36px;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -253,7 +413,6 @@
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen">
         
-
         <div class="auth-brand-logo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
@@ -343,6 +502,160 @@
                 
                 <div class="auth-bottom-text">
                     Remembered it? <span onclick="toggleAuthMode('login')">Return to Log in</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMMERSIVE PREMIUM SUBSCRIBER PAYWALL AND CHECKOUT -->
+    <div id="paywallScreen" style="display:none; padding-bottom: 120px;">
+        <div class="paywall-container">
+            <div class="paywall-header">
+                <h2 class="paywall-title">Choose Your Plan</h2>
+                <button class="icon-btn" onclick="logoutUser()" title="Logout" style="color: var(--red); border-radius:12px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                </button>
+            </div>
+
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px; font-weight: 500;" id="trialStatusBanner">
+                Your 7-day free trial has expired. To continue using the software workspace, please select a billing plan below.
+            </p>
+
+            <!-- Plan Cards Grid -->
+            <div class="plan-grid-paywall">
+                <div class="plan-card-paywall" id="plan_monthly" onclick="selectPaywallPlan('monthly')">
+                    <div class="plan-name-paywall">Monthly</div>
+                    <div class="plan-price-paywall">₹199</div>
+                    <div class="plan-desc-paywall">Best for trying out, renews monthly.</div>
+                </div>
+
+                <div class="plan-card-paywall active" id="plan_quarterly" onclick="selectPaywallPlan('quarterly')">
+                    <div class="plan-badge-paywall">⭐ Most Popular</div>
+                    <div class="plan-name-paywall">Quarterly</div>
+                    <div class="plan-price-paywall">₹499</div>
+                    <div class="plan-desc-paywall">₹166/month. Save ₹98 on this order!</div>
+                </div>
+
+                <div class="plan-card-paywall" id="plan_6months" onclick="selectPaywallPlan('6months')">
+                    <div class="plan-badge-paywall">Best Value</div>
+                    <div class="plan-name-paywall">6 Months</div>
+                    <div class="plan-price-paywall">₹899</div>
+                    <div class="plan-desc-paywall">₹150/month. Save ₹295 overall.</div>
+                </div>
+
+                <div class="plan-card-paywall" id="plan_annual" onclick="selectPaywallPlan('annual')">
+                    <div class="plan-badge-paywall">👑 Best Value</div>
+                    <div class="plan-name-paywall">Annual</div>
+                    <div class="plan-price-paywall">₹1,499</div>
+                    <div class="plan-desc-paywall">₹125/month. Save massive ₹889!</div>
+                </div>
+            </div>
+
+            <!-- Razorpay Style Checkout Container -->
+            <div class="razorpay-replica-card">
+                <div class="buy-banner">
+                    <div class="buy-banner-icon">📚</div>
+                    <div class="buy-banner-content">
+                        <span class="buy-banner-title">Continue buying:</span>
+                        <span class="buy-banner-subtitle" id="selectedPlanBannerText">Quarterly Plan | Standard Premium Access</span>
+                    </div>
+                </div>
+
+                <!-- Functional Promo Code Card -->
+                <div class="promo-card" onclick="triggerPromoCodePrompt()">
+                    <div class="promo-left">
+                        <span>🏷️</span>
+                        <span id="promoStatusText">Apply Promo Code</span>
+                    </div>
+                    <svg style="color:#8b5cf6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+
+                <h3 style="margin: 5px 0 0 0; font-size:14px; font-weight:700;">Price Details</h3>
+                <table class="checkout-details-table">
+                    <tr>
+                        <td style="color:var(--text-muted);">Standard Price</td>
+                        <td style="text-align:right;" id="checkoutRawPrice">₹499</td>
+                    </tr>
+                    <tr id="checkoutDiscountRow" style="display:none; color:var(--green); font-weight:600;">
+                        <td>Promo Discount</td>
+                        <td style="text-align:right;" id="checkoutDiscountValue">-₹0</td>
+                    </tr>
+                    <tr class="checkout-total-row">
+                        <td>Total Amount</td>
+                        <td style="text-align:right;" id="checkoutTotalAmount">₹499</td>
+                    </tr>
+                </table>
+
+                <div class="checkout-saving-badge" id="savingSummaryBadge">
+                    <span>🏷️</span> You will save ₹98 on this standard order!
+                </div>
+
+                <!-- Trusted Payments row -->
+                <div class="trust-badge-row">
+                    <span>🔒 Secure payments</span>
+                    <span>🛡️ Data privacy</span>
+                    <span>✨ 100% authentic</span>
+                </div>
+
+                <!-- Payment Method Simulator Indicator -->
+                <div class="gateway-card-selector">
+                    <div class="gateway-selector-radio">
+                        <div class="gateway-selector-radio-inner"></div>
+                    </div>
+                    <div>
+                        <strong style="font-size:14px; display:block;">UPI / Cards / NetBanking</strong>
+                        <span style="font-size:10px; color:#64748b; font-weight:500;">Most secure payment gateway (Powered by Razorpay sandbox)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating action checkout bar matching real Razorpay App style -->
+        <div class="bottom-action-checkout-bar">
+            <div class="bottom-bar-price-pane">
+                <span class="bottom-bar-was-price" id="bottomBarWasPrice">₹597</span>
+                <span class="bottom-bar-now-price" id="bottomBarNowPrice">₹499</span>
+            </div>
+            <button class="btn-subscribe-checkout" onclick="initiateRazorpayMockPayment()">SUBSCRIBE NOW</button>
+        </div>
+    </div>
+
+    <!-- RAZORPAY MODAL SANDBOX GATEWAY -->
+    <div id="razorpaySandboxModal" class="razorpay-sandbox-modal" style="display:none;">
+        <div class="razorpay-sandbox-card">
+            <div class="sandbox-header">
+                <div class="sandbox-header-brand">
+                    <span>💳</span> Razorpay Sandbox Gateway
+                </div>
+                <button class="icon-btn" onclick="closeRazorpaySandbox()" style="background:transparent; border:none; color:white;">×</button>
+            </div>
+            <div class="sandbox-body">
+                <p style="font-size:12px; color:#64748b; margin:0; line-height:1.5;">
+                    This is the integrated billing sandbox gateway. Select a payment mechanism to instantly write a completed subscription with extended validity directly to your Firestore database records.
+                </p>
+
+                <div class="sandbox-payment-option" onclick="simulateSandboxSuccess('UPI / QR Code')">
+                    <div class="sandbox-option-icon">QR</div>
+                    <div>
+                        <strong style="font-size:13px; display:block;">Pay via UPI QR Scanner</strong>
+                        <span style="font-size:11px; color:#64748b;">Simulates scanning standard UPI details</span>
+                    </div>
+                </div>
+
+                <div class="sandbox-payment-option" onclick="simulateSandboxSuccess('Credit/Debit Cards')">
+                    <div class="sandbox-option-icon">Card</div>
+                    <div>
+                        <strong style="font-size:13px; display:block;">Pay via Cards (Visa/Mastercard)</strong>
+                        <span style="font-size:11px; color:#64748b;">Simulates Card checkout details</span>
+                    </div>
+                </div>
+
+                <div class="sandbox-payment-option" onclick="simulateSandboxSuccess('NetBanking')">
+                    <div class="sandbox-option-icon">NB</div>
+                    <div>
+                        <strong style="font-size:13px; display:block;">Instant Sandbox Activation</strong>
+                        <span style="font-size:11px; color:#64748b;">Instantly update Firestore database status</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -712,6 +1025,7 @@
         let currentUser = null;
         let unsubscribeSnapshot = null;
         let unsubscribeBroadcast = null;
+        let unsubscribeSubscription = null;
 
         // --- 2. GLOBAL STATE ---
         let appConfig = {
@@ -776,7 +1090,7 @@
             localStorage.setItem('libTheme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
         }
 
-        // --- 4. AUTHENTICATION LOGIC ---
+        // --- 4. AUTHENTICATION & TRIAL LOGIC ---
         window.togglePasswordVisibility = function(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
@@ -810,57 +1124,107 @@
                 if (user.uid === ADMIN_UID) {
                     document.getElementById('authScreen').style.display = 'none';
                     document.getElementById('mainApp').style.display = 'none';
+                    document.getElementById('paywallScreen').style.display = 'none';
                     document.getElementById('adminApp').style.display = 'block';
                     window.loadAdminDashboard();
                     window.toast(`Welcome to the Admin Hub!`);
                 } else {
-                    try {
-                        const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
-                        let isInactive = false;
-                        try {
-                            const subSnap = await subRef.get();
-                            if (subSnap.exists) {
-                                const subData = subSnap.data();
-                                let currentStatus = subData.status;
-                                const validUntil = subData.validUntil;
-                                const today = new Date().toISOString().split('T')[0];
-                                if (validUntil && validUntil !== 'No End Date' && validUntil < today && currentStatus !== 'inactive') {
-                                    currentStatus = 'inactive';
-                                    try { await subRef.set({ status: 'inactive' }, { merge: true }); } catch(err){}
-                                }
-                                if (currentStatus === 'inactive') isInactive = true;
-                            } else {
-                                await subRef.set({
-                                    status: 'trialing',
-                                    validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                                    history: [], adminNotes: ""
-                                }, { merge: true });
-                            }
-                        } catch(dbErr) { console.warn("Evaluating Subscription bypassed:", dbErr); }
-                        if (isInactive) {
-                            window.toast("⚠️ Your workspace subscription has expired or is inactive.");
-                            auth.signOut(); return;
-                        }
-                        document.getElementById('authScreen').style.display = 'none';
-                        document.getElementById('adminApp').style.display = 'none';
-                        document.getElementById('mainApp').style.display = 'block';
-                        document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
-                        loadDataFromCloud(); listenForBroadcasts();
-                        window.toast(`Welcome back!`); setTimeout(startAppTour, 1000);
-                    } catch(err) {
-                        console.error("Auth routing error:", err);
-                        window.toast("Error verifying workspace"); auth.signOut();
-                    }
+                    setupSubscriptionListener(user);
                 }
             } else {
                 currentUser = null; 
                 document.getElementById('authScreen').style.display = 'flex'; 
                 document.getElementById('mainApp').style.display = 'none';
                 document.getElementById('adminApp').style.display = 'none';
+                document.getElementById('paywallScreen').style.display = 'none';
                 if (unsubscribeSnapshot) unsubscribeSnapshot();
                 if (unsubscribeBroadcast) unsubscribeBroadcast();
+                if (unsubscribeSubscription) unsubscribeSubscription();
             }
         });
+
+        // --- REAL-TIME TRIAL & SUBSCRIPTION LISTENER ---
+        function setupSubscriptionListener(user) {
+            const subRef = db.doc(`artifacts/${globalAppId}/users/${user.uid}/subscription/info`);
+            
+            unsubscribeSubscription = subRef.onSnapshot(async (docSnap) => {
+                let subData;
+                const todayStr = new Date().toISOString().split('T')[0];
+
+                if (docSnap.exists) {
+                    subData = docSnap.data();
+                } else {
+                    // Create defaults on sign-up
+                    subData = {
+                        status: 'trialing',
+                        createdAt: new Date().toISOString(),
+                        validUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                        history: [],
+                        adminNotes: ""
+                    };
+                    await subRef.set(subData);
+                }
+
+                // Check Expiry State
+                let status = subData.status || 'trialing';
+                const validUntil = subData.validUntil || todayStr;
+                const createdAt = subData.createdAt || new Date().toISOString();
+                
+                // Calculate remaining trial days
+                const trialExpiry = new Date(new Date(createdAt).getTime() + 7 * 24 * 60 * 60 * 1000);
+                const trialExpiryStr = trialExpiry.toISOString().split('T')[0];
+                const trialRemainingDays = Math.ceil((trialExpiry - new Date()) / (1000 * 60 * 60 * 24));
+
+                let isExpired = false;
+                if (status === 'trialing' && trialRemainingDays <= 0) {
+                    isExpired = true;
+                } else if (status === 'active' && validUntil < todayStr) {
+                    isExpired = true;
+                }
+
+                if (isExpired && status !== 'inactive') {
+                    status = 'inactive';
+                    await subRef.set({ status: 'inactive' }, { merge: true });
+                }
+
+                // Render UI routing depending on active status
+                if (status === 'active' || (status === 'trialing' && trialRemainingDays > 0)) {
+                    document.getElementById('authScreen').style.display = 'none';
+                    document.getElementById('adminApp').style.display = 'none';
+                    document.getElementById('paywallScreen').style.display = 'none';
+                    document.getElementById('mainApp').style.display = 'block';
+
+                    // Update UI with Trial days remaining banner
+                    if (status === 'trialing') {
+                        document.getElementById('broadcastText').innerText = `Your free trial is active. ${trialRemainingDays} day(s) remaining.`;
+                        document.getElementById('broadcastBanner').classList.remove('hidden');
+                    } else {
+                        document.getElementById('broadcastBanner').classList.add('hidden');
+                    }
+
+                    document.getElementById('finMonth').value = new Date().toISOString().substring(0,7);
+                    loadDataFromCloud(); 
+                    listenForBroadcasts();
+                    setTimeout(startAppTour, 1000);
+                } else {
+                    // Lockout and take over with Immersive Paywall
+                    document.getElementById('authScreen').style.display = 'none';
+                    document.getElementById('adminApp').style.display = 'none';
+                    document.getElementById('mainApp').style.display = 'none';
+                    document.getElementById('paywallScreen').style.display = 'block';
+
+                    // Customize paywall banner
+                    const banner = document.getElementById('trialStatusBanner');
+                    if (status === 'inactive' && subData.status === 'trialing') {
+                        banner.innerHTML = `⚠️ <strong>Trial Expired:</strong> Your 7-day trial ended on ${trialExpiryStr}. Choose a standard workspace plan to continue.`;
+                    } else if (status === 'inactive') {
+                        banner.innerHTML = `⚠️ <strong>Subscription Expired:</strong> Your subscription ended on ${validUntil}. Please renew to regain access.`;
+                    }
+
+                    initiatePaywallSelection();
+                }
+            });
+        }
 
         window.loginUser = async () => {
             const idInput = document.getElementById('loginId').value.trim();
@@ -929,11 +1293,143 @@
 
         window.logoutUser = () => { auth.signOut().then(() => { window.toast("Logged out"); window.toggleAuthMode('login'); }); };
 
-        // --- 5. ADMIN DASHBOARD LOGIC ---
-        window.activeAdminUserId = null;
-        window.activeAdminUsername = null;
-        window.activeAdminUserEmail = null;
+        // --- 5. DETAILED CHECKOUT AND PROMO CODES ENGINE ---
+        let selectedPlan = 'quarterly';
+        let appliedDiscount = 0;
+        let appliedPromoCode = '';
 
+        const checkoutPricing = {
+            monthly: { price: 199, wasPrice: 199, name: "Monthly Standard Plan", discountMsg: "Renewable monthly, cancel anytime." },
+            quarterly: { price: 499, wasPrice: 597, name: "Quarterly Starter Plan", discountMsg: "Save ₹98 instantly with this popular plan!" },
+            6months: { price: 899, wasPrice: 1194, name: "Half-Year Value Plan", discountMsg: "Save ₹295 instantly over standard monthly." },
+            annual: { price: 1499, wasPrice: 2388, name: "Annual Pro SaaS Plan", discountMsg: "Save ₹889! Best value for long term library owners." }
+        };
+
+        function initiatePaywallSelection() {
+            selectPaywallPlan('quarterly');
+        }
+
+        window.selectPaywallPlan = function(planId) {
+            selectedPlan = planId;
+            document.querySelectorAll('.plan-card-paywall').forEach(c => c.classList.remove('active'));
+            document.getElementById(`plan_${planId}`).classList.add('active');
+
+            appliedDiscount = 0;
+            appliedPromoCode = '';
+            document.getElementById('promoStatusText').innerText = "Apply Promo Code";
+            document.getElementById('checkoutDiscountRow').style.display = 'none';
+
+            updateCheckoutTotals();
+        }
+
+        function updateCheckoutTotals() {
+            const meta = checkoutPricing[selectedPlan];
+            let rawPrice = meta.price;
+            let finalPrice = rawPrice - appliedDiscount;
+            if (finalPrice < 0) finalPrice = 0;
+
+            document.getElementById('selectedPlanBannerText').innerText = `${meta.name} | Advanced Workspace Access`;
+            document.getElementById('checkoutRawPrice').innerText = `₹${rawPrice}`;
+            document.getElementById('checkoutTotalAmount').innerText = `₹${finalPrice}`;
+            
+            document.getElementById('bottomBarWasPrice').innerText = `₹${meta.wasPrice}`;
+            document.getElementById('bottomBarNowPrice').innerText = `₹${finalPrice}`;
+
+            const badge = document.getElementById('savingSummaryBadge');
+            let savedAmount = (meta.wasPrice - finalPrice);
+            if (savedAmount > 0) {
+                badge.style.display = 'flex';
+                badge.innerHTML = `<span>🏷️</span> You will save ₹${savedAmount} on this order!`;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        window.triggerPromoCodePrompt = function() {
+            const code = prompt("Enter Promo Code (Try WELCOME50 or SULTANPUR100 for test discount):");
+            if (!code) return;
+            const cleanCode = code.toUpperCase().trim();
+            const meta = checkoutPricing[selectedPlan];
+
+            if (cleanCode === 'SULTANPUR100') {
+                appliedDiscount = meta.price; // 100% Free for testing
+                appliedPromoCode = cleanCode;
+                document.getElementById('promoStatusText').innerText = `Code Applied: ${cleanCode} (100% OFF)`;
+                document.getElementById('checkoutDiscountValue').innerText = `-₹${appliedDiscount}`;
+                document.getElementById('checkoutDiscountRow').style.display = 'table-row';
+                window.toast("🎟️ Testing code applied: 100% discount!");
+            } else if (cleanCode === 'WELCOME50') {
+                appliedDiscount = Math.round(meta.price * 0.5); // 50% off
+                appliedPromoCode = cleanCode;
+                document.getElementById('promoStatusText').innerText = `Code Applied: ${cleanCode} (50% OFF)`;
+                document.getElementById('checkoutDiscountValue').innerText = `-₹${appliedDiscount}`;
+                document.getElementById('checkoutDiscountRow').style.display = 'table-row';
+                window.toast("🎟️ Testing code applied: 50% discount!");
+            } else {
+                window.toast("❌ Invalid Promo Code entered.");
+                return;
+            }
+            updateCheckoutTotals();
+        }
+
+        // --- 6. MOCK GATEWAY SANDBOX CHECKOUT POPUP ---
+        window.initiateRazorpayMockPayment = function() {
+            document.getElementById('razorpaySandboxModal').style.display = 'flex';
+        }
+
+        window.closeRazorpaySandbox = function() {
+            document.getElementById('razorpaySandboxModal').style.display = 'none';
+        }
+
+        window.simulateSandboxSuccess = async function(methodName) {
+            closeRazorpaySandbox();
+            window.toast(`⚡ Processing simulated ${methodName} transaction...`);
+
+            if (!currentUser) return;
+
+            // Calculate duration to extend validity
+            let daysToExtend = 30;
+            if (selectedPlan === 'quarterly') daysToExtend = 90;
+            else if (selectedPlan === '6months') daysToExtend = 180;
+            else if (selectedPlan === 'annual') daysToExtend = 365;
+
+            const today = new Date();
+            const expiryDate = new Date(today.getTime() + daysToExtend * 24 * 60 * 60 * 1000);
+            const expiryStr = expiryDate.toISOString().split('T')[0];
+
+            const meta = checkoutPricing[selectedPlan];
+            let rawPrice = meta.price;
+            let finalPrice = rawPrice - appliedDiscount;
+            if (finalPrice < 0) finalPrice = 0;
+
+            const subRef = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/subscription/info`);
+            const tx = {
+                id: "MOCK_PAY_" + Date.now().toString().substring(6),
+                amount: finalPrice,
+                date: today.toISOString().split('T')[0],
+                method: methodName,
+                plan: selectedPlan
+            };
+
+            try {
+                const snap = await subRef.get();
+                let history = snap.exists && snap.data().history ? snap.data().history : [];
+                history.push(tx);
+
+                await subRef.set({
+                    status: 'active',
+                    validUntil: expiryStr,
+                    history: history
+                }, { merge: true });
+
+                window.toast("🎉 Subscription activated successfully via Sandbox!");
+            } catch(e) {
+                console.error("Payment sync failed:", e);
+                window.toast("❌ Database update failed. Try again.");
+            }
+        }
+
+        // --- 7. ADMIN DASHBOARD LOGIC ---
         window.saveBroadcast = async function() {
             const msg = document.getElementById('adminBroadcastMsg').value.trim();
             if (!msg) return window.toast("⚠️ Enter message to broadcast!");
@@ -1112,7 +1608,7 @@
             w.document.close();
         }
 
-        // --- 6. MAIN APP LOGIC ---
+        // --- 8. MAIN APP LOGIC ---
         function listenForBroadcasts() {
             unsubscribeBroadcast = db.doc(`artifacts/${globalAppId}/public/data/broadcast/latest`).onSnapshot((docSnap) => {
                 const banner = document.getElementById('broadcastBanner');
@@ -1197,7 +1693,6 @@
             return 'ok';
         }
 
-        // --- UPDATED SYSTEM DASHBOARD STATS LOGIC ---
         function updateDashboard() {
             let freeChairs = 0, totalEnrolled = 0, dueProfiles = 0, warnProfiles = 0;
             for(let seatId of window.seatLayout) {
@@ -1206,7 +1701,6 @@
                 occupants.forEach(s => {
                     totalEnrolled++;
                     const expStatus = checkExpiry(s.validDate);
-                    // Automatic Logic: If manually "Due" OR has "Expired", flag them under Fee Due metrics!
                     if(s.feeStatus === 'Due' || expStatus === 'expired') dueProfiles++;
                     if(expStatus === 'warn' || expStatus === 'expired') warnProfiles++;
                 });
@@ -1222,7 +1716,6 @@
         }
         window.applyFilters = function() { window.renderSeats(); }
 
-        // --- UPDATED SMART RENDERING LOGIC ---
         window.renderSeats = function() {
             const container = document.getElementById('seatsContainer'); if(!container) return;
             container.innerHTML = ''; updateDashboard();
@@ -1237,7 +1730,6 @@
                 
                 occupants.forEach(s => {
                     const expStatus = checkExpiry(s.validDate);
-                    // Smart Filter Match: If explicitly "Due" OR Time has Expired
                     if (s.feeStatus === 'Due' || expStatus === 'expired') hasDue = true;
                     if (expStatus === 'expired') hasExpired = true; 
                     if (expStatus === 'warn') hasWarn = true;
@@ -1267,7 +1759,6 @@
             }
         }
 
-        // --- NEW ADMISSION FEE CALCULATION ---
         window.calcDue = function() {
             let total = parseFloat(document.getElementById('totalFee').value) || 0;
             let paid = parseFloat(document.getElementById('initialAmount').value) || 0;
@@ -1373,7 +1864,6 @@
         }
         window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
         
-        // --- UPDATED SORTING WITH DATE HEADERS AND OVERALL DUE CALCULATION ---
         window.calculateFinances = function() {
             const monthStr = document.getElementById('finMonth').value; if(!monthStr) return;
             let totalIncome = 0, totalExpense = 0, totalDueAmt = 0;
@@ -1398,7 +1888,6 @@
                 });
             }
             
-            // Render Income Day-wise
             incomes.sort((a,b) => new Date(b.date) - new Date(a.date));
             if(incomes.length === 0) { incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded this month.</div>'; }
             let currentIncDate = '';
@@ -1410,7 +1899,6 @@
                 incCont.innerHTML += `<div class="list-item" style="margin-bottom:4px;"><div><strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Mode: ${i.mode}</div></div><span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span></div>`; 
             });
 
-            // Render Expenses Day-wise
             let monthlyExps = (DB.expenses || []).filter(e => e.date.startsWith(monthStr));
             monthlyExps.sort((a,b) => new Date(b.date) - new Date(a.date));
             let currentExpDate = '';
@@ -1504,7 +1992,6 @@
         }
         window.cancelEdit = function() { window.openStudentProfile(window.activeStudentId); }
         
-        // --- NEW PAYMENT & RENEWAL CALCULATION LOGIC ---
         window.calcPayDue = function() {
             let prevDue = parseFloat(document.getElementById('payCurrentDueHidden').value) || 0;
             let newTotal = parseFloat(document.getElementById('payNewTotalFee').value) || 0; 
