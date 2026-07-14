@@ -645,8 +645,8 @@
             <label class="app-label">Library Name</label> <input type="text" class="app-input" id="cfgLibName">
             <label class="app-label">Total Seats</label> <input type="number" class="app-input" id="cfgTotalSeats" min="1">
             <label class="app-label">Custom Seats (comma separated)</label> <input type="text" class="app-input" id="cfgCustomSeats" style="text-transform: uppercase;">
-            <label class="app-label">Available Shifts (Format -> Name : Fee)</label> 
-            <textarea class="app-input" id="cfgShifts" rows="3" placeholder="Morning Shift : 1200&#10;Evening Shift : 1200&#10;Full Day : 2000"></textarea>
+            <label class="app-label">Available Shifts (Format -> Name (Timing) : Fee)</label> 
+            <textarea class="app-input" id="cfgShifts" rows="3" placeholder="Morning Shift (06 AM - 02 PM) : 1200&#10;Evening Shift (02 PM - 10 PM) : 1200&#10;Full Day (06 AM - 10 PM) : 2000"></textarea>
             
             <div style="border-top:1px solid var(--glass-border); margin-top:20px; padding-top:15px;">
                 <h4 style="margin:0 0 10px 0; font-size:13px;">Advanced Data Options</h4>
@@ -742,7 +742,7 @@
 
         let appConfig = {
             libraryName: "LibSync Pro", totalSeats: 20, customSeats: ["1A", "1B", "2A", "2B"],
-            shifts: ["Morning Shift : 1200", "Evening Shift : 1200", "Full Day : 2000"]
+            shifts: ["Morning Shift (06 AM - 02 PM) : 1200", "Evening Shift (02 PM - 10 PM) : 1200", "Full Day (06 AM - 10 PM) : 2000"]
         };
 
         const DB = {
@@ -1301,6 +1301,20 @@
             if (!seatNo || !window.seatLayout.includes(seatNo)) return window.toast('⚠️ Invalid Seat Number.'); if (!name) return window.toast('⚠️ Name required');
             let shift = document.getElementById('shift').value === 'Custom' ? document.getElementById('customShift').value : document.getElementById('shift').value;
             
+            // --- CONFLICT PREVENTION LOGIC ---
+            const currentOccupants = DB.getOccupants(seatNo);
+            const isNewFullDay = shift.toLowerCase().includes('full day');
+            for (let o of currentOccupants) {
+                if (o.shift === shift) {
+                    return window.toast(`⚠️ Seat ${seatNo} already occupied by ${o.name} for this exact shift.`);
+                }
+                const isExistingFullDay = o.shift.toLowerCase().includes('full day');
+                if (isNewFullDay || isExistingFullDay) {
+                    return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift}`);
+                }
+            }
+            // ----------------------------------
+
             const totalFee = parseFloat(document.getElementById('totalFee').value) || 0;
             const paid = parseFloat(document.getElementById('initialAmount').value) || 0;
             const dueAmount = totalFee - paid;
@@ -1422,6 +1436,22 @@
         }
         window.saveEdit = function() { 
             const d = {}; ['Name','Phone','Exam','AdmDate','ValidDate','Shift'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value); 
+            
+            // --- CONFLICT PREVENTION LOGIC IN EDIT ---
+            const currentOccupants = DB.getOccupants(window.activeSeatNo);
+            const isNewFullDay = d.shift.toLowerCase().includes('full day');
+            for (let o of currentOccupants) {
+                if (o.id === window.activeStudentId) continue; // Skip self
+                if (o.shift === d.shift) {
+                    return window.toast(`⚠️ Seat ${window.activeSeatNo} already occupied by ${o.name} for this exact shift.`);
+                }
+                const isExistingFullDay = o.shift.toLowerCase().includes('full day');
+                if (isNewFullDay || isExistingFullDay) {
+                    return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift}`);
+                }
+            }
+            // ------------------------------------------
+
             d.dueAmount = parseFloat(document.getElementById('editDueAmount').value) || 0;
             DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast("Updated"); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
         }
