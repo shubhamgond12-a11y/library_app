@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CUBIX - Smart Library Management</title>
     
+    <!-- Favicon -->
+    <link rel="icon" href="fevicon.png" type="image/png">
+    <link rel="shortcut icon" href="fevicon.png" type="image/png">
+    
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -125,22 +129,22 @@
         .pricing-price span { font-size: 13px; color: #64748b; font-weight: 500; margin-left: 4px; }
         .pricing-saving { font-size: 11px; font-weight: 600; color: #10b981; margin-bottom: 10px; }
 
-        /* --- MOBILE BOTTOM-SHEET & SLIDABLE PRICING OVERRIDES --- */
+        /* --- MOBILE SLIDABLE PRICING & CENTERING OVERRIDES --- */
         @media (max-width: 768px) {
             #authScreen, #subscriptionLockoutScreen {
-                justify-content: flex-end; /* Align modals to bottom on mobile vertically */
-                align-items: center; /* Ensure centered horizontally */
-                padding: 0; /* Remove fixed padding to allow edge-to-edge modal */
+                justify-content: center; /* Center vertically */
+                align-items: center; /* Center horizontally */
+                padding: 15px; /* Restored padding */
             }
-            .auth-brand-logo { margin-bottom: 15px; margin-top: auto; padding-top: 30px; }
+            .auth-brand-logo { margin-bottom: 20px; margin-top: 0; padding-top: 0; }
             .auth-card-modern, .lockout-card {
                 width: 100% !important;
                 max-width: 100% !important;
-                border-radius: 28px 28px 0 0 !important; /* Bottom sheet radius */
-                padding: 25px 20px 35px 20px !important;
-                margin-top: auto; 
+                border-radius: 24px !important; /* Standard radius instead of bottom-sheet */
+                padding: 25px 20px !important;
+                margin-top: 0; 
                 margin-bottom: 0;
-                max-height: 92vh;
+                max-height: 90vh;
                 overflow-y: auto;
                 border-bottom: none;
             }
@@ -329,7 +333,10 @@
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen">
-        <div class="auth-brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg> CUBIX</div>
+        <div class="auth-brand-logo">
+            <img src="logo.png" alt="CUBIX Logo" style="max-height: 48px; max-width: 100%; object-fit: contain;" onerror="this.onerror=null; this.src='https://img.icons8.com/color/120/library.png';"> 
+            <span style="margin-left: 8px;">CUBIX</span>
+        </div>
         
         <div class="auth-card-modern" id="authCard">
             <!-- 1. LOGIN FORM -->
