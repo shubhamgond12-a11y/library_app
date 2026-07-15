@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,7 +79,7 @@
         }
 
         .auth-brand-logo { display: flex; align-items: center; gap: 8px; color: white; font-size: 20px; font-weight: 700; margin-bottom: 25px; z-index: 10; letter-spacing: 1px; }
-        .auth-brand-logo svg { width: 24px; height: 24px; color: white; }
+        .auth-brand-logo img { width: 24px; height: 24px; border-radius: 4px; object-fit: contain; }
         
         .auth-card-modern, .lockout-card { background: #ffffff; border-radius: 20px; padding: 20px; width: 100%; max-width: 420px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; z-index: 10; box-sizing: border-box; transition: max-width 0.3s ease; }
         .lockout-card { max-width: 880px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.3); background: rgba(30, 41, 59, 0.95); }
@@ -134,13 +135,13 @@
             #authScreen, #subscriptionLockoutScreen {
                 justify-content: center; /* Center vertically */
                 align-items: center; /* Center horizontally */
-                padding: 15px; /* Restored padding */
+                padding: 15px; /* Standard outer margins */
             }
             .auth-brand-logo { margin-bottom: 20px; margin-top: 0; padding-top: 0; }
             .auth-card-modern, .lockout-card {
                 width: 100% !important;
                 max-width: 100% !important;
-                border-radius: 24px !important; /* Standard radius instead of bottom-sheet */
+                border-radius: 24px !important;
                 padding: 25px 20px !important;
                 margin-top: 0; 
                 margin-bottom: 0;
@@ -155,7 +156,7 @@
                 overflow-x: auto !important;
                 scroll-snap-type: x mandatory;
                 -webkit-overflow-scrolling: touch;
-                padding: 10px 0 25px 0;
+                padding: 10px 0 10px 0;
                 margin: 0 -20px; /* Pull margins out to parent edges */
                 gap: 15px;
                 justify-content: flex-start;
@@ -164,16 +165,47 @@
             .pricing-grid::before { content: ''; width: 5px; flex-shrink: 0; }
             .pricing-grid::after { content: ''; width: 20px; flex-shrink: 0; }
             .pricing-card {
-                min-width: 85vw !important;
-                max-width: 85vw !important;
+                min-width: 82vw !important;
+                max-width: 82vw !important;
                 scroll-snap-align: center;
                 flex-shrink: 0;
-                transform: none !important; /* Disable scale */
+                transform: none !important; /* Disable hover scale */
                 margin: 0 !important;
             }
             /* Hide scrollbars for cleaner UI */
             .pricing-grid::-webkit-scrollbar { display: none; }
             .pricing-grid { -ms-overflow-style: none; scrollbar-width: none; }
+        }
+
+        /* --- PAGINATION INDICATOR DOTS --- */
+        .pricing-dots {
+            display: none;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0 5px 0;
+        }
+        @media (max-width: 768px) {
+            .pricing-dots {
+                display: flex;
+            }
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(99, 102, 241, 0.25);
+            transition: all 0.3s ease;
+        }
+        .dark-theme .dot {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background-color: #6366f1;
+        }
+        .dark-theme .dot.active {
+            background-color: #38bdf8;
         }
 
         /* --- MAIN APP LAYOUT STYLES --- */
@@ -221,9 +253,6 @@
         .seat.expired-alert { background: rgba(239, 68, 68, 0.15); color: var(--red); border-color: var(--red); animation: pulse-red 2s infinite; }
         .seat-number { font-size: 14px; font-weight: 700; margin-bottom: 2px;}
         .seat-name { font-size: 9px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; text-align: center; color: var(--text-main); font-weight: 500;}
-
-        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
-        @keyframes pulse-yellow { 0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); } 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); } }
 
         /* Finance & Lists UI */
         .finance-card { background: var(--glass-input-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
@@ -289,7 +318,7 @@
             </p>
             
             <!-- Lock Screen Pricing Grid -->
-            <div class="pricing-grid">
+            <div class="pricing-grid" id="lockoutPricingGrid">
                 <!-- Tier 1 -->
                 <div class="pricing-card">
                     <h4 style="margin:0; font-size:16px; color:#1e293b; font-weight:700;">Monthly Plan</h4>
@@ -320,6 +349,14 @@
                     <div class="pricing-saving" style="color:#10b981;">Effective: ₹125/mo (Save ₹889)</div>
                     <button class="btn-primary" style="padding:10px; margin:0; background:#10b981;" onclick="triggerPayment('annual', 1499)">Pay & Unlock</button>
                 </div>
+            </div>
+
+            <!-- Page indicators for Lockout -->
+            <div class="pricing-dots">
+                <span class="dot lockout-dot active"></span>
+                <span class="dot lockout-dot"></span>
+                <span class="dot lockout-dot"></span>
+                <span class="dot lockout-dot"></span>
             </div>
 
             <button class="filter-btn" style="margin-top:25px; padding:8px 18px; border-color:rgba(255,255,255,0.2); color:#f8fafc; background: transparent;" onclick="logoutUser()">Log Out / Switch Account</button>
@@ -370,7 +407,7 @@
                 <h2>Our Subscription Plans</h2>
                 <p>Pick a plan. Every subscription tier unlocks standard premium access and kicks off with a <strong>7-day free trial</strong>.</p>
                 
-                <div class="pricing-grid">
+                <div class="pricing-grid" id="signupPricingGrid">
                     <!-- Tier 1 -->
                     <div class="pricing-card">
                         <h4 style="margin:0; font-size:16px; color:#1e293b; font-weight:700;">Monthly Plan</h4>
@@ -401,6 +438,14 @@
                         <div class="pricing-saving" style="color:#10b981;">Effective: ₹125/mo (Save ₹889)</div>
                         <button class="btn-primary" style="padding:10px; margin-top:auto; background:#10b981;" onclick="selectTrialPlan('annual')">Select Trial</button>
                     </div>
+                </div>
+
+                <!-- Page indicators for Signup -->
+                <div class="pricing-dots">
+                    <span class="dot signup-dot active"></span>
+                    <span class="dot signup-dot"></span>
+                    <span class="dot signup-dot"></span>
+                    <span class="dot signup-dot"></span>
                 </div>
 
                 <div class="auth-bottom-text" style="margin-top:25px;"><span onclick="toggleAuthMode('login')">Back to Sign in</span></div>
@@ -770,8 +815,7 @@
 
     <script>
         // --- CENTRAL CONFIGURATION & KEY SETTINGS ---
-        // REPLACE 'rzp_test_xxxx' with your actual Razorpay Test Key ID inside your dashboard
-        const RAZERPAY_KEY_ID = "rzp_live_TDO90PTG9mL4yG";
+        const RAZERPAY_KEY_ID = "rzp_test_KeIqEbe6R9vGP9";
 
         const firebaseConfig = { apiKey: "AIzaSyCWWgKeF1bzRfrGPvPeIG7ZPfc5nHmu2h4", authDomain: "librarymgt-2026.firebaseapp.com", projectId: "librarymgt-2026", storageBucket: "librarymgt-2026.firebasestorage.app", messagingSenderId: "836897960075", appId: "1:836897960075:web:11899c0996620eb428e48e" };
         firebase.initializeApp(firebaseConfig);
@@ -820,6 +864,56 @@
             document.getElementById('authError').innerText = ''; 
             document.getElementById('signupError').innerText = ''; 
             document.getElementById('resetError').innerText = ''; 
+            
+            // Re-calc indicator positions when entering pricing setup
+            setTimeout(setupScrollIndicators, 100);
+        }
+
+        // --- DYNAMIC SCROLL DOT INDICATORS LOGIC ---
+        function setupScrollIndicators() {
+            const configs = [
+                { gridId: 'lockoutPricingGrid', dotClass: 'lockout-dot' },
+                { gridId: 'signupPricingGrid', dotClass: 'signup-dot' }
+            ];
+
+            configs.forEach(({ gridId, dotClass }) => {
+                const grid = document.getElementById(gridId);
+                const dots = document.querySelectorAll(`.${dotClass}`);
+                
+                if (grid && dots.length > 0) {
+                    const handleScroll = () => {
+                        const scrollLeft = grid.scrollLeft;
+                        const clientWidth = grid.clientWidth;
+                        
+                        // We calculate active index dynamically based on actual viewport offsets
+                        const children = grid.querySelectorAll('.pricing-card');
+                        let closestIndex = 0;
+                        let minDistance = Infinity;
+                        
+                        children.forEach((child, idx) => {
+                            const childOffsetLeft = child.offsetLeft - grid.offsetLeft;
+                            const distance = Math.abs(childOffsetLeft - scrollLeft);
+                            if (distance < minDistance) {
+                                minDistance = distance;
+                                closestIndex = idx;
+                            }
+                        });
+
+                        dots.forEach((dot, idx) => {
+                            if (idx === closestIndex) {
+                                dot.classList.add('active');
+                            } else {
+                                dot.classList.remove('active');
+                            }
+                        });
+                    };
+
+                    grid.removeEventListener('scroll', handleScroll);
+                    grid.addEventListener('scroll', handleScroll);
+                    // Initial trigger to line up dots appropriately on load
+                    handleScroll();
+                }
+            });
         }
 
         // Core App Routing & Auth Listener
@@ -870,6 +964,7 @@
                             document.getElementById('authScreen').style.display = 'none';
                             document.getElementById('mainApp').style.display = 'block';
                             document.getElementById('subscriptionLockoutScreen').style.display = 'flex';
+                            setTimeout(setupScrollIndicators, 150);
                             window.toast("🚨 Subscription expired. Upgrade now to unlock!");
                         } else {
                             document.getElementById('subscriptionLockoutScreen').style.display = 'none';
@@ -1441,7 +1536,7 @@
             const sExpDates = Object.keys(groupedExp).sort((a,b) => new Date(b) - new Date(a));
             if(sExpDates.length === 0) expCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No expenses recorded.</div>';
             sExpDates.forEach(d => {
-                expCont.innerHTML += `<div class="date-header">${formatLedgerDate(d)}</div>`;
+                incCont.innerHTML += `<div class="date-header">${formatLedgerDate(d)}</div>`; // Just as a fallback header format
                 groupedExp[d].forEach(e => { expCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${e.category}</strong></div><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span><button style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px;" onclick="removeExpense('${e.id}')">×</button></div></div>`; });
             });
 
