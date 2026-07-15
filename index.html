@@ -411,7 +411,7 @@
         </div>
 
         <div class="tab-container animate-in">
-            <button class="tab-btn active" id="tabMapBtn" onclick="switchTab('map')">🪑 Matrix</button>
+            <button class="tab-btn active" id="tabMapBtn" onclick="switchTab('map')">🪑 Chairs</button>
             <button class="tab-btn" id="tabAddBtn" onclick="switchTab('add')">📝 Admission</button>
             <button class="tab-btn" id="tabWaitBtn" onclick="switchTab('wait')">⏳ Waitlist <span id="waitBadge" class="badge" style="background:var(--primary); margin-left:4px;">0</span></button>
             <button class="tab-btn" id="tabFinBtn" onclick="switchTab('fin')">💰 Finance</button>
@@ -1209,7 +1209,7 @@
         }
 
         function loadDataFromCloud() { if(!currentUser || currentUser.uid === ADMIN_UID) return; unsubscribeSnapshot = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).onSnapshot((s) => { window.initializeAppStructure(); if (s.exists) { const d = s.data(); if(d.config) appConfig = d.config; if(d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } else { DB.init(); DB.save(); } document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro'; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); }, ()=>{}); }
-        function startAppTour() { if (localStorage.getItem('hasSeenTour') === 'true') return; const t = window.driver.js.driver({ showProgress:true, steps:[{popover:{title:'Welcome!',description:'Quick 30s tour.'}},{element:'#settingsTab',popover:{title:'1. Setup',description:'Start here.'}},{element:'#seatMapTab',popover:{title:'2. Matrix',description:'Your seats.'}},{element:'#tabFinBtn',popover:{title:'3. Finance',description:'Track Dues.'}}], onDestroyStarted:()=>{localStorage.setItem('hasSeenTour','true');t.destroy();}}); t.drive(); }
+        function startAppTour() { if (localStorage.getItem('hasSeenTour') === 'true') return; const t = window.driver.js.driver({ showProgress:true, steps:[{popover:{title:'Welcome!',description:'Quick 30s tour.'}},{element:'#settingsTab',popover:{title:'1. Setup',description:'Start here.'}},{element:'#seatMapTab',popover:{title:'2. Chairs',description:'Your seats.'}},{element:'#tabFinBtn',popover:{title:'3. Finance',description:'Track Dues.'}}], onDestroyStarted:()=>{localStorage.setItem('hasSeenTour','true');t.destroy();}}); t.drive(); }
 
         window.switchTab = function(tab) { ['seatMapTab', 'addSeatTab', 'waitlistTab', 'financeTab'].forEach(id => document.getElementById(id).classList.add('hidden')); ['tabMapBtn', 'tabAddBtn', 'tabWaitBtn', 'tabFinBtn'].forEach(id => document.getElementById(id).classList.remove('active')); if(tab === 'map') { document.getElementById('seatMapTab').classList.remove('hidden'); document.getElementById('tabMapBtn').classList.add('active'); window.renderSeats(); } else if(tab === 'add') { document.getElementById('addSeatTab').classList.remove('hidden'); document.getElementById('tabAddBtn').classList.add('active'); document.getElementById('admDate').value = new Date().toISOString().split('T')[0]; document.getElementById('totalFee').value = ''; document.getElementById('initialAmount').value = ''; } else if(tab === 'wait') { document.getElementById('waitlistTab').classList.remove('hidden'); document.getElementById('tabWaitBtn').classList.add('active'); window.renderWaitlist(); } else if(tab === 'fin') { document.getElementById('financeTab').classList.remove('hidden'); document.getElementById('tabFinBtn').classList.add('active'); window.calculateFinances(); } }
 
@@ -1254,8 +1254,13 @@
             const examQuery = document.getElementById('searchExam').value.toLowerCase(); const selectedShift = document.getElementById('shiftFilter').value;
 
             for (let seatId of window.seatLayout) {
-                const allOccupants = DB.getOccupants(seatId); let occupants = allOccupants;
-                if (selectedShift !== 'all') occupants = allOccupants.filter(o => o.shift === selectedShift || o.shift.toLowerCase().includes('full day'));
+                const allOccupants = DB.getOccupants(seatId); 
+                let occupants = allOccupants;
+                
+                if (selectedShift !== 'all') {
+                    occupants = allOccupants.filter(o => o.shift === selectedShift || o.shift.toLowerCase().includes('full day'));
+                }
+                
                 let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
                 occupants.forEach(s => {
                     const st = window.getStudentStatus(s);
@@ -1263,14 +1268,31 @@
                     if (checkExpiry(s.validDate) === 'warn' && st !== 'Expired') hasWarn = true;
                     if (!examQuery || (s.exam && s.exam.toLowerCase().includes(examQuery))) hasMatch = true;
                 });
-                if (window.currentFilter === 'free' && occupants.length > 0) continue;
+
+                // Check genuine availability to avoid collision rendering
+                let isAvailableForSelected = true;
+                if (selectedShift !== 'all') {
+                    const isNewFullDay = selectedShift.toLowerCase().includes('full day');
+                    for (let o of allOccupants) {
+                        if (o.shift === selectedShift) { isAvailableForSelected = false; break; }
+                        const isExistingFullDay = o.shift.toLowerCase().includes('full day');
+                        if (isNewFullDay || isExistingFullDay) { isAvailableForSelected = false; break; }
+                    }
+                } else {
+                    isAvailableForSelected = allOccupants.length === 0;
+                }
+
+                if (window.currentFilter === 'free' && !isAvailableForSelected) continue;
                 if (window.currentFilter === 'due' && !hasDue) continue;
                 if (window.currentFilter === 'warn' && !hasWarn) continue;
                 if (window.currentFilter === 'expired' && !hasExpired) continue;
                 if (occupants.length > 0 && examQuery && !hasMatch) continue;
 
                 const div = document.createElement('div');
-                if (occupants.length > 0) {
+                if (window.currentFilter === 'free' && isAvailableForSelected) {
+                    div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
+                    div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; if (selectedShift !== 'all') document.getElementById('shift').value = selectedShift; window.toggleCustomShift('shift','customShift'); };
+                } else if (occupants.length > 0) {
                     let alertClass = 'allotted';
                     if (hasExpired) alertClass = 'expired-alert'; else if (hasWarn) alertClass = 'warn-alert'; else if (hasDue) alertClass = 'due-alert';
                     div.className = `seat ${alertClass}`;
@@ -1279,6 +1301,8 @@
                     div.onclick = () => window.handleSeatClick(seatId);
                 } else {
                     if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
+                    if (selectedShift !== 'all' && !isAvailableForSelected) continue; // Hide if conflict exists
+                    
                     div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
                     div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; if (selectedShift !== 'all') document.getElementById('shift').value = selectedShift; window.toggleCustomShift('shift','customShift'); };
                 }
