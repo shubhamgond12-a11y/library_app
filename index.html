@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LibSync Pro - Library SaaS</title>
+    <title>CUBIX - Smart Library Management</title>
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -128,7 +128,8 @@
         /* --- MOBILE BOTTOM-SHEET & SLIDABLE PRICING OVERRIDES --- */
         @media (max-width: 768px) {
             #authScreen, #subscriptionLockoutScreen {
-                align-items: flex-end; /* Align modals to bottom on mobile */
+                justify-content: flex-end; /* Align modals to bottom on mobile vertically */
+                align-items: center; /* Ensure centered horizontally */
                 padding: 0; /* Remove fixed padding to allow edge-to-edge modal */
             }
             .auth-brand-logo { margin-bottom: 15px; margin-top: auto; padding-top: 30px; }
@@ -265,7 +266,7 @@
             <div style="font-size:48px; margin-bottom:15px;">🚧</div>
             <h2 style="color:var(--primary); margin:0 0 10px 0; font-weight:700;">Scheduled Maintenance</h2>
             <p style="color:#f8fafc; font-size:14px; line-height:1.6; margin-bottom:20px;">
-                LibSync Pro is currently undergoing scheduled database optimizations to enhance read/write speeds.
+                CUBIX is currently undergoing scheduled database optimizations to enhance read/write speeds.
             </p>
             <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:12px; font-size:12px; color:var(--orange); font-weight: 600; margin-bottom:25px;">
                 ⏳ Expected offline duration: Less than 15 minutes
@@ -328,7 +329,7 @@
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen">
-        <div class="auth-brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg> LIBSYNC</div>
+        <div class="auth-brand-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg> CUBIX</div>
         
         <div class="auth-card-modern" id="authCard">
             <!-- 1. LOGIN FORM -->
@@ -431,7 +432,7 @@
     <!-- MAIN USER APP -->
     <div id="mainApp" style="display:none;">
         <header class="animate-in">
-            <h2 id="appTitle">LibSync Pro</h2>
+            <h2 id="appTitle">CUBIX</h2>
             <div class="utility-bar">
                 <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
                 <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
@@ -777,7 +778,7 @@
         let selectedSaaSTrialPlan = "monthly"; // Tracks the tier selected during registration
 
         let appConfig = {
-            libraryName: "LibSync Pro", totalSeats: 20, customSeats: ["1A", "1B", "2A", "2B"],
+            libraryName: "CUBIX", totalSeats: 20, customSeats: ["1A", "1B", "2A", "2B"],
             shifts: ["Morning Shift (06 AM - 02 PM) : 1200", "Evening Shift (02 PM - 10 PM) : 1200", "Full Day (06 AM - 10 PM) : 2000"]
         };
 
@@ -929,7 +930,7 @@
                 "key": RAZERPAY_KEY_ID, 
                 "amount": priceInPaise.toString(), 
                 "currency": "INR",
-                "name": "LibSync Pro Premium",
+                "name": "CUBIX Premium",
                 "description": `Upgrade Workspace to ${planId.toUpperCase()} Plan`,
                 "image": "https://img.icons8.com/color/120/library.png", 
                 "handler": async function (response) {
@@ -1244,7 +1245,7 @@
             }, ()=>{}); 
         }
 
-        function loadDataFromCloud() { if(!currentUser || currentUser.uid === ADMIN_UID) return; unsubscribeSnapshot = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).onSnapshot((s) => { window.initializeAppStructure(); if (s.exists) { const d = s.data(); if(d.config) appConfig = d.config; if(d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } else { DB.init(); DB.save(); } document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibSync Pro'; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); }, ()=>{}); }
+        function loadDataFromCloud() { if(!currentUser || currentUser.uid === ADMIN_UID) return; unsubscribeSnapshot = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).onSnapshot((s) => { window.initializeAppStructure(); if (s.exists) { const d = s.data(); if(d.config) appConfig = d.config; if(d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } else { DB.init(); DB.save(); } document.getElementById('appTitle').innerText = appConfig.libraryName || 'CUBIX'; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); }, ()=>{}); }
         function startAppTour() { if (localStorage.getItem('hasSeenTour') === 'true') return; const t = window.driver.js.driver({ showProgress:true, steps:[{popover:{title:'Welcome!',description:'Quick 30s tour.'}},{element:'#settingsTab',popover:{title:'1. Setup',description:'Start here.'}},{element:'#seatMapTab',popover:{title:'2. Chairs',description:'Your seats.'}},{element:'#tabFinBtn',popover:{title:'3. Finance',description:'Track Dues.'}}], onDestroyStarted:()=>{localStorage.setItem('hasSeenTour','true');t.destroy();}}); t.drive(); }
 
         window.switchTab = function(tab) { ['seatMapTab', 'addSeatTab', 'waitlistTab', 'financeTab'].forEach(id => document.getElementById(id).classList.add('hidden')); ['tabMapBtn', 'tabAddBtn', 'tabWaitBtn', 'tabFinBtn'].forEach(id => document.getElementById(id).classList.remove('active')); if(tab === 'map') { document.getElementById('seatMapTab').classList.remove('hidden'); document.getElementById('tabMapBtn').classList.add('active'); window.renderSeats(); } else if(tab === 'add') { document.getElementById('addSeatTab').classList.remove('hidden'); document.getElementById('tabAddBtn').classList.add('active'); document.getElementById('admDate').value = new Date().toISOString().split('T')[0]; document.getElementById('totalFee').value = ''; document.getElementById('initialAmount').value = ''; } else if(tab === 'wait') { document.getElementById('waitlistTab').classList.remove('hidden'); document.getElementById('tabWaitBtn').classList.add('active'); window.renderWaitlist(); } else if(tab === 'fin') { document.getElementById('financeTab').classList.remove('hidden'); document.getElementById('tabFinBtn').classList.add('active'); window.calculateFinances(); } }
@@ -1447,7 +1448,7 @@
         }
 
         window.openSettingsModal = function() { hideAllModalSections(); document.getElementById('cfgLibName').value = appConfig.libraryName || ''; document.getElementById('cfgTotalSeats').value = appConfig.totalSeats || 20; document.getElementById('cfgCustomSeats').value = (appConfig.customSeats || []).join(', '); document.getElementById('cfgShifts').value = (appConfig.shifts || []).join('\n'); triggerModalAnimation('modalSettingsSection'); document.getElementById('detailsModal').style.display = 'flex'; }
-        window.saveSettings = function() { appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "LibSync Pro"; appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 20; appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s); appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s); DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!'); }
+        window.saveSettings = function() { appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "CUBIX"; appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 20; appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s); appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s); DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!'); }
 
         function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection'].forEach(id => { const el = document.getElementById(id); if(el) { el.classList.add('hidden'); el.classList.remove('modal-animate'); } }); }
         function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
@@ -1547,7 +1548,7 @@
             if(DB.getOccupants(window.activeSeatNo).length > 0) window.showListMenu(); else window.closeModal();
         }
 
-        window.exportData = function() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ config: appConfig, seatsData: DB.seatsData, expenses: DB.expenses, waitlist: DB.waitlist })); const a = document.createElement('a'); a.href = dataStr; a.download = `LibSync_Backup_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!"); }
+        window.exportData = function() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ config: appConfig, seatsData: DB.seatsData, expenses: DB.expenses, waitlist: DB.waitlist })); const a = document.createElement('a'); a.href = dataStr; a.download = `CUBIX_Backup_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!"); }
         window.importData = function(input) { const reader = new FileReader(); reader.onload = function() { try { const obj = JSON.parse(reader.result); if(obj.config) { appConfig = obj.config; DB.seatsData = obj.seatsData || {}; DB.expenses = obj.expenses || []; DB.waitlist = obj.waitlist || []; } else { DB.seatsData = obj; } DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); window.closeModal(); window.toast("📤 Restored!"); } catch(e) { window.toast("⚠️ Read Error"); } }; if(input.files[0]) reader.readAsText(input.files[0]); }
     </script>
 </body>
