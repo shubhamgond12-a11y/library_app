@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CUBIX - Smart Library Management</title>
+    <title>LibOrg - Smart Library Management</title>
     
     <!-- Favicon -->
     <link rel="icon" href="fevicon.png" type="image/png">
@@ -78,8 +77,7 @@
             #authScreen, #subscriptionLockoutScreen { padding: 20px; }
         }
 
-        .auth-brand-logo { display: flex; align-items: center; gap: 8px; color: white; font-size: 20px; font-weight: 700; margin-bottom: 25px; z-index: 10; letter-spacing: 1px; }
-        .auth-brand-logo img { width: 24px; height: 24px; border-radius: 4px; object-fit: contain; }
+        .auth-brand-logo { display: flex; align-items: center; gap: 8px; color: white; font-size: 22px; font-weight: 700; margin-bottom: 25px; z-index: 10; letter-spacing: 1px; }
         
         .auth-card-modern, .lockout-card { background: #ffffff; border-radius: 20px; padding: 20px; width: 100%; max-width: 420px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; z-index: 10; box-sizing: border-box; transition: max-width 0.3s ease; }
         .lockout-card { max-width: 880px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 20px 50px rgba(0,0,0,0.3); background: rgba(30, 41, 59, 0.95); }
@@ -299,7 +297,7 @@
             <div style="font-size:48px; margin-bottom:15px;">🚧</div>
             <h2 style="color:var(--primary); margin:0 0 10px 0; font-weight:700;">Scheduled Maintenance</h2>
             <p style="color:#f8fafc; font-size:14px; line-height:1.6; margin-bottom:20px;">
-                CUBIX is currently undergoing scheduled database optimizations to enhance read/write speeds.
+                LibOrg is currently undergoing scheduled database optimizations to enhance read/write speeds.
             </p>
             <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:12px; font-size:12px; color:var(--orange); font-weight: 600; margin-bottom:25px;">
                 ⏳ Expected offline duration: Less than 15 minutes
@@ -371,8 +369,11 @@
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen">
         <div class="auth-brand-logo">
-            <img src="logo.png" alt="CUBIX Logo" style="max-height: 48px; max-width: 100%; object-fit: contain;" onerror="this.onerror=null; this.src='https://img.icons8.com/color/120/library.png';"> 
-            <span style="margin-left: 8px;">CUBIX</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px; color: white;">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            <span style="margin-left: 8px;">LibOrg</span>
         </div>
         
         <div class="auth-card-modern" id="authCard">
@@ -484,7 +485,7 @@
     <!-- MAIN USER APP -->
     <div id="mainApp" style="display:none;">
         <header class="animate-in">
-            <h2 id="appTitle">CUBIX</h2>
+            <h2 id="appTitle">LibOrg</h2>
             <div class="utility-bar">
                 <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg></button>
                 <button class="icon-btn" id="settingsTab" onclick="openSettingsModal()" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
@@ -829,7 +830,7 @@
         let selectedSaaSTrialPlan = "monthly"; // Tracks the tier selected during registration
 
         let appConfig = {
-            libraryName: "CUBIX", totalSeats: 20, customSeats: ["1A", "1B", "2A", "2B"],
+            libraryName: "LibOrg", totalSeats: 20, customSeats: ["1A", "1B", "2A", "2B"],
             shifts: ["Morning Shift (06 AM - 02 PM) : 1200", "Evening Shift (02 PM - 10 PM) : 1200", "Full Day (06 AM - 10 PM) : 2000"]
         };
 
@@ -845,6 +846,32 @@
         };
 
         window.seatLayout = []; window.currentFilter = 'all'; window.activeSeatNo = null; window.activeStudentId = null; window.isDeleteConfirmStep = false; 
+
+        window.isShiftOverlap = function(shift1, shift2) {
+            const parseTime = (str) => {
+                const match = str.match(/(\d{1,2})(?:\s*:\s*(\d{2}))?\s*(AM|PM)\s*-\s*(\d{1,2})(?:\s*:\s*(\d{2}))?\s*(AM|PM)/i);
+                if (!match) return null;
+                let sH = parseInt(match[1]), sM = parseInt(match[2] || 0), sP = match[3].toUpperCase();
+                let eH = parseInt(match[4]), eM = parseInt(match[5] || 0), eP = match[6].toUpperCase();
+                if (sP === 'PM' && sH !== 12) sH += 12;
+                if (sP === 'AM' && sH === 12) sH = 0;
+                if (eP === 'PM' && eH !== 12) eH += 12;
+                if (eP === 'AM' && eH === 12) eH = 24;
+                let start = sH + sM/60; let end = eH + eM/60;
+                if (end <= start) end += 24; // Handle midnight crossing
+                return { start, end };
+            };
+            const t1 = parseTime(shift1), t2 = parseTime(shift2);
+            if (t1 && t2) {
+                if (t1.start < t2.end && t1.end > t2.start) return true;
+                if (t1.end > 24 && t1.start - 24 < t2.end && t1.end - 24 > t2.start) return true;
+                if (t2.end > 24 && t2.start - 24 < t1.end && t2.end - 24 > t1.start) return true;
+                return false;
+            }
+            const s1Base = shift1.split(':')[0].trim().toLowerCase(), s2Base = shift2.split(':')[0].trim().toLowerCase();
+            if (s1Base === s2Base || s1Base.includes('full day') || s2Base.includes('full day')) return true;
+            return false;
+        };
 
         if(localStorage.getItem('libTheme') === 'dark') document.body.classList.add('dark-theme');
 
@@ -1032,7 +1059,7 @@
                 "key": RAZERPAY_KEY_ID, 
                 "amount": priceInPaise.toString(), 
                 "currency": "INR",
-                "name": "CUBIX Premium",
+                "name": "LibOrg Premium",
                 "description": `Upgrade Workspace to ${planId.toUpperCase()} Plan`,
                 "image": "https://img.icons8.com/color/120/library.png", 
                 "handler": async function (response) {
@@ -1347,7 +1374,7 @@
             }, ()=>{}); 
         }
 
-        function loadDataFromCloud() { if(!currentUser || currentUser.uid === ADMIN_UID) return; unsubscribeSnapshot = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).onSnapshot((s) => { window.initializeAppStructure(); if (s.exists) { const d = s.data(); if(d.config) appConfig = d.config; if(d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } else { DB.init(); DB.save(); } document.getElementById('appTitle').innerText = appConfig.libraryName || 'CUBIX'; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); }, ()=>{}); }
+        function loadDataFromCloud() { if(!currentUser || currentUser.uid === ADMIN_UID) return; unsubscribeSnapshot = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).onSnapshot((s) => { window.initializeAppStructure(); if (s.exists) { const d = s.data(); if(d.config) appConfig = d.config; if(d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } else { DB.init(); DB.save(); } document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibOrg'; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); }, ()=>{}); }
         function startAppTour() { if (localStorage.getItem('hasSeenTour') === 'true') return; const t = window.driver.js.driver({ showProgress:true, steps:[{popover:{title:'Welcome!',description:'Quick 30s tour.'}},{element:'#settingsTab',popover:{title:'1. Setup',description:'Start here.'}},{element:'#seatMapTab',popover:{title:'2. Chairs',description:'Your seats.'}},{element:'#tabFinBtn',popover:{title:'3. Finance',description:'Track Dues.'}}], onDestroyStarted:()=>{localStorage.setItem('hasSeenTour','true');t.destroy();}}); t.drive(); }
 
         window.switchTab = function(tab) { ['seatMapTab', 'addSeatTab', 'waitlistTab', 'financeTab'].forEach(id => document.getElementById(id).classList.add('hidden')); ['tabMapBtn', 'tabAddBtn', 'tabWaitBtn', 'tabFinBtn'].forEach(id => document.getElementById(id).classList.remove('active')); if(tab === 'map') { document.getElementById('seatMapTab').classList.remove('hidden'); document.getElementById('tabMapBtn').classList.add('active'); window.renderSeats(); } else if(tab === 'add') { document.getElementById('addSeatTab').classList.remove('hidden'); document.getElementById('tabAddBtn').classList.add('active'); document.getElementById('admDate').value = new Date().toISOString().split('T')[0]; document.getElementById('totalFee').value = ''; document.getElementById('initialAmount').value = ''; } else if(tab === 'wait') { document.getElementById('waitlistTab').classList.remove('hidden'); document.getElementById('tabWaitBtn').classList.add('active'); window.renderWaitlist(); } else if(tab === 'fin') { document.getElementById('financeTab').classList.remove('hidden'); document.getElementById('tabFinBtn').classList.add('active'); window.calculateFinances(); } }
@@ -1397,7 +1424,7 @@
                 let occupants = allOccupants;
                 
                 if (selectedShift !== 'all') {
-                    occupants = allOccupants.filter(o => o.shift === selectedShift || o.shift.toLowerCase().includes('full day'));
+                    occupants = allOccupants.filter(o => window.isShiftOverlap(o.shift, selectedShift));
                 }
                 
                 let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
@@ -1411,11 +1438,8 @@
                 // Check genuine availability to avoid collision rendering
                 let isAvailableForSelected = true;
                 if (selectedShift !== 'all') {
-                    const isNewFullDay = selectedShift.toLowerCase().includes('full day');
                     for (let o of allOccupants) {
-                        if (o.shift === selectedShift) { isAvailableForSelected = false; break; }
-                        const isExistingFullDay = o.shift.toLowerCase().includes('full day');
-                        if (isNewFullDay || isExistingFullDay) { isAvailableForSelected = false; break; }
+                        if (window.isShiftOverlap(o.shift, selectedShift)) { isAvailableForSelected = false; break; }
                     }
                 } else {
                     isAvailableForSelected = allOccupants.length === 0;
@@ -1466,14 +1490,9 @@
             
             // --- CONFLICT PREVENTION LOGIC ---
             const currentOccupants = DB.getOccupants(seatNo);
-            const isNewFullDay = shift.toLowerCase().includes('full day');
             for (let o of currentOccupants) {
-                if (o.shift === shift) {
-                    return window.toast(`⚠️ Seat ${seatNo} already occupied by ${o.name} for this exact shift.`);
-                }
-                const isExistingFullDay = o.shift.toLowerCase().includes('full day');
-                if (isNewFullDay || isExistingFullDay) {
-                    return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift}`);
+                if (window.isShiftOverlap(o.shift, shift)) {
+                    return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift.split(':')[0]}`);
                 }
             }
             // ----------------------------------
@@ -1536,7 +1555,7 @@
             const sExpDates = Object.keys(groupedExp).sort((a,b) => new Date(b) - new Date(a));
             if(sExpDates.length === 0) expCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No expenses recorded.</div>';
             sExpDates.forEach(d => {
-                incCont.innerHTML += `<div class="date-header">${formatLedgerDate(d)}</div>`; // Just as a fallback header format
+                expCont.innerHTML += `<div class="date-header">${formatLedgerDate(d)}</div>`; // Just as a fallback header format
                 groupedExp[d].forEach(e => { expCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${e.category}</strong></div><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span><button style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px;" onclick="removeExpense('${e.id}')">×</button></div></div>`; });
             });
 
@@ -1550,7 +1569,7 @@
         }
 
         window.openSettingsModal = function() { hideAllModalSections(); document.getElementById('cfgLibName').value = appConfig.libraryName || ''; document.getElementById('cfgTotalSeats').value = appConfig.totalSeats || 20; document.getElementById('cfgCustomSeats').value = (appConfig.customSeats || []).join(', '); document.getElementById('cfgShifts').value = (appConfig.shifts || []).join('\n'); triggerModalAnimation('modalSettingsSection'); document.getElementById('detailsModal').style.display = 'flex'; }
-        window.saveSettings = function() { appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "CUBIX"; appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 20; appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s); appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s); DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!'); }
+        window.saveSettings = function() { appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "LibOrg"; appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 20; appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s); appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s); DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!'); }
 
         function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection'].forEach(id => { const el = document.getElementById(id); if(el) { el.classList.add('hidden'); el.classList.remove('modal-animate'); } }); }
         function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
@@ -1602,15 +1621,10 @@
             
             // --- CONFLICT PREVENTION LOGIC IN EDIT ---
             const currentOccupants = DB.getOccupants(window.activeSeatNo);
-            const isNewFullDay = d.shift.toLowerCase().includes('full day');
             for (let o of currentOccupants) {
                 if (o.id === window.activeStudentId) continue; // Skip self
-                if (o.shift === d.shift) {
-                    return window.toast(`⚠️ Seat ${window.activeSeatNo} already occupied by ${o.name} for this exact shift.`);
-                }
-                const isExistingFullDay = o.shift.toLowerCase().includes('full day');
-                if (isNewFullDay || isExistingFullDay) {
-                    return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift}`);
+                if (window.isShiftOverlap(o.shift, d.shift)) {
+                    return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift.split(':')[0]}`);
                 }
             }
             // ------------------------------------------
@@ -1650,7 +1664,7 @@
             if(DB.getOccupants(window.activeSeatNo).length > 0) window.showListMenu(); else window.closeModal();
         }
 
-        window.exportData = function() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ config: appConfig, seatsData: DB.seatsData, expenses: DB.expenses, waitlist: DB.waitlist })); const a = document.createElement('a'); a.href = dataStr; a.download = `CUBIX_Backup_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!"); }
+        window.exportData = function() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ config: appConfig, seatsData: DB.seatsData, expenses: DB.expenses, waitlist: DB.waitlist })); const a = document.createElement('a'); a.href = dataStr; a.download = `LibOrg_Backup_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!"); }
         window.importData = function(input) { const reader = new FileReader(); reader.onload = function() { try { const obj = JSON.parse(reader.result); if(obj.config) { appConfig = obj.config; DB.seatsData = obj.seatsData || {}; DB.expenses = obj.expenses || []; DB.waitlist = obj.waitlist || []; } else { DB.seatsData = obj; } DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); window.closeModal(); window.toast("📤 Restored!"); } catch(e) { window.toast("⚠️ Read Error"); } }; if(input.files[0]) reader.readAsText(input.files[0]); }
     </script>
 </body>
