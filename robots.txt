@@ -1,4 +1,4 @@
 User-agent: *
-Allow: /library_app/
+Allow: /
 
-Sitemap: https://github.io
+Sitemap: https://liborg-droid.github.io/liborg/sitemap.xml
