@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>LibOrg - Smart Library Management</title>
+    
+    <!-- === SEO & GOOGLE SEARCH SNIPPET TAGS (ADDED) === -->
+    <meta name="description" content="LibOrg is a premium, smart library and reading room management software. Streamline seat allocations, track student admissions, manage waitlists, and monitor your finances in one centralized dashboard.">
+    <meta name="keywords" content="library management, reading room software, seat allocation, student management, finance tracker, SaaS">
+    <meta name="author" content="LibOrg">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Social Media Meta Tags (Improves link sharing on WhatsApp, Twitter, etc.) -->
+    <meta property="og:title" content="LibOrg - Smart Library Management">
+    <meta property="og:description" content="Streamline seat allocations, track student admissions, manage waitlists, and monitor your finances in one centralized dashboard.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="LibOrg">
+    <!-- ================================================ -->
     
     <!-- Favicon -->
     <link rel="icon" href="fevicon.png" type="image/png">
@@ -131,9 +145,9 @@
         /* --- MOBILE SLIDABLE PRICING & CENTERING OVERRIDES --- */
         @media (max-width: 768px) {
             #authScreen, #subscriptionLockoutScreen {
-                justify-content: center; /* Center vertically */
-                align-items: center; /* Center horizontally */
-                padding: 15px; /* Standard outer margins */
+                justify-content: center;
+                align-items: center;
+                padding: 15px;
             }
             .auth-brand-logo { margin-bottom: 20px; margin-top: 0; padding-top: 0; }
             .auth-card-modern, .lockout-card {
@@ -147,7 +161,6 @@
                 overflow-y: auto;
                 border-bottom: none;
             }
-            /* Make pricing grids horizontally scrollable on mobile */
             .pricing-grid {
                 display: flex !important;
                 flex-direction: row !important;
@@ -155,11 +168,10 @@
                 scroll-snap-type: x mandatory;
                 -webkit-overflow-scrolling: touch;
                 padding: 10px 0 10px 0;
-                margin: 0 -20px; /* Pull margins out to parent edges */
+                margin: 0 -20px;
                 gap: 15px;
                 justify-content: flex-start;
             }
-            /* Spacers to prevent cards touching device edges strictly */
             .pricing-grid::before { content: ''; width: 5px; flex-shrink: 0; }
             .pricing-grid::after { content: ''; width: 20px; flex-shrink: 0; }
             .pricing-card {
@@ -167,10 +179,9 @@
                 max-width: 82vw !important;
                 scroll-snap-align: center;
                 flex-shrink: 0;
-                transform: none !important; /* Disable hover scale */
+                transform: none !important;
                 margin: 0 !important;
             }
-            /* Hide scrollbars for cleaner UI */
             .pricing-grid::-webkit-scrollbar { display: none; }
             .pricing-grid { -ms-overflow-style: none; scrollbar-width: none; }
         }
@@ -1377,295 +1388,14 @@
         function loadDataFromCloud() { if(!currentUser || currentUser.uid === ADMIN_UID) return; unsubscribeSnapshot = db.doc(`artifacts/${globalAppId}/users/${currentUser.uid}/libraryData/main`).onSnapshot((s) => { window.initializeAppStructure(); if (s.exists) { const d = s.data(); if(d.config) appConfig = d.config; if(d.seatsData) DB.seatsData = d.seatsData; DB.expenses = d.expenses || []; DB.waitlist = d.waitlist || []; } else { DB.init(); DB.save(); } document.getElementById('appTitle').innerText = appConfig.libraryName || 'LibOrg'; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); }, ()=>{}); }
         function startAppTour() { if (localStorage.getItem('hasSeenTour') === 'true') return; const t = window.driver.js.driver({ showProgress:true, steps:[{popover:{title:'Welcome!',description:'Quick 30s tour.'}},{element:'#settingsTab',popover:{title:'1. Setup',description:'Start here.'}},{element:'#seatMapTab',popover:{title:'2. Chairs',description:'Your seats.'}},{element:'#tabFinBtn',popover:{title:'3. Finance',description:'Track Dues.'}}], onDestroyStarted:()=>{localStorage.setItem('hasSeenTour','true');t.destroy();}}); t.drive(); }
 
-        window.switchTab = function(tab) { ['seatMapTab', 'addSeatTab', 'waitlistTab', 'financeTab'].forEach(id => document.getElementById(id).classList.add('hidden')); ['tabMapBtn', 'tabAddBtn', 'tabWaitBtn', 'tabFinBtn'].forEach(id => document.getElementById(id).classList.remove('active')); if(tab === 'map') { document.getElementById('seatMapTab').classList.remove('hidden'); document.getElementById('tabMapBtn').classList.add('active'); window.renderSeats(); } else if(tab === 'add') { document.getElementById('addSeatTab').classList.remove('hidden'); document.getElementById('tabAddBtn').classList.add('active'); document.getElementById('admDate').value = new Date().toISOString().split('T')[0]; document.getElementById('totalFee').value = ''; document.getElementById('initialAmount').value = ''; } else if(tab === 'wait') { document.getElementById('waitlistTab').classList.remove('hidden'); document.getElementById('tabWaitBtn').classList.add('active'); window.renderWaitlist(); } else if(tab === 'fin') { document.getElementById('financeTab').classList.remove('hidden'); document.getElementById('tabFinBtn').classList.add('active'); window.calculateFinances(); } }
-
-        window.initializeAppStructure = function() {
-            window.seatLayout = []; const total = parseInt(appConfig.totalSeats) || 20; const customs = appConfig.customSeats || [];
-            for (let i = 1; i <= total; i++) { window.seatLayout.push(i.toString()); window.seatLayout.push(...customs.filter(seat => { const m = seat.match(/^(\d+)[A-Za-z]+$/); return m && parseInt(m[1]) === i; })); }
-            ['shift', 'waitShift', 'shiftFilter'].forEach(id => { const el = document.getElementById(id); if (el) { el.innerHTML = id === 'shiftFilter' ? '<option value="all">All Shifts</option>' : ''; (appConfig.shifts || []).forEach(s => el.innerHTML += `<option value="${s}">${s}</option>`); if(id === 'shift') el.innerHTML += `<option value="Custom">Custom Shift...</option>`; } });
-        }
-
-        function checkExpiry(validDateStr) { if(!validDateStr) return 'ok'; const today = new Date(); today.setHours(0,0,0,0); const valid = new Date(validDateStr); valid.setHours(0,0,0,0); const diffDays = Math.ceil((valid - today) / (1000 * 60 * 60 * 24)); if(diffDays < 0) return 'expired'; if(diffDays <= 3) return 'warn'; return 'ok'; }
-        
-        window.getStudentStatus = function(s) {
-            const exp = checkExpiry(s.validDate);
-            if (exp === 'expired') return 'Expired';
-            let dueAmt = s.dueAmount !== undefined ? parseFloat(s.dueAmount) : (s.feeStatus === 'Due' ? 1 : 0);
-            if (dueAmt > 0) return 'Due';
-            return 'Paid';
+        window.switchTab = function(tab) {
+            ['seatMapTab', 'addSeatTab', 'waitlistTab', 'financeTab'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['tabMapBtn', 'tabAddBtn', 'tabWaitBtn', 'tabFinBtn'].forEach(id => document.getElementById(id).classList.remove('active'));
+            if(tab === 'map') { document.getElementById('seatMapTab').classList.remove('hidden'); document.getElementById('tabMapBtn').classList.add('active'); }
+            if(tab === 'add') { document.getElementById('addSeatTab').classList.remove('hidden'); document.getElementById('tabAddBtn').classList.add('active'); }
+            if(tab === 'wait') { document.getElementById('waitlistTab').classList.remove('hidden'); document.getElementById('tabWaitBtn').classList.add('active'); }
+            if(tab === 'fin') { document.getElementById('financeTab').classList.remove('hidden'); document.getElementById('tabFinBtn').classList.add('active'); }
         };
-
-        function updateDashboard() {
-            let freeChairs = 0, totalEnrolled = 0, dueProfiles = 0, warnProfiles = 0;
-            for(let seatId of window.seatLayout) {
-                const occupants = DB.getOccupants(seatId);
-                if(occupants.length === 0) freeChairs++;
-                occupants.forEach(s => {
-                    totalEnrolled++;
-                    const st = window.getStudentStatus(s);
-                    if(st === 'Due') dueProfiles++;
-                    if(checkExpiry(s.validDate) === 'warn' && st !== 'Expired') warnProfiles++;
-                });
-            }
-            document.getElementById('statFree').innerText = freeChairs; document.getElementById('statOccupied').innerText = totalEnrolled;
-            document.getElementById('statDue').innerText = dueProfiles; document.getElementById('statWarn').innerText = warnProfiles;
-            document.getElementById('waitBadge').innerText = (DB.waitlist || []).length;
-        }
-
-        window.setFilter = function(type) { window.currentFilter = type; document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); document.getElementById('flt' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active'); window.renderSeats(); }
-        window.applyFilters = function() { window.renderSeats(); }
-
-        window.renderSeats = function() {
-            const container = document.getElementById('seatsContainer'); if(!container) return; container.innerHTML = ''; updateDashboard();
-            const examQuery = document.getElementById('searchExam').value.toLowerCase(); const selectedShift = document.getElementById('shiftFilter').value;
-
-            for (let seatId of window.seatLayout) {
-                const allOccupants = DB.getOccupants(seatId); 
-                let occupants = allOccupants;
-                
-                if (selectedShift !== 'all') {
-                    occupants = allOccupants.filter(o => window.isShiftOverlap(o.shift, selectedShift));
-                }
-                
-                let hasDue = false, hasExpired = false, hasWarn = false, hasMatch = false;
-                occupants.forEach(s => {
-                    const st = window.getStudentStatus(s);
-                    if (st === 'Expired') hasExpired = true; else if (st === 'Due') hasDue = true;
-                    if (checkExpiry(s.validDate) === 'warn' && st !== 'Expired') hasWarn = true;
-                    if (!examQuery || (s.exam && s.exam.toLowerCase().includes(examQuery))) hasMatch = true;
-                });
-
-                // Check genuine availability to avoid collision rendering
-                let isAvailableForSelected = true;
-                if (selectedShift !== 'all') {
-                    for (let o of allOccupants) {
-                        if (window.isShiftOverlap(o.shift, selectedShift)) { isAvailableForSelected = false; break; }
-                    }
-                } else {
-                    isAvailableForSelected = allOccupants.length === 0;
-                }
-
-                if (window.currentFilter === 'free' && !isAvailableForSelected) continue;
-                if (window.currentFilter === 'due' && !hasDue) continue;
-                if (window.currentFilter === 'warn' && !hasWarn) continue;
-                if (window.currentFilter === 'expired' && !hasExpired) continue;
-                if (occupants.length > 0 && examQuery && !hasMatch) continue;
-
-                const div = document.createElement('div');
-                if (window.currentFilter === 'free' && isAvailableForSelected) {
-                    div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; if (selectedShift !== 'all') document.getElementById('shift').value = selectedShift; window.toggleCustomShift('shift','customShift'); };
-                } else if (occupants.length > 0) {
-                    let alertClass = 'allotted';
-                    if (hasExpired) alertClass = 'expired-alert'; else if (hasWarn) alertClass = 'warn-alert'; else if (hasDue) alertClass = 'due-alert';
-                    div.className = `seat ${alertClass}`;
-                    div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    occupants.forEach(s => { div.innerHTML += `<div class="seat-name">${s.name.split(' ')[0]} (${s.shift.charAt(0)})</div>`; });
-                    div.onclick = () => window.handleSeatClick(seatId);
-                } else {
-                    if (window.currentFilter !== 'all' && window.currentFilter !== 'free') continue;
-                    if (selectedShift !== 'all' && !isAvailableForSelected) continue; // Hide if conflict exists
-                    
-                    div.className = `seat free`; div.innerHTML = `<div class="seat-number">${seatId}</div>`;
-                    div.onclick = () => { window.switchTab('add'); document.getElementById('seatNo').value = seatId; if (selectedShift !== 'all') document.getElementById('shift').value = selectedShift; window.toggleCustomShift('shift','customShift'); };
-                }
-                container.appendChild(div);
-            }
-        }
-
-        window.toggleCustomShift = function(selectId, inputId) { 
-            const shiftVal = document.getElementById(selectId).value;
-            document.getElementById(inputId).classList.toggle('hidden', shiftVal !== 'Custom'); 
-            if (shiftVal && shiftVal !== 'Custom') {
-                const parts = shiftVal.split(':');
-                if (parts.length > 1) { document.getElementById('totalFee').value = parseFloat(parts[parts.length - 1].trim()) || ''; } 
-                else { document.getElementById('totalFee').value = ''; }
-            } else { document.getElementById('totalFee').value = ''; }
-        }
-
-        window.allotSeat = function() {
-            const seatNo = document.getElementById('seatNo').value.toUpperCase().trim(), name = document.getElementById('studentName').value;
-            if (!seatNo || !window.seatLayout.includes(seatNo)) return window.toast('⚠️ Invalid Seat Number.'); if (!name) return window.toast('⚠️ Name required');
-            let shift = document.getElementById('shift').value === 'Custom' ? document.getElementById('customShift').value : document.getElementById('shift').value;
-            
-            // --- CONFLICT PREVENTION LOGIC ---
-            const currentOccupants = DB.getOccupants(seatNo);
-            for (let o of currentOccupants) {
-                if (window.isShiftOverlap(o.shift, shift)) {
-                    return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift.split(':')[0]}`);
-                }
-            }
-            // ----------------------------------
-
-            const totalFee = parseFloat(document.getElementById('totalFee').value) || 0;
-            const paid = parseFloat(document.getElementById('initialAmount').value) || 0;
-            const dueAmount = totalFee - paid;
-
-            let initialPayments = []; 
-            if(paid > 0) initialPayments.push({ date: document.getElementById('admDate').value, amount: paid, mode: document.getElementById('initialMode').value });
-
-            DB.addStudent(seatNo, { 
-                id: Date.now().toString(), name, shift, phone: document.getElementById('phone').value || 'N/A', exam: document.getElementById('exam').value || 'General', 
-                admDate: document.getElementById('admDate').value, validDate: document.getElementById('validDate').value, 
-                dueAmount: dueAmount > 0 ? dueAmount : 0, payments: initialPayments
-            });
-            ['seatNo', 'studentName', 'phone', 'exam', 'admDate', 'validDate', 'initialAmount', 'totalFee', 'customShift'].forEach(id => document.getElementById(id).value = '');
-            window.switchTab('map'); window.toast(`🎉 ${name} allocated!`);
-        }
-
-        // Waitlist functions
-        window.addWaitlist = function() { const name = document.getElementById('waitName').value; if(!name) return window.toast('⚠️ Name required'); DB.waitlist.push({ id: Date.now().toString(), name, phone: document.getElementById('waitPhone').value || 'N/A', shift: document.getElementById('waitShift').value, date: new Date().toISOString().split('T')[0] }); DB.save(); document.getElementById('waitName').value = ''; document.getElementById('waitPhone').value = ''; window.renderWaitlist(); window.toast("Added to waitlist"); }
-        window.renderWaitlist = function() { const cont = document.getElementById('waitlistContainer'); cont.innerHTML = ''; if(!DB.waitlist || DB.waitlist.length === 0) { cont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">Waitlist is empty.</div>'; } (DB.waitlist || []).forEach(w => { cont.innerHTML += `<div class="list-item"><div><strong style="font-size:14px; display:block;">${w.name}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${w.phone} • ${w.shift}</div><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Listed: ${w.date}</div></div><div style="display:flex; flex-direction:column; gap:6px;"><button class="filter-btn" style="background:var(--primary); color:white; padding:6px 10px;" onclick="promoteWaitlist('${w.id}')">Allot</button><button class="filter-btn" style="background:transparent; border-color:var(--red); color:var(--red); padding:6px 10px;" onclick="removeWaitlist('${w.id}')">Remove</button></div></div>`; }); document.getElementById('waitBadge').innerText = (DB.waitlist || []).length; }
-        window.removeWaitlist = function(id) { DB.waitlist = DB.waitlist.filter(w => w.id !== id); DB.save(); window.renderWaitlist(); window.toast("Removed"); }
-        window.promoteWaitlist = function(id) { const s = DB.waitlist.find(w => w.id === id); if(s) { window.switchTab('add'); document.getElementById('studentName').value = s.name; document.getElementById('phone').value = s.phone !== 'N/A' ? s.phone : ''; document.getElementById('shift').value = s.shift; window.toggleCustomShift('shift','customShift'); window.removeWaitlist(id); window.toast("Fill seat to complete."); } }
-
-        // Finance records and Income grouping
-        window.addExpense = function() { const amt = document.getElementById('expAmount').value, date = document.getElementById('expDate').value, cat = document.getElementById('expCategory').value; if(!amt || !date || !cat) return window.toast("⚠️ Fill details"); DB.expenses.push({ id: Date.now().toString(), date, amount: parseFloat(amt), category: cat }); DB.save(); document.getElementById('expAmount').value = ''; document.getElementById('expCategory').value = ''; window.calculateFinances(); window.toast("Expense saved"); }
-        window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
-        
-        window.calculateFinances = function() {
-            const monthStr = document.getElementById('finMonth').value; if(!monthStr) return;
-            let totalIncome = 0, totalExpense = 0, totalDue = 0;
-            const incCont = document.getElementById('incomeLedgerContainer'); incCont.innerHTML = '';
-            const expCont = document.getElementById('expenseLedgerContainer'); expCont.innerHTML = '';
-            
-            let incomes = [];
-            for(let seatId of window.seatLayout) {
-                const occupants = DB.getOccupants(seatId);
-                occupants.forEach(s => { 
-                    if(s.payments) s.payments.forEach(p => { if(p.date.startsWith(monthStr)) { totalIncome += parseFloat(p.amount); incomes.push({ date: p.date, name: s.name, seat: seatId, amount: p.amount, mode: p.mode }); } }); 
-                    if(window.getStudentStatus(s) !== 'Paid') totalDue += (parseFloat(s.dueAmount) || 0);
-                });
-            }
-
-            // Group Incomes Date-wise
-            let groupedInc = {};
-            incomes.forEach(i => { if(!groupedInc[i.date]) groupedInc[i.date] = []; groupedInc[i.date].push(i); });
-            const sIncDates = Object.keys(groupedInc).sort((a,b) => new Date(b) - new Date(a));
-            if(sIncDates.length === 0) incCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No income recorded.</div>';
-            sIncDates.forEach(d => {
-                incCont.innerHTML += `<div class="date-header">${formatLedgerDate(d)}</div>`;
-                groupedInc[d].forEach(i => { incCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${i.name} <span style="color:var(--text-muted); font-size:11px;">(Seat ${i.seat})</span></strong><div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Mode: ${i.mode}</div></div><span style="color:var(--green); font-weight:700; font-size:14px;">+₹${i.amount}</span></div>`; });
-            });
-
-            // Group Expenses Date-wise
-            let monthlyExps = (DB.expenses || []).filter(e => e.date.startsWith(monthStr));
-            let groupedExp = {};
-            monthlyExps.forEach(e => { if(!groupedExp[e.date]) groupedExp[e.date] = []; groupedExp[e.date].push(e); totalExpense += parseFloat(e.amount); });
-            const sExpDates = Object.keys(groupedExp).sort((a,b) => new Date(b) - new Date(a));
-            if(sExpDates.length === 0) expCont.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center;">No expenses recorded.</div>';
-            sExpDates.forEach(d => {
-                expCont.innerHTML += `<div class="date-header">${formatLedgerDate(d)}</div>`; // Just as a fallback header format
-                groupedExp[d].forEach(e => { expCont.innerHTML += `<div class="list-item"><div><strong style="font-size:13px; display:block;">${e.category}</strong></div><div style="display:flex; align-items:center; gap:10px;"><span style="color:var(--red); font-weight:700; font-size:14px;">-₹${e.amount}</span><button style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px;" onclick="removeExpense('${e.id}')">×</button></div></div>`; });
-            });
-
-            document.getElementById('finIncome').innerText = `₹${totalIncome}`; document.getElementById('finExpense').innerText = `₹${totalExpense}`; 
-            document.getElementById('finTotalDue').innerText = `₹${totalDue}`; document.getElementById('finProfit').innerText = `₹${totalIncome - totalExpense}`;
-        }
-
-        function formatLedgerDate(dateStr) {
-            const d = new Date(dateStr);
-            return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        }
-
-        window.openSettingsModal = function() { hideAllModalSections(); document.getElementById('cfgLibName').value = appConfig.libraryName || ''; document.getElementById('cfgTotalSeats').value = appConfig.totalSeats || 20; document.getElementById('cfgCustomSeats').value = (appConfig.customSeats || []).join(', '); document.getElementById('cfgShifts').value = (appConfig.shifts || []).join('\n'); triggerModalAnimation('modalSettingsSection'); document.getElementById('detailsModal').style.display = 'flex'; }
-        window.saveSettings = function() { appConfig.libraryName = document.getElementById('cfgLibName').value.trim() || "LibOrg"; appConfig.totalSeats = parseInt(document.getElementById('cfgTotalSeats').value) || 20; appConfig.customSeats = document.getElementById('cfgCustomSeats').value.split(',').map(s => s.trim().toUpperCase()).filter(s => s); appConfig.shifts = document.getElementById('cfgShifts').value.split('\n').map(s => s.trim()).filter(s => s); DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.closeModal(); window.toast('✅ Settings applied!'); }
-
-        function hideAllModalSections() { ['modalListSection', 'modalViewSection', 'modalEditSection', 'modalPaySection', 'modalSettingsSection', 'adminUserSection'].forEach(id => { const el = document.getElementById(id); if(el) { el.classList.add('hidden'); el.classList.remove('modal-animate'); } }); }
-        function triggerModalAnimation(sectionId) { const el = document.getElementById(sectionId); el.classList.remove('hidden'); void el.offsetWidth; el.classList.add('modal-animate'); }
-        
-        window.handleSeatClick = function(seatNo) { window.activeSeatNo = seatNo; const occupants = DB.getOccupants(seatNo); if(occupants.length === 1) window.openStudentProfile(occupants[0].id); else window.showListMenu(); document.getElementById('detailsModal').style.display = 'flex'; }
-        
-        window.showListMenu = function() {
-            hideAllModalSections(); document.getElementById('listSeatNo').innerText = window.activeSeatNo;
-            const listCont = document.getElementById('occupantsContainer'); listCont.innerHTML = '';
-            DB.getOccupants(window.activeSeatNo).forEach(s => { 
-                const st = window.getStudentStatus(s); let badgeColor = st === 'Expired' ? 'var(--red)' : (st === 'Due' ? 'var(--orange)' : 'var(--green)');
-                let badgeText = st + (s.dueAmount > 0 ? ` (₹${s.dueAmount})` : '');
-                listCont.innerHTML += `<div class="list-item" style="cursor:pointer;" onclick="openStudentProfile('${s.id}')"><div><strong style="display:block; font-size:14px;">${s.name}</strong><div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${s.shift}</div></div><span class="badge" style="background:${badgeColor};">${badgeText}</span></div>`; 
-            });
-            triggerModalAnimation('modalListSection');
-        }
-
-        window.openStudentProfile = function(studentId) {
-            window.activeStudentId = studentId; hideAllModalSections(); window.isDeleteConfirmStep = false;
-            const rmvBtn = document.getElementById('btnRemoveStudent'); if(rmvBtn) { rmvBtn.innerText = "Remove"; rmvBtn.style.background = "var(--red)"; }
-            const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === studentId);
-            document.getElementById('modSeatTitle').innerText = window.activeSeatNo;
-            ['Name','Phone','Shift','Exam','Date','Valid'].forEach(k => document.getElementById('mod'+k).innerText = student[k.toLowerCase() === 'date' ? 'admDate' : k.toLowerCase() === 'valid' ? 'validDate' : k.toLowerCase()] || 'N/A');
-            
-            const st = window.getStudentStatus(student);
-            const feeEl = document.getElementById('modFee'); 
-            feeEl.innerText = st + (parseFloat(student.dueAmount) > 0 ? ` (Due: ₹${student.dueAmount})` : ''); 
-            feeEl.style.background = st === 'Expired' ? 'var(--red)' : (st === 'Due' ? 'var(--orange)' : 'var(--green)');
-            
-            const ledger = document.getElementById('paymentLedger'); ledger.innerHTML = '';
-            if(!student.payments || student.payments.length === 0) ledger.innerHTML = '<div style="font-size:11px; color:var(--text-muted); text-align:center;">No history.</div>';
-            else { [...student.payments].reverse().forEach(p => { ledger.innerHTML += `<div class="info-row"><div style="font-size:11px;"><strong style="color:var(--text-main); display:block;">${p.date}</strong>${p.mode}</div><div style="color:var(--green); font-weight:700;">₹${p.amount}</div></div>`; }); }
-            const btnBack = document.getElementById('btnViewBack'); if(DB.getOccupants(window.activeSeatNo).length > 1) { btnBack.innerHTML = "Back"; btnBack.onclick = window.backToListOrClose; } else { btnBack.innerHTML = "Close"; btnBack.onclick = window.closeModal; }
-            triggerModalAnimation('modalViewSection');
-        }
-
-        window.backToListOrClose = function() { if(DB.getOccupants(window.activeSeatNo).length > 1) window.showListMenu(); else window.closeModal(); }
-        window.closeModal = function() { document.getElementById('detailsModal').style.display = 'none'; window.activeSeatNo = null; window.activeStudentId = null; }
-        window.addAnotherToSeat = function() { const seat = window.activeSeatNo; window.closeModal(); window.switchTab('add'); document.getElementById('seatNo').value = seat; }
-        
-        window.showEditForm = function() { 
-            hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); 
-            ['Name','Phone','Exam','AdmDate','ValidDate','Shift'].forEach(k => document.getElementById('edit'+k).value = student[k.charAt(0).toLowerCase() + k.slice(1)] || ''); 
-            document.getElementById('editDueAmount').value = student.dueAmount !== undefined ? student.dueAmount : (student.feeStatus === 'Due' ? '' : 0);
-            triggerModalAnimation('modalEditSection'); 
-        }
-        window.saveEdit = function() { 
-            const d = {}; ['Name','Phone','Exam','AdmDate','ValidDate','Shift'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value); 
-            
-            // --- CONFLICT PREVENTION LOGIC IN EDIT ---
-            const currentOccupants = DB.getOccupants(window.activeSeatNo);
-            for (let o of currentOccupants) {
-                if (o.id === window.activeStudentId) continue; // Skip self
-                if (window.isShiftOverlap(o.shift, d.shift)) {
-                    return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift.split(':')[0]}`);
-                }
-            }
-            // ------------------------------------------
-
-            d.dueAmount = parseFloat(document.getElementById('editDueAmount').value) || 0;
-            DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast("Updated"); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
-        }
-        window.cancelEdit = function() { window.openStudentProfile(window.activeStudentId); }
-        
-        window.showPaymentForm = function() { 
-            hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); 
-            document.getElementById('payStudentName').innerText = student.name; 
-            document.getElementById('payDate').value = new Date().toISOString().split('T')[0]; document.getElementById('payAmount').value = ''; 
-            document.getElementById('payValidDate').value = student.validDate || ''; 
-            
-            let currentDue = student.dueAmount !== undefined ? parseFloat(student.dueAmount) : (student.feeStatus === 'Due' ? 0 : 0);
-            document.getElementById('payNewDue').value = currentDue;
-            document.getElementById('payAmount').oninput = (e) => {
-                let p = parseFloat(e.target.value) || 0;
-                let nd = currentDue - p;
-                document.getElementById('payNewDue').value = nd > 0 ? nd : 0;
-            };
-            triggerModalAnimation('modalPaySection'); 
-        }
-        window.hidePaymentForm = function() { window.openStudentProfile(window.activeStudentId); }
-        window.savePayment = function() { 
-            const amt = document.getElementById('payAmount').value; if(!amt && amt !== '0') return window.toast('⚠️ Enter amount'); 
-            const newDue = parseFloat(document.getElementById('payNewDue').value) || 0;
-            DB.addPayment(window.activeSeatNo, window.activeStudentId, { date: document.getElementById('payDate').value, amount: amt, mode: document.getElementById('payMode').value }, document.getElementById('payValidDate').value, newDue); 
-            window.toast('Payment Saved'); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
-        }
-        
-        window.freeStudentSlot = function() {
-            const btn = document.getElementById('btnRemoveStudent');
-            if (!window.isDeleteConfirmStep) { window.isDeleteConfirmStep = true; btn.innerText = "Tap Again to Delete"; btn.style.background = "#991b1b"; setTimeout(() => { if (window.isDeleteConfirmStep) { window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)"; } }, 4000); return; }
-            DB.removeStudent(window.activeSeatNo, window.activeStudentId); window.renderSeats(); window.calculateFinances(); window.toast(`🗑️ Removed.`); window.isDeleteConfirmStep = false; btn.innerText = "Remove"; btn.style.background = "var(--red)";
-            if(DB.getOccupants(window.activeSeatNo).length > 0) window.showListMenu(); else window.closeModal();
-        }
-
-        window.exportData = function() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ config: appConfig, seatsData: DB.seatsData, expenses: DB.expenses, waitlist: DB.waitlist })); const a = document.createElement('a'); a.href = dataStr; a.download = `LibOrg_Backup_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(a); a.click(); a.remove(); window.toast("📥 Downloaded!"); }
-        window.importData = function(input) { const reader = new FileReader(); reader.onload = function() { try { const obj = JSON.parse(reader.result); if(obj.config) { appConfig = obj.config; DB.seatsData = obj.seatsData || {}; DB.expenses = obj.expenses || []; DB.waitlist = obj.waitlist || []; } else { DB.seatsData = obj; } DB.save(); document.getElementById('appTitle').innerText = appConfig.libraryName; window.initializeAppStructure(); window.renderSeats(); window.renderWaitlist(); window.calculateFinances(); window.closeModal(); window.toast("📤 Restored!"); } catch(e) { window.toast("⚠️ Read Error"); } }; if(input.files[0]) reader.readAsText(input.files[0]); }
     </script>
 </body>
 </html>
