@@ -1533,6 +1533,10 @@
         window.promoteWaitlist = function(id) { const s = DB.waitlist.find(w => w.id === id); if(s) { window.switchTab('add'); document.getElementById('studentName').value = s.name; document.getElementById('phone').value = s.phone !== 'N/A' ? s.phone : ''; document.getElementById('shift').value = s.shift; window.toggleCustomShift('shift','customShift'); window.removeWaitlist(id); window.toast("Fill seat to complete."); } }
 
         // Finance records and Income grouping
+        window.switchFinView = function(view) {
+            document.getElementById('finIncomeView').classList.toggle('hidden', view !== 'income'); document.getElementById('finExpenseView').classList.toggle('hidden', view !== 'expense');
+            document.getElementById('btnShowIncome').classList.toggle('active', view === 'income'); document.getElementById('btnShowExpense').classList.toggle('active', view === 'expense');
+        }
         window.addExpense = function() { const amt = document.getElementById('expAmount').value, date = document.getElementById('expDate').value, cat = document.getElementById('expCategory').value; if(!amt || !date || !cat) return window.toast("⚠️ Fill details"); DB.expenses.push({ id: Date.now().toString(), date, amount: parseFloat(amt), category: cat }); DB.save(); document.getElementById('expAmount').value = ''; document.getElementById('expCategory').value = ''; window.calculateFinances(); window.toast("Expense saved"); }
         window.removeExpense = function(id) { DB.expenses = DB.expenses.filter(e => e.id !== id); DB.save(); window.calculateFinances(); }
         
