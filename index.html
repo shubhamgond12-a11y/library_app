@@ -709,7 +709,9 @@
             <input type="text" class="app-input" id="editName" placeholder="Name" style="margin-bottom:8px;">
             <input type="tel" class="app-input" id="editPhone" placeholder="Phone" style="margin-bottom:8px;">
             <input type="text" class="app-input" id="editExam" placeholder="Exam" style="margin-bottom:8px;">
-            <input type="text" class="app-input" id="editShift" placeholder="Shift Details" style="margin-bottom:8px;">
+            <label class="app-label" style="margin-top:0; margin-bottom:4px;">Shift</label>
+            <select class="app-input" id="editShift" style="margin-bottom:8px;"></select>
+            <input type="text" class="app-input" id="editSeatNo" placeholder="Seat Number" style="margin-bottom:8px; text-transform: uppercase;">
             <div class="flex-row" style="margin-bottom:8px;">
                 <div style="flex:1"><label class="app-label" style="margin-top:0">Admission Date</label><input type="date" class="app-input" id="editAdmDate"></div>
                 <div style="flex:1"><label class="app-label" style="margin-top:0">Valid Until</label><input type="date" class="app-input" id="editValidDate"></div>
@@ -854,6 +856,15 @@
             getOccupants: function(seatNo) { return this.seatsData[seatNo] || []; },
             addStudent: function(seatNo, studentData) { if(!this.seatsData[seatNo]) this.seatsData[seatNo] = []; this.seatsData[seatNo].push(studentData); this.save(); },
             updateStudent: function(seatNo, studentId, updatedData) { const idx = this.seatsData[seatNo].findIndex(s => s.id === studentId); if(idx > -1) { this.seatsData[seatNo][idx] = { ...this.seatsData[seatNo][idx], ...updatedData }; this.save(); } },
+            moveStudent: function(fromSeat, toSeat, studentId, updatedData) { 
+                const fromList = this.seatsData[fromSeat] || []; const idx = fromList.findIndex(s => s.id === studentId); 
+                if(idx === -1) return false; 
+                const student = { ...fromList[idx], ...updatedData }; 
+                fromList.splice(idx, 1); 
+                if(fromList.length === 0) delete this.seatsData[fromSeat]; 
+                if(!this.seatsData[toSeat]) this.seatsData[toSeat] = []; 
+                this.seatsData[toSeat].push(student); this.save(); return true; 
+            },
             removeStudent: function(seatNo, studentId) { this.seatsData[seatNo] = this.seatsData[seatNo].filter(s => s.id !== studentId); this.save(); },
             addPayment: function(seatNo, studentId, paymentObj, validDate, newDue) { const student = this.seatsData[seatNo].find(s => s.id === studentId); if(student) { if(!student.payments) student.payments = []; student.payments.push(paymentObj); if(validDate) student.validDate = validDate; if(newDue !== undefined) student.dueAmount = newDue; this.save(); } }
         };
@@ -1629,16 +1640,25 @@
         
         window.showEditForm = function() { 
             hideAllModalSections(); const student = DB.getOccupants(window.activeSeatNo).find(s => s.id === window.activeStudentId); 
-            ['Name','Phone','Exam','AdmDate','ValidDate','Shift'].forEach(k => document.getElementById('edit'+k).value = student[k.charAt(0).toLowerCase() + k.slice(1)] || ''); 
+            ['Name','Phone','Exam','AdmDate','ValidDate'].forEach(k => document.getElementById('edit'+k).value = student[k.charAt(0).toLowerCase() + k.slice(1)] || ''); 
+            const shiftSelect = document.getElementById('editShift');
+            shiftSelect.innerHTML = '';
+            (appConfig.shifts || []).forEach(s => shiftSelect.innerHTML += `<option value="${s}">${s}</option>`);
+            shiftSelect.value = student.shift || '';
+            document.getElementById('editSeatNo').value = window.activeSeatNo || '';
             document.getElementById('editDueAmount').value = student.dueAmount !== undefined ? student.dueAmount : (student.feeStatus === 'Due' ? '' : 0);
             triggerModalAnimation('modalEditSection'); 
         }
         window.saveEdit = function() { 
-            const d = {}; ['Name','Phone','Exam','AdmDate','ValidDate','Shift'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value); 
+            const d = {}; ['Name','Phone','Exam','AdmDate','ValidDate'].forEach(k => d[k.charAt(0).toLowerCase() + k.slice(1)] = document.getElementById('edit'+k).value); 
+            d.shift = document.getElementById('editShift').value;
+            const targetSeat = (document.getElementById('editSeatNo').value || '').toUpperCase().trim();
+            if (!targetSeat) return window.toast('⚠️ Seat number required');
+            if (!window.seatLayout.includes(targetSeat)) return window.toast('⚠️ Invalid seat number');
             
             // --- CONFLICT PREVENTION LOGIC IN EDIT ---
-            const currentOccupants = DB.getOccupants(window.activeSeatNo);
-            for (let o of currentOccupants) {
+            const seatOccupants = DB.getOccupants(targetSeat);
+            for (let o of seatOccupants) {
                 if (o.id === window.activeStudentId) continue; // Skip self
                 if (window.isShiftOverlap(o.shift, d.shift)) {
                     return window.toast(`⚠️ Shift collision! ${o.name} is currently occupying: ${o.shift.split(':')[0]}`);
@@ -1647,7 +1667,15 @@
             // ------------------------------------------
 
             d.dueAmount = parseFloat(document.getElementById('editDueAmount').value) || 0;
-            DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast("Updated"); window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
+            if (targetSeat !== window.activeSeatNo) {
+                const moved = DB.moveStudent(window.activeSeatNo, targetSeat, window.activeStudentId, d);
+                if (!moved) return window.toast('⚠️ Could not move student');
+                window.activeSeatNo = targetSeat;
+                window.toast('Updated and moved');
+            } else {
+                DB.updateStudent(window.activeSeatNo, window.activeStudentId, d); window.toast('Updated');
+            }
+            window.renderSeats(); window.calculateFinances(); window.openStudentProfile(window.activeStudentId); 
         }
         window.cancelEdit = function() { window.openStudentProfile(window.activeStudentId); }
         
